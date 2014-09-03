@@ -3,6 +3,10 @@ import struct
 import sys
 import termios
 
+__author__ = '@Robpol86'
+__license__ = 'MIT'
+__version__ = '1.0.0'
+
 
 def set_terminal_title(title):
     """Sets the terminal title.
@@ -64,7 +68,7 @@ class AsciiTable(object):
         widths = [0] * number_of_columns
 
         for row in self.table_data:
-            for i in range(row):
+            for i in range(len(row)):
                 if not row[i]:
                     continue
                 widths[i] = max(widths[i], len(max(row[i].splitlines(), key=len)))
