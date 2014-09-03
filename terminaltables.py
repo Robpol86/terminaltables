@@ -35,10 +35,8 @@ class AsciiTable(object):
         self.inner_row_border = True
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
         self.outer_border = False
-        self.padding_bottom = 0
         self.padding_left = 1
         self.padding_right = 1
-        self.padding_top = 0
 
     def column_max_width(self, column_number):
         """TODO
@@ -61,7 +59,9 @@ class AsciiTable(object):
 
         for row in self.table_data:
             for i in range(row):
-                widths[i] = max(widths[i], len(row[i]))
+                if not row[i]:
+                    continue
+                widths[i] = max(widths[i], len(max(row[i].splitlines(), key=len)))
 
         return widths
 
@@ -78,13 +78,14 @@ class AsciiTable(object):
         column_widths = self.column_widths
         for row in new_table_data:
             for i in range(row):
-                justification = self.justify_columns.get(i, 'right')
+                justification = self.justify_columns.get(i, 'left')
+                lines = row[i].splitlines() or ['']
                 if justification == 'right':
-                    cell = row[i].rjust(column_widths[i])
+                    cell = '\n'.join(l.rjust(column_widths[i]) for l in lines)
                 elif justification == 'center':
-                    cell = row[i].center(column_widths[i])
+                    cell = '\n'.join(l.center(column_widths[i]) for l in lines)
                 else:
-                    cell = row[i].ljust(column_widths[i])
+                    cell = '\n'.join(l.ljust(column_widths[i]) for l in lines)
                 row[i] = cell
 
         return new_table_data
