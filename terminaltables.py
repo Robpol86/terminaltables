@@ -39,7 +39,7 @@ class AsciiTable(object):
         self.padding_right = 1
 
     def column_max_width(self, column_number):
-        """TODO
+        """Returns the maximum width of a column based on the current terminal width.
 
         Positional arguments:
         column_number -- the column number to query.
@@ -47,7 +47,13 @@ class AsciiTable(object):
         Returns:
         The max width of the column (integer).
         """
-        raise NotImplementedError('todo')
+        column_widths = self.column_widths
+        additional = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
+        if self.outer_border:
+            additional += 2
+        if self.inner_column_border:
+            additional += len(column_widths) - 1
+        return sum(column_widths) + additional - column_widths[column_number]
 
     @property
     def column_widths(self):
