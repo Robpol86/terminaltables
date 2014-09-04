@@ -38,7 +38,7 @@ class AsciiTable(object):
         self.inner_heading_row_border = False
         self.inner_row_border = True
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
-        self.outer_border = False
+        self.outer_border = True
         self.padding_left = 1
         self.padding_right = 1
 
@@ -52,12 +52,13 @@ class AsciiTable(object):
         The max width of the column (integer).
         """
         column_widths = self.column_widths
-        additional = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
+        borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
         if self.outer_border:
-            additional += 2
+            borders_padding += 2
         if self.inner_column_border:
-            additional += len(column_widths) - 1
-        return sum(column_widths) + additional - column_widths[column_number]
+            borders_padding += len(column_widths) - 1
+        other_column_widths = sum(column_widths) - column_widths[column_number]
+        return self.terminal_width - other_column_widths - borders_padding
 
     @property
     def column_widths(self):
