@@ -61,6 +61,46 @@ def test_simple(cls):
 
 
 @pytest.mark.parametrize('cls', CLASSES)
+def test_attributes(cls):
+    class FakeCls(cls):
+        terminal_width = 80
+
+    table_data = [
+        ['Name', 'Color', 'Type'],
+        ['Avocado', 'green', 'nut'],
+        ['Tomato', 'red', 'fruit'],
+        ['Lettuce', 'green', 'vegetable'],
+    ]
+    table = FakeCls(table_data)  # '| Lettuce | green | vegetable |'
+
+    table.outer_border = False
+    assert 58 == table.column_max_width(0)
+    assert 56 == table.column_max_width(1)
+    assert 60 == table.column_max_width(2)
+    table.outer_border = True
+
+    table.inner_column_border = False
+    assert 58 == table.column_max_width(0)
+    assert 56 == table.column_max_width(1)
+    assert 60 == table.column_max_width(2)
+    table.outer_border = False
+    assert 60 == table.column_max_width(0)
+    assert 58 == table.column_max_width(1)
+    assert 62 == table.column_max_width(2)
+    table.outer_border = True
+    table.inner_column_border = True
+
+    table.padding_left = 0
+    assert 59 == table.column_max_width(0)
+    assert 57 == table.column_max_width(1)
+    assert 61 == table.column_max_width(2)
+    table.padding_right = 5
+    assert 47 == table.column_max_width(0)
+    assert 45 == table.column_max_width(1)
+    assert 49 == table.column_max_width(2)
+
+
+@pytest.mark.parametrize('cls', CLASSES)
 def test_multi_line(cls):
     class FakeCls(cls):
         terminal_width = 80
