@@ -88,7 +88,7 @@ class AsciiTable(object):
         # Pad strings in each cell, and apply text-align/justification.
         column_widths = self.column_widths
         for row in new_table_data:
-            for i in range(row):
+            for i in range(len(row)):
                 justification = self.justify_columns.get(i, 'left')
                 lines = row[i].splitlines() or ['']
                 if justification == 'right':
