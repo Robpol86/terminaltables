@@ -8,6 +8,34 @@ __license__ = 'MIT'
 __version__ = '1.0.0'
 
 
+def _align_and_pad(input_, align, width, lpad, rpad):
+    """Aligns a string with center/rjust/ljust and adds additional padding.
+
+    Positional arguments:
+    input_ -- input string to operate on.
+    align -- 'left', 'right', or 'center'.
+    width -- align to this column width.
+    lpad -- number of spaces to pad on the left.
+    rpad -- number of spaces to pad on the right.
+
+    Returns:
+    Modified string.
+    """
+    # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
+    lines = input_.splitlines() if input_ else ['']
+    if input_.endswith('\n'):
+        lines.append('')
+
+    if align == 'center':
+        output = '\n'.join(l.center(width) for l in lines)
+    elif align == 'right':
+        output = '\n'.join(l.rjust(width) for l in lines)
+    else:
+        output = '\n'.join(l.ljust(width) for l in lines)
+
+    return '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in output.splitlines())
+
+
 def set_terminal_title(title):
     """Sets the terminal title.
 
@@ -35,7 +63,7 @@ class AsciiTable(object):
         self.title = title
 
         self.inner_column_border = True
-        self.inner_heading_row_border = False
+        self.inner_heading_row_border = True
         self.inner_row_border = True
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
         self.outer_border = True
@@ -63,7 +91,7 @@ class AsciiTable(object):
     @property
     def column_widths(self):
         if not self.table_data:
-            return []
+            return list()
 
         number_of_columns = max(len(r) for r in self.table_data)
         widths = [0] * number_of_columns
@@ -79,7 +107,7 @@ class AsciiTable(object):
     @property
     def padded_table_data(self):
         if not self.table_data:
-            return []
+            return list()
 
         # Set all rows to the same number of columns.
         max_columns = max(len(r) for r in self.table_data)
@@ -90,22 +118,46 @@ class AsciiTable(object):
         for row in new_table_data:
             for i in range(len(row)):
                 justification = self.justify_columns.get(i, 'left')
-                lines = row[i].splitlines() or ['']
-                if justification == 'right':
-                    cell = '\n'.join(l.rjust(column_widths[i]) for l in lines)
-                elif justification == 'center':
-                    cell = '\n'.join(l.center(column_widths[i]) for l in lines)
-                else:
-                    cell = '\n'.join(l.ljust(column_widths[i]) for l in lines)
+                cell = _align_and_pad(row[i], justification, column_widths[i], self.padding_left, self.padding_right)
                 row[i] = cell
 
         return new_table_data
 
     @property
     def table(self):
+        padded_table_data = self.padded_table_data
+        column_widths = [len(c) for c in padded_table_data[0]]
+        borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
+        separator_cells = [(c + borders_padding) * self.CHAR_HORIZONTAL for c in column_widths]
+        top_border, bottom_border, heading_border, row_border = list(), list(), list(), list()
+
+        # Build internal table data (within outer borders).
         inner_column_border = '{l}{c}{r}'.format(c=(self.CHAR_VERTICAL if self.inner_column_border else ''),
                                                  l=(' ' * self.padding_left), r=(' ' * self.padding_right))
-        table_data = [r.join(inner_column_border) for r in self.padded_table_data]
+        table_data = [inner_column_border.join(r) for r in padded_table_data]
+
+        # Build top and bottom borders.
+        if self.outer_border:
+            if self.title is not None and len(self.title) < sum([len(c) for c in separator_cells]):
+                top_border = ['{0}{1}{2}'.format(
+                    self.CHAR_CORNER_UPPER_LEFT,
+                    self.title + self.CHAR_INTERSECT_TOP.join(separator_cells)[len(self.title):],
+                    self.CHAR_CORNER_UPPER_RIGHT
+                )]
+            else:
+                top_border = ['{0}{1}{2}'.format(self.CHAR_CORNER_UPPER_LEFT,
+                                                 self.CHAR_INTERSECT_TOP.join(separator_cells),
+                                                 self.CHAR_CORNER_UPPER_RIGHT)]
+            bottom_border = ['{0}{1}{2}'.format(self.CHAR_CORNER_LOWER_LEFT,
+                                                self.CHAR_INTERSECT_BOTTOM.join(separator_cells),
+                                                self.CHAR_CORNER_LOWER_RIGHT)]
+
+        # Build heading separator.
+        if table_data and self.inner_heading_row_border:
+            table_data.insert(1, ['{0}{1}{2}'.format(self.CHAR_INTERSECT_LEFT,
+                                                     self.CHAR_INTERSECT_CENTER.join(separator_cells),
+                                                     self.CHAR_INTERSECT_RIGHT)])
+
         raise NotImplementedError
 
     @property

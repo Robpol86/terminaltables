@@ -18,10 +18,10 @@ def test_empty(cls):
     assert [[]] == table.padded_table_data
 
     table = cls([['']])
-    assert [['']] == table.padded_table_data
+    assert [['  ']] == table.padded_table_data
 
     table = cls([[' ']])
-    assert [[' ']] == table.padded_table_data
+    assert [['   ']] == table.padded_table_data
 
 
 @pytest.mark.parametrize('cls', CLASSES)
@@ -35,22 +35,22 @@ def test_simple(cls):
     table = cls(table_data)
 
     expected = [
-        ['Name   ', 'Color', 'Type     '],
-        ['Avocado', 'green', 'nut      '],
-        ['Tomato ', 'red  ', 'fruit    '],
-        ['Lettuce', 'green', 'vegetable'],
+        [' Name    ', ' Color ', ' Type      '],
+        [' Avocado ', ' green ', ' nut       '],
+        [' Tomato  ', ' red   ', ' fruit     '],
+        [' Lettuce ', ' green ', ' vegetable '],
     ]
     assert expected == table.padded_table_data
 
     table_data.append(['Watermelon', 'green'])
     table_data.append([])
     expected = [
-        ['Name      ', 'Color', 'Type     '],
-        ['Avocado   ', 'green', 'nut      '],
-        ['Tomato    ', 'red  ', 'fruit    '],
-        ['Lettuce   ', 'green', 'vegetable'],
-        ['Watermelon', 'green', '         '],
-        ['          ', '     ', '         '],
+        [' Name       ', ' Color ', ' Type      '],
+        [' Avocado    ', ' green ', ' nut       '],
+        [' Tomato     ', ' red   ', ' fruit     '],
+        [' Lettuce    ', ' green ', ' vegetable '],
+        [' Watermelon ', ' green ', '           '],
+        ['            ', '       ', '           '],
     ]
     assert expected == table.padded_table_data
 
@@ -68,21 +68,21 @@ def test_attributes(cls):
 
     table.justify_columns[0] = 'right'
     expected = [
-        ['      Name', 'Color', 'Type     '],
-        ['   Avocado', 'green', 'nut      '],
-        ['    Tomato', 'red  ', 'fruit    '],
-        ['   Lettuce', 'green', 'vegetable'],
-        ['Watermelon', 'green', '         ']
+        ['       Name ', ' Color ', ' Type      '],
+        ['    Avocado ', ' green ', ' nut       '],
+        ['     Tomato ', ' red   ', ' fruit     '],
+        ['    Lettuce ', ' green ', ' vegetable '],
+        [' Watermelon ', ' green ', '           ']
     ]
     assert expected == table.padded_table_data
 
     table.justify_columns[2] = 'center'
     expected = [
-        ['      Name', 'Color', '   Type  '],
-        ['   Avocado', 'green', '   nut   '],
-        ['    Tomato', 'red  ', '  fruit  '],
-        ['   Lettuce', 'green', 'vegetable'],
-        ['Watermelon', 'green', '         ']
+        ['       Name ', ' Color ', '    Type   '],
+        ['    Avocado ', ' green ', '    nut    '],
+        ['     Tomato ', ' red   ', '   fruit   '],
+        ['    Lettuce ', ' green ', ' vegetable '],
+        [' Watermelon ', ' green ', '           ']
     ]
     assert expected == table.padded_table_data
 
@@ -98,9 +98,11 @@ def test_multi_line(cls):
     table = cls(table_data)
 
     expected = [
-        ['Show      ',        'Characters                                                                         '],
-        ['Rugrats   ', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
-                              'Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                 ')],
-        ['South Park',        'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                         ']
+        [' Show       ', ' Characters                                                                          '],
+        [' Rugrats    ', dedent(
+                         ' Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, \n'
+                         ' Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                  '
+        )],
+        [' South Park ', ' Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          ']
     ]
     assert expected == table.padded_table_data
