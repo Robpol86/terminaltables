@@ -5,6 +5,10 @@ def test_align():
     assert 'test' == _align_and_pad('test', '', 1, 0, 0)
     assert 'test' == _align_and_pad('test', 'left', 1, 0, 0)
     assert '    ' == _align_and_pad('', 'left', 4, 0, 0)
+    assert '' == _align_and_pad('', 'left', 0, 0, 0)
+    assert '  ' == _align_and_pad('', 'left', 0, 1, 1)
+    assert '   ' == _align_and_pad('', 'left', 1, 1, 1)
+    assert '      ' == _align_and_pad('', 'left', 4, 1, 1)
 
     assert 'test' == _align_and_pad('test', 'left', 4, 0, 0)
     assert 'test ' == _align_and_pad('test', 'left', 5, 0, 0)

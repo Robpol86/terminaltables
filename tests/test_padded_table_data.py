@@ -1,5 +1,3 @@
-from textwrap import dedent
-
 import pytest
 
 from terminaltables import (
@@ -91,18 +89,16 @@ def test_attributes(cls):
 def test_multi_line(cls):
     table_data = [
         ['Show', 'Characters'],
-        ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
-                           'Susie Carmichael, Dil Pickles, Kimi Finster, Spike')],
+        ['Rugrats', ('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
+                     'Susie Carmichael, Dil Pickles, Kimi Finster, Spike')],
         ['South Park', 'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick']
     ]
     table = cls(table_data)
 
     expected = [
         [' Show       ', ' Characters                                                                          '],
-        [' Rugrats    ', dedent(
-                         ' Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, \n'
-                         ' Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                  '
-        )],
+        [' Rugrats    ', (' Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, \n'
+                          ' Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                  ')],
         [' South Park ', ' Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          ']
     ]
     assert expected == table.padded_table_data

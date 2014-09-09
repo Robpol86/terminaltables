@@ -22,7 +22,7 @@ def _align_and_pad(input_, align, width, lpad, rpad):
     Modified string.
     """
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
-    lines = input_.splitlines() if input_ else ['']
+    lines = input_.splitlines() or ['']
     if input_.endswith('\n'):
         lines.append('')
 
@@ -33,7 +33,7 @@ def _align_and_pad(input_, align, width, lpad, rpad):
     else:
         output = '\n'.join(l.ljust(width) for l in lines)
 
-    return '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in output.splitlines())
+    return '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in output.splitlines() or [''])
 
 
 def set_terminal_title(title):
