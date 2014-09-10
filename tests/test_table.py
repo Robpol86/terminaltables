@@ -71,6 +71,52 @@ def test_simple():
     assert expected == table.table
 
 
+def test_title():
+    return
+    table_data = [
+        ['Name', 'Color', 'Type'],
+        ['Avocado', 'green', 'nut'],
+        ['Tomato', 'red', 'fruit'],
+        ['Lettuce', 'green', 'vegetable'],
+    ]
+    table = AsciiTable(table_data, 'Foods')
+
+    expected = dedent("""\
+        +-Foods---+-------+-----------+
+        | Name    | Color | Type      |
+        +---------+-------+-----------+
+        | Avocado | green | nut       |
+        | Tomato  | red   | fruit     |
+        | Lettuce | green | vegetable |
+        +---------+-------+-----------+\
+    """)
+    assert expected == table.table
+
+    table.title = 'Foooooooooooooods'
+    expected = dedent("""\
+        +-Foooooooooooooods-----------+
+        | Name    | Color | Type      |
+        +---------+-------+-----------+
+        | Avocado | green | nut       |
+        | Tomato  | red   | fruit     |
+        | Lettuce | green | vegetable |
+        +---------+-------+-----------+\
+    """)
+    assert expected == table.table
+
+    table.title = 'Foooooooooooooodsssssssssssss'
+    expected = dedent("""\
+        +---------+-------+-----------+
+        | Name    | Color | Type      |
+        +---------+-------+-----------+
+        | Avocado | green | nut       |
+        | Tomato  | red   | fruit     |
+        | Lettuce | green | vegetable |
+        +---------+-------+-----------+\
+    """)
+    assert expected == table.table
+
+
 def test_attributes():
     return
     table_data = [

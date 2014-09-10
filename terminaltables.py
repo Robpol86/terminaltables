@@ -8,13 +8,14 @@ __license__ = 'MIT'
 __version__ = '1.0.0'
 
 
-def _align_and_pad(input_, align, width, lpad, rpad):
+def _align_and_pad(input_, align, width, height, lpad, rpad):
     """Aligns a string with center/rjust/ljust and adds additional padding.
 
     Positional arguments:
     input_ -- input string to operate on.
     align -- 'left', 'right', or 'center'.
     width -- align to this column width.
+    height -- pad newlines and spaces to set cell to this height.
     lpad -- number of spaces to pad on the left.
     rpad -- number of spaces to pad on the right.
 
@@ -26,14 +27,23 @@ def _align_and_pad(input_, align, width, lpad, rpad):
     if input_.endswith('\n'):
         lines.append('')
 
+    # Align.
     if align == 'center':
-        output = '\n'.join(l.center(width) for l in lines)
+        aligned = '\n'.join(l.center(width) for l in lines)
     elif align == 'right':
-        output = '\n'.join(l.rjust(width) for l in lines)
+        aligned = '\n'.join(l.rjust(width) for l in lines)
     else:
-        output = '\n'.join(l.ljust(width) for l in lines)
+        aligned = '\n'.join(l.ljust(width) for l in lines)
 
-    return '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in output.splitlines() or [''])
+    # Pad.
+    padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
+
+    # Increase height.
+    additional_padding = height - 1 - padded.count('\n')
+    if additional_padding > 0:
+        padded += ('\n{0}'.format(' ' * (width + lpad + rpad))) * additional_padding
+
+    return padded
 
 
 def set_terminal_title(title):
@@ -116,9 +126,10 @@ class AsciiTable(object):
         # Pad strings in each cell, and apply text-align/justification.
         column_widths = self.column_widths
         for row in new_table_data:
+            height = max([c.count('\n') for c in row] or [0]) + 1
             for i in range(len(row)):
-                justification = self.justify_columns.get(i, 'left')
-                cell = _align_and_pad(row[i], justification, column_widths[i], self.padding_left, self.padding_right)
+                align = self.justify_columns.get(i, 'left')
+                cell = _align_and_pad(row[i], align, column_widths[i], height, self.padding_left, self.padding_right)
                 row[i] = cell
 
         return new_table_data

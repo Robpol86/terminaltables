@@ -88,17 +88,16 @@ def test_attributes(cls):
 @pytest.mark.parametrize('cls', CLASSES)
 def test_multi_line(cls):
     table_data = [
-        ['Show', 'Characters'],
-        ['Rugrats', ('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
-                     'Susie Carmichael, Dil Pickles, Kimi Finster, Spike')],
-        ['South Park', 'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick']
+        ['A', 'B', 'C'],
+        ['aaa', 'b\nbb\nbb', 'cc\nccccc'],
+        ['aa', 'bb\nbb', 'c\ncc\nccc'],
     ]
     table = cls(table_data)
+    table.justify_columns = {1: 'center', 2: 'right'}
 
     expected = [
-        [' Show       ', ' Characters                                                                          '],
-        [' Rugrats    ', (' Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, \n'
-                          ' Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                  ')],
-        [' South Park ', ' Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          ']
+        [' A   ', ' B  ', '     C '],
+        [' aaa \n     \n     ', ' b  \n bb \n bb ', '    cc \n ccccc \n       '],
+        [' aa  \n     \n     ', ' bb \n bb \n    ', '     c \n    cc \n   ccc '],
     ]
     assert expected == table.padded_table_data
