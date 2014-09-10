@@ -46,6 +46,35 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
     return padded
 
 
+def _convert_row(row, left, middle, right):
+    """Converts a row (list of strings) into a joined string with left and right borders. Supports multi-lines.
+
+    Positional arguments:
+    row -- list of strings representing one row.
+    left -- left border.
+    middle -- column separator.
+    right -- right border.
+
+    Returns:
+    String representation of a row.
+    """
+    if not row:
+        return left + right
+
+    if not any('\n' in c for c in row):
+        return left + middle.join(row) + right
+
+    # Split cells in the row by newlines. This creates new rows.
+    split_cells = [(c.splitlines() or ['']) + ([''] if c.endswith('\n') else []) for c in row]
+    height = len(split_cells[0])
+
+    # Merge rows into strings.
+    converted_rows = list()
+    for row_number in range(height):
+        converted_rows.append(left + middle.join([c[row_number] for c in split_cells]) + right)
+    return '\n'.join(converted_rows)
+
+
 def set_terminal_title(title):
     """Sets the terminal title.
 
@@ -137,39 +166,42 @@ class AsciiTable(object):
     @property
     def table(self):
         padded_table_data = self.padded_table_data
-        column_widths = [len(c) for c in padded_table_data[0]]
-        borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
-        separator_cells = [(c + borders_padding) * self.CHAR_HORIZONTAL for c in column_widths]
-        top_border, bottom_border, heading_border, row_border = list(), list(), list(), list()
+        column_widths = [len(c) + self.padding_left + self.padding_right for c in self.column_widths]
+        final_table_data = list()
 
-        # Build internal table data (within outer borders).
-        inner_column_border = '{l}{c}{r}'.format(c=(self.CHAR_VERTICAL if self.inner_column_border else ''),
-                                                 l=(' ' * self.padding_left), r=(' ' * self.padding_right))
-        table_data = [inner_column_border.join(r) for r in padded_table_data]
-
-        # Build top and bottom borders.
+        # Append top border.
         if self.outer_border:
-            if self.title is not None and len(self.title) < sum([len(c) for c in separator_cells]):
-                top_border = ['{0}{1}{2}'.format(
-                    self.CHAR_CORNER_UPPER_LEFT,
-                    self.title + self.CHAR_INTERSECT_TOP.join(separator_cells)[len(self.title):],
-                    self.CHAR_CORNER_UPPER_RIGHT
-                )]
-            else:
-                top_border = ['{0}{1}{2}'.format(self.CHAR_CORNER_UPPER_LEFT,
-                                                 self.CHAR_INTERSECT_TOP.join(separator_cells),
-                                                 self.CHAR_CORNER_UPPER_RIGHT)]
-            bottom_border = ['{0}{1}{2}'.format(self.CHAR_CORNER_LOWER_LEFT,
-                                                self.CHAR_INTERSECT_BOTTOM.join(separator_cells),
-                                                self.CHAR_CORNER_LOWER_RIGHT)]
+            row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
+                               self.CHAR_CORNER_UPPER_LEFT, self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
+                               self.CHAR_CORNER_UPPER_RIGHT)
+            if self.title is not None and len(self.title) <= len(row) - 4:
+                row = row[:2] + self.title + row[2 + len(self.title):]
+            final_table_data.append(row)
 
-        # Build heading separator.
-        if table_data and self.inner_heading_row_border:
-            table_data.insert(1, ['{0}{1}{2}'.format(self.CHAR_INTERSECT_LEFT,
-                                                     self.CHAR_INTERSECT_CENTER.join(separator_cells),
-                                                     self.CHAR_INTERSECT_RIGHT)])
+        # Build table body.
+        for i in range(len(padded_table_data)):
+            row = _convert_row(padded_table_data[0],
+                               self.CHAR_VERTICAL if self.outer_border else '',
+                               self.CHAR_VERTICAL if self.inner_column_border else '',
+                               self.CHAR_VERTICAL if self.outer_border else '')
+            final_table_data.append(row)
+            if self.inner_row_border or self.inner_heading_row_border and i == 0:
+                row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
+                                   self.CHAR_INTERSECT_LEFT,
+                                   self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
+                                   self.CHAR_INTERSECT_RIGHT)
+                final_table_data.append(row)
 
-        raise NotImplementedError
+        # Append bottom border.
+        if self.outer_border:
+            row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
+                               self.CHAR_CORNER_LOWER_LEFT,
+                               self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else '',
+                               self.CHAR_CORNER_LOWER_RIGHT)
+            final_table_data.append(row)
+
+        final_table = '\n'.join(final_table_data)
+        return final_table.strip()
 
     @property
     def terminal_height(self):
