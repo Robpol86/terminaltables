@@ -90,11 +90,11 @@ class AsciiTable(object):
     CHAR_CORNER_UPPER_LEFT = '+'
     CHAR_CORNER_UPPER_RIGHT = '+'
     CHAR_HORIZONTAL = '-'
-    CHAR_INTERSECT_BOTTOM = '-'
+    CHAR_INTERSECT_BOTTOM = '+'
     CHAR_INTERSECT_CENTER = '+'
-    CHAR_INTERSECT_LEFT = '|'
-    CHAR_INTERSECT_RIGHT = '|'
-    CHAR_INTERSECT_TOP = '-'
+    CHAR_INTERSECT_LEFT = '+'
+    CHAR_INTERSECT_RIGHT = '+'
+    CHAR_INTERSECT_TOP = '+'
     CHAR_VERTICAL = '|'
 
     def __init__(self, table_data, title=None):
@@ -103,7 +103,7 @@ class AsciiTable(object):
 
         self.inner_column_border = True
         self.inner_heading_row_border = True
-        self.inner_row_border = True
+        self.inner_row_border = False
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
         self.outer_border = True
         self.padding_left = 1
@@ -166,7 +166,7 @@ class AsciiTable(object):
     @property
     def table(self):
         padded_table_data = self.padded_table_data
-        column_widths = [len(c) + self.padding_left + self.padding_right for c in self.column_widths]
+        column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
         final_table_data = list()
 
         # Append top border.
@@ -174,22 +174,27 @@ class AsciiTable(object):
             row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
                                self.CHAR_CORNER_UPPER_LEFT, self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
                                self.CHAR_CORNER_UPPER_RIGHT)
-            if self.title is not None and len(self.title) <= len(row) - 4:
+            if self.title and len(self.title) <= len(row) - 4:
                 row = row[:2] + self.title + row[2 + len(self.title):]
             final_table_data.append(row)
 
         # Build table body.
-        for i in range(len(padded_table_data)):
-            row = _convert_row(padded_table_data[0],
+        indexes = range(len(padded_table_data))
+        for i in indexes:
+            row = _convert_row(padded_table_data[i],
                                self.CHAR_VERTICAL if self.outer_border else '',
                                self.CHAR_VERTICAL if self.inner_column_border else '',
                                self.CHAR_VERTICAL if self.outer_border else '')
             final_table_data.append(row)
-            if self.inner_row_border or self.inner_heading_row_border and i == 0:
+
+            # Insert row separator.
+            if i == indexes[-1]:
+                continue
+            if self.inner_row_border or (self.inner_heading_row_border and i == 0):
                 row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
-                                   self.CHAR_INTERSECT_LEFT,
+                                   self.CHAR_INTERSECT_LEFT if self.outer_border else '',
                                    self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
-                                   self.CHAR_INTERSECT_RIGHT)
+                                   self.CHAR_INTERSECT_RIGHT if self.outer_border else '')
                 final_table_data.append(row)
 
         # Append bottom border.
@@ -200,8 +205,7 @@ class AsciiTable(object):
                                self.CHAR_CORNER_LOWER_RIGHT)
             final_table_data.append(row)
 
-        final_table = '\n'.join(final_table_data)
-        return final_table.strip()
+        return '\n'.join(final_table_data)
 
     @property
     def terminal_height(self):
