@@ -170,12 +170,19 @@ class AsciiTable(object):
         final_table_data = list()
 
         # Append top border.
-        if self.outer_border:
+        max_title = sum(column_widths) + ((len(column_widths) - 1) if self.inner_column_border else 0)
+        if self.outer_border and self.title and len(self.title) <= max_title:
+            pseudo_row = _convert_row(['h' * w for w in column_widths],
+                                      'l', 't' if self.inner_column_border else '', 'r')
+            substitute = lambda x: (x.replace('h', self.CHAR_HORIZONTAL).replace('l', self.CHAR_CORNER_UPPER_LEFT)
+                                     .replace('t', self.CHAR_INTERSECT_TOP)
+                                     .replace('r', self.CHAR_CORNER_UPPER_RIGHT))
+            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + len(self.title):])
+            final_table_data.append(row)
+        elif self.outer_border:
             row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
                                self.CHAR_CORNER_UPPER_LEFT, self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
                                self.CHAR_CORNER_UPPER_RIGHT)
-            if self.title and len(self.title) <= len(row) - 4:
-                row = row[:2] + self.title + row[2 + len(self.title):]
             final_table_data.append(row)
 
         # Build table body.
@@ -228,6 +235,12 @@ class UnixTable(AsciiTable):
     CHAR_INTERSECT_RIGHT = '\033(0\x75\033(B'
     CHAR_INTERSECT_TOP = '\033(0\x77\033(B'
     CHAR_VERTICAL = '\033(0\x78\033(B'
+
+    @property
+    def table(self):
+        ascii_table = super(UnixTable, self).table
+        optimized = ascii_table.replace('\033(B\033(0', '')
+        return optimized
 
 
 class DosSingleTable(AsciiTable):

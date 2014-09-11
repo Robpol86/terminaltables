@@ -1,10 +1,6 @@
 from textwrap import dedent
 
-import pytest
-
-from terminaltables import (
-    AsciiTable, DosDoubleTable, DosSingleTable, UnicodeDoubleTable, UnicodeSingleTable, UnixTable
-)
+from terminaltables import AsciiTable
 
 
 def test_empty():
@@ -80,7 +76,7 @@ def test_title():
     table = AsciiTable(table_data, 'Foods')
 
     expected = dedent("""\
-        +-Foods---+-------+-----------+
+        +Foods----+-------+-----------+
         | Name    | Color | Type      |
         +---------+-------+-----------+
         | Avocado | green | nut       |
@@ -91,7 +87,7 @@ def test_title():
 
     table.title = 'Foooooooooooooods'
     expected = dedent("""\
-        +-Foooooooooooooods-----------+
+        +Foooooooooooooods+-----------+
         | Name    | Color | Type      |
         +---------+-------+-----------+
         | Avocado | green | nut       |
@@ -101,6 +97,17 @@ def test_title():
     assert expected == table.table
 
     table.title = 'Foooooooooooooodsssssssssssss'
+    expected = dedent("""\
+        +Foooooooooooooodsssssssssssss+
+        | Name    | Color | Type      |
+        +---------+-------+-----------+
+        | Avocado | green | nut       |
+        | Tomato  | red   | fruit     |
+        | Lettuce | green | vegetable |
+        +---------+-------+-----------+""")
+    assert expected == table.table
+
+    table.title = 'Foooooooooooooodssssssssssssss'
     expected = dedent("""\
         +---------+-------+-----------+
         | Name    | Color | Type      |
@@ -160,7 +167,7 @@ def test_attributes():
     table.title = 'Foods'
     table.inner_column_border = False
     expected = dedent("""\
-        +-Foods------------------------+
+        +Foods-------------------------+
         |       Name  Color     Type   |
         |    Avocado  green     nut    |
         |     Tomato  red      fruit   |
@@ -182,7 +189,7 @@ def test_attributes():
     table.outer_border = True
     table.inner_row_border = True
     expected = dedent("""\
-        +-Foods------------------------+
+        +Foods-------------------------+
         |       Name  Color     Type   |
         +------------------------------+
         |    Avocado  green     nut    |
