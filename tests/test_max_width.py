@@ -2,14 +2,10 @@ from textwrap import dedent
 
 import pytest
 
-from terminaltables import (
-    AsciiTable, DosDoubleTable, DosSingleTable, UnicodeDoubleTable, UnicodeSingleTable, UnixTable
-)
-
-CLASSES = [AsciiTable, DosDoubleTable, DosSingleTable, UnicodeDoubleTable, UnicodeSingleTable, UnixTable]
+from terminaltables import AsciiTable, UnixTable
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
     class FakeCls(cls):
         terminal_width = 80
@@ -37,7 +33,7 @@ def test_empty(cls):
         table.column_max_width(1)
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
     class FakeCls(cls):
         terminal_width = 80
@@ -60,7 +56,7 @@ def test_simple(cls):
     assert 55 == table.column_max_width(2)
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_attributes(cls):
     class FakeCls(cls):
         terminal_width = 80
@@ -100,7 +96,7 @@ def test_attributes(cls):
     assert 49 == table.column_max_width(2)
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
     class FakeCls(cls):
         terminal_width = 80

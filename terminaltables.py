@@ -241,19 +241,3 @@ class UnixTable(AsciiTable):
         ascii_table = super(UnixTable, self).table
         optimized = ascii_table.replace('\033(B\033(0', '')
         return optimized
-
-
-class DosSingleTable(AsciiTable):
-    pass
-
-
-class DosDoubleTable(AsciiTable):
-    pass
-
-
-class UnicodeSingleTable(AsciiTable):
-    pass
-
-
-class UnicodeDoubleTable(AsciiTable):
-    pass

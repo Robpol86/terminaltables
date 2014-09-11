@@ -1,13 +1,9 @@
 import pytest
 
-from terminaltables import (
-    AsciiTable, DosDoubleTable, DosSingleTable, UnicodeDoubleTable, UnicodeSingleTable, UnixTable
-)
-
-CLASSES = [AsciiTable, DosDoubleTable, DosSingleTable, UnicodeDoubleTable, UnicodeSingleTable, UnixTable]
+from terminaltables import AsciiTable, UnixTable
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
     table = cls([])
     assert [] == table.padded_table_data
@@ -22,7 +18,7 @@ def test_empty(cls):
     assert [['   ']] == table.padded_table_data
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
     table_data = [
         ['Name', 'Color', 'Type'],
@@ -53,7 +49,7 @@ def test_simple(cls):
     assert expected == table.padded_table_data
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_attributes(cls):
     table_data = [
         ['Name', 'Color', 'Type'],
@@ -85,7 +81,7 @@ def test_attributes(cls):
     assert expected == table.padded_table_data
 
 
-@pytest.mark.parametrize('cls', CLASSES)
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
     table_data = [
         ['A', 'B', 'C'],
