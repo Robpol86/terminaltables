@@ -1,4 +1,24 @@
+"""Generate simple tables in terminals from a nested list of strings.
+
+Example:
+>>> from terminaltables import AsciiTable
+>>> table = AsciiTable([['Name', 'Type'], ['Apple', 'fruit'], ['Carrot', 'vegetable']])
+>>> print table.table
++--------+-----------+
+| Name   | Type      |
++--------+-----------+
+| Apple  | fruit     |
+| Carrot | vegetable |
++--------+-----------+
+
+Use UnixTable instead of AsciiTable for box-drawing characters instead.
+
+https://github.com/Robpol86/terminaltables
+https://pypi.python.org/pypi/terminaltables
+"""
+
 import fcntl
+import re
 import struct
 import sys
 import termios
@@ -84,7 +104,18 @@ def set_terminal_title(title):
     sys.stdout.write('\033]0;{0}\007'.format(title))
 
 
+def terminal_height():
+    """Returns the terminal's height (number of lines)."""
+    return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
+
+
+def terminal_width():
+    """Returns the terminal's width (number of character columns)."""
+    return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
+
+
 class AsciiTable(object):
+    """Draw a table using regular ASCII characters, such as `+`, `|`, and `-`."""
     CHAR_CORNER_LOWER_LEFT = '+'
     CHAR_CORNER_LOWER_RIGHT = '+'
     CHAR_CORNER_UPPER_LEFT = '+'
@@ -125,10 +156,11 @@ class AsciiTable(object):
         if self.inner_column_border:
             borders_padding += len(column_widths) - 1
         other_column_widths = sum(column_widths) - column_widths[column_number]
-        return self.terminal_width - other_column_widths - borders_padding
+        return terminal_width() - other_column_widths - borders_padding
 
     @property
     def column_widths(self):
+        """Returns a list of integers representing the widths of each table column without padding."""
         if not self.table_data:
             return list()
 
@@ -145,6 +177,10 @@ class AsciiTable(object):
 
     @property
     def padded_table_data(self):
+        """Returns a list of lists of strings. It's self.table_data but with the cells padded with spaces and newlines.
+
+        Most of the work in this class is done here.
+        """
         if not self.table_data:
             return list()
 
@@ -165,6 +201,7 @@ class AsciiTable(object):
 
     @property
     def table(self):
+        """Returns a large string of the entire table ready to be printed to the terminal."""
         padded_table_data = self.padded_table_data
         column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
         final_table_data = list()
@@ -174,9 +211,10 @@ class AsciiTable(object):
         if self.outer_border and self.title and len(self.title) <= max_title:
             pseudo_row = _convert_row(['h' * w for w in column_widths],
                                       'l', 't' if self.inner_column_border else '', 'r')
-            substitute = lambda x: (x.replace('h', self.CHAR_HORIZONTAL).replace('l', self.CHAR_CORNER_UPPER_LEFT)
-                                     .replace('t', self.CHAR_INTERSECT_TOP)
-                                     .replace('r', self.CHAR_CORNER_UPPER_RIGHT))
+            pseudo_row_key = dict(h=self.CHAR_HORIZONTAL, l=self.CHAR_CORNER_UPPER_LEFT, t=self.CHAR_INTERSECT_TOP,
+                                  r=self.CHAR_CORNER_UPPER_RIGHT)
+            pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
+            substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
             row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + len(self.title):])
             final_table_data.append(row)
         elif self.outer_border:
@@ -214,16 +252,12 @@ class AsciiTable(object):
 
         return '\n'.join(final_table_data)
 
-    @property
-    def terminal_height(self):
-        return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
-
-    @property
-    def terminal_width(self):
-        return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
-
 
 class UnixTable(AsciiTable):
+    """Draw a table using box-drawing characters on Unix platforms. Table borders won't have any gaps between lines.
+
+    Similar to the tables shown on PC BIOS boot messages, but not double-lined.
+    """
     CHAR_CORNER_LOWER_LEFT = '\033(0\x6d\033(B'
     CHAR_CORNER_LOWER_RIGHT = '\033(0\x6a\033(B'
     CHAR_CORNER_UPPER_LEFT = '\033(0\x6c\033(B'

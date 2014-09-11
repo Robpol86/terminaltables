@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import ast
 import atexit
 from codecs import open
@@ -12,6 +14,8 @@ from setuptools.command.test import test
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 setuptools.command.sdist.READMES = tuple(list(getattr(setuptools.command.sdist, 'READMES', ())) + ['README.md'])
+NAME = 'terminaltables'
+PACKAGE = False
 
 
 def get_metadata(main_file):
@@ -25,15 +29,13 @@ def get_metadata(main_file):
     """
     with open(os.path.join(HERE, 'README.md'), encoding='utf-8') as f:
         long_description = f.read()
-    name = [l.strip() for l in long_description.splitlines() if l.strip().startswith('#')][0].split(' ', 1)[1]
 
     with open(os.path.join(HERE, main_file), encoding='utf-8') as f:
         lines = [l.strip() for l in f if l.startswith('__')]
     metadata = ast.literal_eval("{'" + ", '".join([l.replace(' = ', "': ") for l in lines]) + '}')
     __author__, __license__, __version__ = [metadata[k] for k in ('__author__', '__license__', '__version__')]
 
-    everything = dict(version=__version__, long_description=long_description, author=__author__, license=__license__,
-                      name=name,)
+    everything = dict(version=__version__, long_description=long_description, author=__author__, license=__license__)
     if not all(everything.values()):
         raise ValueError('Failed to obtain metadata from package/module.')
 
@@ -41,7 +43,7 @@ def get_metadata(main_file):
 
 
 class PyTest(test):
-    TEST_ARGS = ['--cov-report', 'term-missing', '--cov', 'terminaltables', 'tests']
+    TEST_ARGS = ['--cov-report', 'term-missing', '--cov', NAME, 'tests']
 
     def finalize_options(self):
         test.finalize_options(self)
@@ -60,7 +62,7 @@ class PyTestPdb(PyTest):
 
 
 class PyTestCovWeb(PyTest):
-    TEST_ARGS = ['--cov-report', 'html', '--cov', 'terminaltables', 'tests']
+    TEST_ARGS = ['--cov-report', 'html', '--cov', NAME, 'tests']
 
     def run_tests(self):
         if find_executable('open'):
@@ -68,9 +70,9 @@ class PyTestCovWeb(PyTest):
         PyTest.run_tests(self)
 
 
-class CmdFlake(setuptools.Command):
+class CmdStyle(setuptools.Command):
     user_options = []
-    CMD_ARGS = ['flake8', '--max-line-length', '120', '--statistics', 'terminaltables.py']
+    CMD_ARGS = ['flake8', '--max-line-length', '120', '--statistics', '{0}.py'.format(NAME)]
 
     def initialize_options(self):
         pass
@@ -82,13 +84,14 @@ class CmdFlake(setuptools.Command):
         subprocess.call(self.CMD_ARGS)
 
 
-class CmdLint(CmdFlake):
-    CMD_ARGS = ['pylint', '--max-line-length', '120', 'terminaltables.py']
+class CmdLint(CmdStyle):
+    CMD_ARGS = ['pylint', '--max-line-length', '120', '{0}.py'.format(NAME)]
 
 
 ALL_DATA = dict(
+    name=NAME,
     description='Generate simple tables in terminals from a nested list of strings.',
-    url='https://github.com/Robpol86/terminaltables',
+    url='https://github.com/Robpol86/{0}'.format(NAME),
     author_email='robpol86@gmail.com',
 
     classifiers=[
@@ -109,15 +112,15 @@ ALL_DATA = dict(
         'Topic :: Text Processing :: Markup',
     ],
 
-    keywords='Bash ANSI ASCII terminal tables',
-    py_modules=['terminaltables'],
+    keywords='Shell Bash ANSI ASCII terminal tables',
+    py_modules=[NAME],
     zip_safe=True,
 
     tests_require=['pytest', 'pytest-cov'],
-    cmdclass=dict(test=PyTest, testpdb=PyTestPdb, testcovweb=PyTestCovWeb, style=CmdFlake, lint=CmdLint),
+    cmdclass=dict(test=PyTest, testpdb=PyTestPdb, testcovweb=PyTestCovWeb, style=CmdStyle, lint=CmdLint),
 
     # Pass the rest from get_metadata().
-    **get_metadata(os.path.join('terminaltables.py'))
+    **get_metadata(os.path.join('{0}.py'.format(NAME)))
 )
 
 
