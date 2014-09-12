@@ -28,7 +28,7 @@ pip install terminaltables
 
 ![Example Scripts Screenshot](/example.png?raw=true "Example Scripts Screenshot")
 
-Source code for both examples: [example1.py](example1.py) and [example2.py](example2.py)
+Source code for examples: [example1.py](example1.py), [example2.py](example2.py), and [example3.py](example3.py)
 
 ## Usage
 
