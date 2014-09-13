@@ -25,7 +25,10 @@ import termios
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
+
+DEFAULT_TERMINAL_HEIGHT = None
+DEFAULT_TERMINAL_WIDTH = None
 
 
 def _align_and_pad(input_, align, width, height, lpad, rpad):
@@ -106,12 +109,22 @@ def set_terminal_title(title):
 
 def terminal_height():
     """Returns the terminal's height (number of lines)."""
-    return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
+    try:
+        return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
+    except IOError:
+        if DEFAULT_TERMINAL_HEIGHT is None:
+            raise
+        return int(DEFAULT_TERMINAL_HEIGHT)
 
 
 def terminal_width():
     """Returns the terminal's width (number of character columns)."""
-    return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
+    try:
+        return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
+    except IOError:
+        if DEFAULT_TERMINAL_WIDTH is None:
+            raise
+        return int(DEFAULT_TERMINAL_WIDTH)
 
 
 class AsciiTable(object):

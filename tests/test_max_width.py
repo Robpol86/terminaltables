@@ -5,6 +5,20 @@ import pytest
 import terminaltables
 
 
+def test_terminal_width_height():
+    terminaltables.DEFAULT_TERMINAL_WIDTH = None
+    terminaltables.DEFAULT_TERMINAL_HEIGHT = None
+    with pytest.raises(IOError):
+        terminaltables.terminal_width()
+    with pytest.raises(IOError):
+        terminaltables.terminal_height()
+
+    terminaltables.DEFAULT_TERMINAL_WIDTH = 80
+    terminaltables.DEFAULT_TERMINAL_HEIGHT = 24
+    assert 80 == terminaltables.terminal_width()
+    assert 24 == terminaltables.terminal_height()
+
+
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
 def test_empty(cls):
     table = cls([])
@@ -97,10 +111,10 @@ def test_multi_line(cls):
     ]
     table = cls(table_data)
 
+    terminaltables.DEFAULT_TERMINAL_WIDTH = 80
     assert -10 == table.column_max_width(0)
     assert 63 == table.column_max_width(1)
 
-    terminaltables.terminal_width = lambda: 100
+    terminaltables.DEFAULT_TERMINAL_WIDTH = 100
     assert 10 == table.column_max_width(0)
     assert 83 == table.column_max_width(1)
-    terminaltables.terminal_width = lambda: 80

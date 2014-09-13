@@ -114,6 +114,12 @@ Name | Description/Notes
 
 ## Changelog
 
+#### 1.0.1
+
+* Added terminal width/height defaults for testing:
+    * `terminaltables.DEFAULT_TERMINAL_WIDTH`
+    * `terminaltables.DEFAULT_TERMINAL_HEIGHT`
+
 #### 1.0.0
 
 * Initial release.
