@@ -25,7 +25,7 @@ import termios
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 DEFAULT_TERMINAL_HEIGHT = None
 DEFAULT_TERMINAL_WIDTH = None
@@ -166,7 +166,7 @@ class AsciiTable(object):
         borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
         if self.outer_border:
             borders_padding += 2
-        if self.inner_column_border:
+        if self.inner_column_border and column_widths:
             borders_padding += len(column_widths) - 1
         other_column_widths = sum(column_widths) - column_widths[column_number]
         return terminal_width() - other_column_widths - borders_padding
@@ -187,6 +187,11 @@ class AsciiTable(object):
                 widths[i] = max(widths[i], len(max(row[i].splitlines(), key=len)))
 
         return widths
+
+    @property
+    def ok(self):
+        """Returns True if the table fits within the terminal width, False if the table breaks."""
+        return self.table_width <= terminal_width()
 
     @property
     def padded_table_data(self):
@@ -264,6 +269,17 @@ class AsciiTable(object):
             final_table_data.append(row)
 
         return '\n'.join(final_table_data)
+
+    @property
+    def table_width(self):
+        """Returns the width of the table including padding and borders."""
+        column_widths = self.column_widths
+        borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
+        if self.outer_border:
+            borders_padding += 2
+        if self.inner_column_border and column_widths:
+            borders_padding += len(column_widths) - 1
+        return sum(column_widths) + borders_padding
 
 
 class UnixTable(AsciiTable):
