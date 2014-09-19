@@ -109,10 +109,16 @@ re-instantiate if you change any of the class attributes, including `table_data`
 Name | Description/Notes
 :--- | :----------------
 `column_widths` | Returns a list with the current column widths (one int per column) without padding.
+`ok` | Returns True if the table fits within the terminal width, False if the table breaks.
 `padded_table_data` | Returns the padding table data. With spaces and newlines. Does not include borders.
 `table` | Returns a large string, the whole table. This may be printed to the terminal.
+`table_width` | Returns the width of the table including padding and borders.
 
 ## Changelog
+
+#### 1.0.2
+
+* Added `table_width` and `ok` properties.
 
 #### 1.0.1
 
