@@ -9,8 +9,12 @@ python:
 
 install: 'pip install .'
 
-before_script: 'pip install python-coveralls'
+before_script: 'pip install python-coveralls colorclass'
 
-script: 'python setup.py test'
+script:
+  - 'python setup.py test'
+  - 'python example1.py'
+  - 'python example2.py'
+  - 'python example3.py'
 
 after_success: 'coveralls -i'
