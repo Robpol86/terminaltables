@@ -11,22 +11,25 @@ Example:
 | Carrot | vegetable |
 +--------+-----------+
 
-Use UnixTable instead of AsciiTable for box-drawing characters instead.
+Use SingleTable or DoubleWindowsSingleUnixTable instead of AsciiTable for box-drawing characters instead.
 
 https://github.com/Robpol86/terminaltables
 https://pypi.python.org/pypi/terminaltables
 """
 
-import fcntl
+import ctypes
+import os
 import re
 import struct
 import sys
-import termios
+if os.name != 'nt':
+    import fcntl
+    import termios
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '1.0.2'
-
+__version__ = '1.1.0'
+_WINDOWS_CONVERT = lambda ibm437: ibm437 if type(ibm437) == str else ibm437.encode('utf-8')
 DEFAULT_TERMINAL_HEIGHT = None
 DEFAULT_TERMINAL_WIDTH = None
 
@@ -109,6 +112,16 @@ def set_terminal_title(title):
 
 def terminal_height():
     """Returns the terminal's height (number of lines)."""
+    if os.name == 'nt':
+        console_screen_buffer_info = ctypes.create_string_buffer(22)
+        handle = ctypes.windll.kernel32.GetStdHandle(-11)
+        if ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, console_screen_buffer_info):
+            left, top, right, bottom = struct.unpack('hhhhHhhhhhh', console_screen_buffer_info.raw)[5:9]
+            return bottom - top
+        elif DEFAULT_TERMINAL_HEIGHT is not None:
+            return int(DEFAULT_TERMINAL_HEIGHT)
+        else:
+            raise IOError('Unable to get terminal dimensions from win32 API.')
     try:
         return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
     except IOError:
@@ -119,6 +132,16 @@ def terminal_height():
 
 def terminal_width():
     """Returns the terminal's width (number of character columns)."""
+    if os.name == 'nt':
+        console_screen_buffer_info = ctypes.create_string_buffer(22)
+        handle = ctypes.windll.kernel32.GetStdHandle(-11)
+        if ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, console_screen_buffer_info):
+            left, top, right, bottom = struct.unpack('hhhhHhhhhhh', console_screen_buffer_info.raw)[5:9]
+            return right - left
+        elif DEFAULT_TERMINAL_WIDTH is not None:
+            return int(DEFAULT_TERMINAL_WIDTH)
+        else:
+            raise IOError('Unable to get terminal dimensions from win32 API.')
     try:
         return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
     except IOError:
@@ -304,3 +327,46 @@ class UnixTable(AsciiTable):
         ascii_table = super(UnixTable, self).table
         optimized = ascii_table.replace('\033(B\033(0', '')
         return optimized
+
+
+class WindowsTable(AsciiTable):
+    """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Single-line borders.
+
+    From: http://en.wikipedia.org/wiki/Code_page_437#Characters
+    """
+    CHAR_CORNER_LOWER_LEFT = _WINDOWS_CONVERT(b'\xc0'.decode('ibm437'))
+    CHAR_CORNER_LOWER_RIGHT = _WINDOWS_CONVERT(b'\xd9'.decode('ibm437'))
+    CHAR_CORNER_UPPER_LEFT = _WINDOWS_CONVERT(b'\xda'.decode('ibm437'))
+    CHAR_CORNER_UPPER_RIGHT = _WINDOWS_CONVERT(b'\xbf'.decode('ibm437'))
+    CHAR_HORIZONTAL = _WINDOWS_CONVERT(b'\xc4'.decode('ibm437'))
+    CHAR_INTERSECT_BOTTOM = _WINDOWS_CONVERT(b'\xc1'.decode('ibm437'))
+    CHAR_INTERSECT_CENTER = _WINDOWS_CONVERT(b'\xc5'.decode('ibm437'))
+    CHAR_INTERSECT_LEFT = _WINDOWS_CONVERT(b'\xc3'.decode('ibm437'))
+    CHAR_INTERSECT_RIGHT = _WINDOWS_CONVERT(b'\xb4'.decode('ibm437'))
+    CHAR_INTERSECT_TOP = _WINDOWS_CONVERT(b'\xc2'.decode('ibm437'))
+    CHAR_VERTICAL = _WINDOWS_CONVERT(b'\xb3'.decode('ibm437'))
+
+
+class WindowsTableDouble(AsciiTable):
+    """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Double-line borders."""
+    CHAR_CORNER_LOWER_LEFT = _WINDOWS_CONVERT(b'\xc8'.decode('ibm437'))
+    CHAR_CORNER_LOWER_RIGHT = _WINDOWS_CONVERT(b'\xbc'.decode('ibm437'))
+    CHAR_CORNER_UPPER_LEFT = _WINDOWS_CONVERT(b'\xc9'.decode('ibm437'))
+    CHAR_CORNER_UPPER_RIGHT = _WINDOWS_CONVERT(b'\xbb'.decode('ibm437'))
+    CHAR_HORIZONTAL = _WINDOWS_CONVERT(b'\xcd'.decode('ibm437'))
+    CHAR_INTERSECT_BOTTOM = _WINDOWS_CONVERT(b'\xca'.decode('ibm437'))
+    CHAR_INTERSECT_CENTER = _WINDOWS_CONVERT(b'\xce'.decode('ibm437'))
+    CHAR_INTERSECT_LEFT = _WINDOWS_CONVERT(b'\xcc'.decode('ibm437'))
+    CHAR_INTERSECT_RIGHT = _WINDOWS_CONVERT(b'\xb9'.decode('ibm437'))
+    CHAR_INTERSECT_TOP = _WINDOWS_CONVERT(b'\xcb'.decode('ibm437'))
+    CHAR_VERTICAL = _WINDOWS_CONVERT(b'\xba'.decode('ibm437'))
+
+
+class SingleTable(WindowsTable if os.name == 'nt' else UnixTable):
+    """Cross-platform table with single-line box-drawing characters."""
+    pass
+
+
+class DoubleWindowsSingleUnixTable(WindowsTableDouble if os.name == 'nt' else UnixTable):
+    """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's single."""
+    pass

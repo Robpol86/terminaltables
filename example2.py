@@ -5,16 +5,18 @@ Just prints sample text and exits.
 """
 
 from __future__ import print_function
-from colorclass import Color
-from terminaltables import UnixTable
+from colorclass import Color, Windows
+from terminaltables import SingleTable
 
+
+Windows.enable(auto_colors=True, reset_atexit=True)  # Does nothing if not on Windows.
 
 table_data = [
     [Color('{autogreen}<10ms{/autogreen}'), '192.168.0.100, 192.168.0.101'],
     [Color('{autoyellow}10ms <= 100ms{/autoyellow}'), '192.168.0.102, 192.168.0.103'],
     [Color('{autored}>100ms{/autored}'), '192.168.0.105'],
 ]
-table = UnixTable(table_data)
+table = SingleTable(table_data)
 table.inner_heading_row_border = False
 print()
 print(table.table)
@@ -42,7 +44,7 @@ table.inner_column_border = False
 print()
 print(table.table)
 
-table = UnixTable([['Obey Obey Obey Obey']], 'Instructions')
+table = SingleTable([['Obey Obey Obey Obey']], 'Instructions')
 print()
 print(table.table)
 

@@ -5,7 +5,7 @@ Just prints sample text and exits.
 """
 
 from __future__ import print_function
-from terminaltables import AsciiTable, UnixTable
+from terminaltables import AsciiTable, DoubleWindowsSingleUnixTable
 
 
 table_data = [
@@ -17,7 +17,7 @@ table = AsciiTable(table_data, 'Jetta SportWagen')
 print()
 print(table.table)
 
-table = UnixTable(table_data, 'Jetta SportWagen')
+table = DoubleWindowsSingleUnixTable(table_data, 'Jetta SportWagen')
 table.inner_row_border = True
 table.justify_columns[2] = 'right'
 print()
