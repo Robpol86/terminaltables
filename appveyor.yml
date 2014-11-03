@@ -1,6 +1,7 @@
 environment:
   COVERALLS_REPO_TOKEN:
     secure: LaT81XUtZpr1jXbx7yYlcmFRSdQmgMzFQGQV5DtstfFdyJbtn+MZm4QjCby/OaHM
+  PYTHONIOENCODING: utf-8
 
   matrix:
     - PYTHON: 'C:\\Python27'
@@ -24,6 +25,6 @@ test_script:
   - '%PYTHON%\\python.exe setup.py test'
   - '%PYTHON%\\python.exe example1.py'
   - '%PYTHON%\\python.exe example2.py'
-  - '%PYTHON%\\python.exe example3.py'
+  - '%PYTHON%\\python.exe -c "import terminaltables; terminaltables.DEFAULT_TERMINAL_WIDTH=80; import example3"'
 
 after_test: '%PYTHON%\\Scripts\\coveralls.exe'

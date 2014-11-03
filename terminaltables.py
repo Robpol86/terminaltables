@@ -175,8 +175,11 @@ def set_terminal_title(title):
     Positional arguments:
     title -- the title to set.
     """
-    if os.name == 'nt':
+    if os.name == 'nt' and sys.version_info[0] == 3:
         ctypes.windll.kernel32.SetConsoleTitleW(title)
+        return
+    if os.name == 'nt' and sys.version_info[0] == 2:
+        ctypes.windll.kernel32.SetConsoleTitleA(title)
         return
     sys.stdout.write('\033]0;{0}\007'.format(title))
 
