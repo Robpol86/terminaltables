@@ -11,7 +11,7 @@ Example:
 | Carrot | vegetable |
 +--------+-----------+
 
-Use SingleTable or DoubleWindowsSingleUnixTable instead of AsciiTable for box-drawing characters instead.
+Use SingleTable or DoubleTable instead of AsciiTable for box-drawing characters instead.
 
 https://github.com/Robpol86/terminaltables
 https://pypi.python.org/pypi/terminaltables

@@ -2,8 +2,13 @@
 
 Easily draw tables in terminal/console applications from a list of lists of strings. Supports multi-line rows.
 
-`terminaltables` is supported on Python 2.6, 2.7, 3.3, and 3.4.
+* Python 2.6, 2.7, 3.3, and 3.4 supported on Linux, OS X, and Cygwin.
+* Python 2.7, 3.3, and 3.4 supported on Windows (both 32 and 64 bit versions of Python).
 
+Tested on Windows XP and Windows 10 technical preview.
+
+[![Build Status Windows](https://ci.appveyor.com/api/projects/status/krq10akm1qxyd9d6/branch/master?svg=true)]
+(https://ci.appveyor.com/project/Robpol86/terminaltables)
 [![Build Status](https://travis-ci.org/Robpol86/terminaltables.svg?branch=master)]
 (https://travis-ci.org/Robpol86/terminaltables)
 [![Coverage Status](https://img.shields.io/coveralls/Robpol86/terminaltables.svg)]
@@ -33,8 +38,9 @@ Source code for examples: [example1.py](example1.py), [example2.py](example2.py)
 ## Usage
 
 The below usage information is for `AsciiTable` which uses simple ASCII characters for the table (e.g. -+|). Use
-`UnixTable` for [box drawing characters](http://en.wikipedia.org/wiki/Box-drawing_character) instead. `UnixTable` has
-the same methods and properties as `AsciiTable`.
+`SingleTable` for [box drawing characters](http://en.wikipedia.org/wiki/Box-drawing_character) instead. You may also use
+`DoubleTable` for double-lined box characters. All three tables have the same methods and properties and work on all
+platforms.
 
 ### Simple Usage
 
@@ -79,7 +85,7 @@ string lengths correctly.
 ### Class Attributes
 
 You can instantiate with `AsciiTable(table_data)` or `AsciiTable(table_data, 'Table Title')`. These are available after
-instantiating AsciiTable or UnixTable.
+instantiating any table class.
 
 Name | Description/Notes
 :--- | :----------------
@@ -115,6 +121,11 @@ Name | Description/Notes
 `table_width` | Returns the width of the table including padding and borders.
 
 ## Changelog
+
+#### 1.1.0
+
+* Added Windows support.
+* Added double-lined table.
 
 #### 1.0.2
 
