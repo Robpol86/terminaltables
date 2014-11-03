@@ -25,13 +25,81 @@ import sys
 if os.name != 'nt':
     import fcntl
     import termios
+else:
+    import ctypes.wintypes
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
 __version__ = '1.1.0'
-_WINDOWS_CONVERT = lambda ibm437: ibm437 if type(ibm437) == str else ibm437.encode('utf-8')
 DEFAULT_TERMINAL_HEIGHT = None
 DEFAULT_TERMINAL_WIDTH = None
+
+
+def _get_windows_csbi(stderr=False):
+    """Get information about this current console window (for Microsoft Windows only).
+
+    Based on pytest's py project: py/_io/terminalwriter.py.
+
+    Raises IOError if attempt to get information fails (if there is no console window).
+
+    Keyword arguments:
+    stderr -- get information (mainly color may differ from stdout) for stderr instead of stdout.
+
+    Returns:
+    Dictionary with different integer values. Keys are:
+        buffer_width -- width of the buffer (Screen Buffer Size in cmd.exe layout tab).
+        buffer_height -- height of the buffer (Screen Buffer Size in cmd.exe layout tab).
+        terminal_width -- width of the terminal window.
+        terminal_height -- height of the terminal window.
+        bg_color -- current background color code (http://msdn.microsoft.com/en-us/library/windows/desktop/ms682088).
+        fg_color -- current text color code.
+    """
+    class COORD(ctypes.Structure):
+        """Windows COORD structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms682119"""
+        _fields_ = [('X', ctypes.c_short), ('Y', ctypes.c_short)]
+
+    class SmallRECT(ctypes.Structure):
+        """Windows SMALL_RECT structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms686311"""
+        _fields_ = [('Left', ctypes.c_short), ('Top', ctypes.c_short), ('Right', ctypes.c_short),
+                    ('Bottom', ctypes.c_short)]
+
+    class ConsoleScreenBufferInfo(ctypes.Structure):
+        """Windows CONSOLE_SCREEN_BUFFER_INFO. http://msdn.microsoft.com/en-us/library/windows/desktop/ms682093"""
+        _fields_ = [
+            ('dwSize', COORD),
+            ('dwCursorPosition', COORD),
+            ('wAttributes', ctypes.wintypes.WORD),
+            ('srWindow', SmallRECT),
+            ('dwMaximumWindowSize', COORD)
+        ]
+
+    if not ctypes.windll.kernel32.GetConsoleScreenBufferInfo.argtypes:
+        ctypes.windll.kernel32.GetStdHandle.argtypes = [ctypes.wintypes.DWORD]
+        ctypes.windll.kernel32.GetStdHandle.restype = ctypes.wintypes.HANDLE
+        ctypes.windll.kernel32.GetConsoleScreenBufferInfo.restype = ctypes.wintypes.BOOL
+        ctypes.windll.kernel32.GetConsoleScreenBufferInfo.argtypes = [
+            ctypes.wintypes.HANDLE, ctypes.POINTER(ConsoleScreenBufferInfo)
+        ]
+
+    # Query Win32 API.
+    handle = ctypes.windll.kernel32.GetStdHandle(-12 if stderr else -11)
+    console_screen_buffer_info = ConsoleScreenBufferInfo()
+    try:
+        if not ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, ctypes.byref(console_screen_buffer_info)):
+            raise IOError('Unable to get console screen buffer info from win32 API.')
+    except ctypes.ArgumentError:
+        raise IOError('Unable to get console screen buffer info from win32 API.')
+
+    # Parse data.
+    result = dict(
+        buffer_width=int(console_screen_buffer_info.dwSize.X - 1),
+        buffer_height=int(console_screen_buffer_info.dwSize.Y),
+        terminal_width=int(console_screen_buffer_info.srWindow.Right - console_screen_buffer_info.srWindow.Left),
+        terminal_height=int(console_screen_buffer_info.srWindow.Bottom - console_screen_buffer_info.srWindow.Top),
+        bg_color=int(console_screen_buffer_info.wAttributes & 240),
+        fg_color=int(console_screen_buffer_info.wAttributes % 16),
+    )
+    return result
 
 
 def _align_and_pad(input_, align, width, height, lpad, rpad):
@@ -107,47 +175,34 @@ def set_terminal_title(title):
     Positional arguments:
     title -- the title to set.
     """
+    if os.name == 'nt':
+        ctypes.windll.kernel32.SetConsoleTitleW(title)
+        return
     sys.stdout.write('\033]0;{0}\007'.format(title))
 
 
 def terminal_height():
     """Returns the terminal's height (number of lines)."""
-    if os.name == 'nt':
-        console_screen_buffer_info = ctypes.create_string_buffer(22)
-        handle = ctypes.windll.kernel32.GetStdHandle(-11)
-        if ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, console_screen_buffer_info):
-            left, top, right, bottom = struct.unpack('hhhhHhhhhhh', console_screen_buffer_info.raw)[5:9]
-            return bottom - top
-        elif DEFAULT_TERMINAL_HEIGHT is not None:
-            return int(DEFAULT_TERMINAL_HEIGHT)
-        else:
-            raise IOError('Unable to get terminal dimensions from win32 API.')
     try:
+        if os.name == 'nt':
+            return _get_windows_csbi()['terminal_height']
         return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[0]
     except IOError:
         if DEFAULT_TERMINAL_HEIGHT is None:
             raise
-        return int(DEFAULT_TERMINAL_HEIGHT)
+    return int(DEFAULT_TERMINAL_HEIGHT)
 
 
 def terminal_width():
     """Returns the terminal's width (number of character columns)."""
-    if os.name == 'nt':
-        console_screen_buffer_info = ctypes.create_string_buffer(22)
-        handle = ctypes.windll.kernel32.GetStdHandle(-11)
-        if ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, console_screen_buffer_info):
-            left, top, right, bottom = struct.unpack('hhhhHhhhhhh', console_screen_buffer_info.raw)[5:9]
-            return right - left
-        elif DEFAULT_TERMINAL_WIDTH is not None:
-            return int(DEFAULT_TERMINAL_WIDTH)
-        else:
-            raise IOError('Unable to get terminal dimensions from win32 API.')
     try:
+        if os.name == 'nt':
+            return _get_windows_csbi()['terminal_width']
         return struct.unpack('hhhh', fcntl.ioctl(0, termios.TIOCGWINSZ, '\000' * 8))[1]
     except IOError:
         if DEFAULT_TERMINAL_WIDTH is None:
             raise
-        return int(DEFAULT_TERMINAL_WIDTH)
+    return int(DEFAULT_TERMINAL_WIDTH)
 
 
 class AsciiTable(object):
@@ -334,32 +389,32 @@ class WindowsTable(AsciiTable):
 
     From: http://en.wikipedia.org/wiki/Code_page_437#Characters
     """
-    CHAR_CORNER_LOWER_LEFT = _WINDOWS_CONVERT(b'\xc0'.decode('ibm437'))
-    CHAR_CORNER_LOWER_RIGHT = _WINDOWS_CONVERT(b'\xd9'.decode('ibm437'))
-    CHAR_CORNER_UPPER_LEFT = _WINDOWS_CONVERT(b'\xda'.decode('ibm437'))
-    CHAR_CORNER_UPPER_RIGHT = _WINDOWS_CONVERT(b'\xbf'.decode('ibm437'))
-    CHAR_HORIZONTAL = _WINDOWS_CONVERT(b'\xc4'.decode('ibm437'))
-    CHAR_INTERSECT_BOTTOM = _WINDOWS_CONVERT(b'\xc1'.decode('ibm437'))
-    CHAR_INTERSECT_CENTER = _WINDOWS_CONVERT(b'\xc5'.decode('ibm437'))
-    CHAR_INTERSECT_LEFT = _WINDOWS_CONVERT(b'\xc3'.decode('ibm437'))
-    CHAR_INTERSECT_RIGHT = _WINDOWS_CONVERT(b'\xb4'.decode('ibm437'))
-    CHAR_INTERSECT_TOP = _WINDOWS_CONVERT(b'\xc2'.decode('ibm437'))
-    CHAR_VERTICAL = _WINDOWS_CONVERT(b'\xb3'.decode('ibm437'))
+    CHAR_CORNER_LOWER_LEFT = b'\xc0'.decode('ibm437')
+    CHAR_CORNER_LOWER_RIGHT = b'\xd9'.decode('ibm437')
+    CHAR_CORNER_UPPER_LEFT = b'\xda'.decode('ibm437')
+    CHAR_CORNER_UPPER_RIGHT = b'\xbf'.decode('ibm437')
+    CHAR_HORIZONTAL = b'\xc4'.decode('ibm437')
+    CHAR_INTERSECT_BOTTOM = b'\xc1'.decode('ibm437')
+    CHAR_INTERSECT_CENTER = b'\xc5'.decode('ibm437')
+    CHAR_INTERSECT_LEFT = b'\xc3'.decode('ibm437')
+    CHAR_INTERSECT_RIGHT = b'\xb4'.decode('ibm437')
+    CHAR_INTERSECT_TOP = b'\xc2'.decode('ibm437')
+    CHAR_VERTICAL = b'\xb3'.decode('ibm437')
 
 
 class WindowsTableDouble(AsciiTable):
     """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Double-line borders."""
-    CHAR_CORNER_LOWER_LEFT = _WINDOWS_CONVERT(b'\xc8'.decode('ibm437'))
-    CHAR_CORNER_LOWER_RIGHT = _WINDOWS_CONVERT(b'\xbc'.decode('ibm437'))
-    CHAR_CORNER_UPPER_LEFT = _WINDOWS_CONVERT(b'\xc9'.decode('ibm437'))
-    CHAR_CORNER_UPPER_RIGHT = _WINDOWS_CONVERT(b'\xbb'.decode('ibm437'))
-    CHAR_HORIZONTAL = _WINDOWS_CONVERT(b'\xcd'.decode('ibm437'))
-    CHAR_INTERSECT_BOTTOM = _WINDOWS_CONVERT(b'\xca'.decode('ibm437'))
-    CHAR_INTERSECT_CENTER = _WINDOWS_CONVERT(b'\xce'.decode('ibm437'))
-    CHAR_INTERSECT_LEFT = _WINDOWS_CONVERT(b'\xcc'.decode('ibm437'))
-    CHAR_INTERSECT_RIGHT = _WINDOWS_CONVERT(b'\xb9'.decode('ibm437'))
-    CHAR_INTERSECT_TOP = _WINDOWS_CONVERT(b'\xcb'.decode('ibm437'))
-    CHAR_VERTICAL = _WINDOWS_CONVERT(b'\xba'.decode('ibm437'))
+    CHAR_CORNER_LOWER_LEFT = b'\xc8'.decode('ibm437')
+    CHAR_CORNER_LOWER_RIGHT = b'\xbc'.decode('ibm437')
+    CHAR_CORNER_UPPER_LEFT = b'\xc9'.decode('ibm437')
+    CHAR_CORNER_UPPER_RIGHT = b'\xbb'.decode('ibm437')
+    CHAR_HORIZONTAL = b'\xcd'.decode('ibm437')
+    CHAR_INTERSECT_BOTTOM = b'\xca'.decode('ibm437')
+    CHAR_INTERSECT_CENTER = b'\xce'.decode('ibm437')
+    CHAR_INTERSECT_LEFT = b'\xcc'.decode('ibm437')
+    CHAR_INTERSECT_RIGHT = b'\xb9'.decode('ibm437')
+    CHAR_INTERSECT_TOP = b'\xcb'.decode('ibm437')
+    CHAR_VERTICAL = b'\xba'.decode('ibm437')
 
 
 class SingleTable(WindowsTable if os.name == 'nt' else UnixTable):
@@ -367,6 +422,6 @@ class SingleTable(WindowsTable if os.name == 'nt' else UnixTable):
     pass
 
 
-class DoubleWindowsSingleUnixTable(WindowsTableDouble if os.name == 'nt' else UnixTable):
-    """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's single."""
+class DoubleTable(WindowsTableDouble):
+    """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's unicode."""
     pass
