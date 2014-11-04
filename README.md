@@ -122,6 +122,10 @@ Name | Description/Notes
 
 ## Changelog
 
+#### 1.1.1
+
+* Fixed Python 2.7 64-bit terminal width bug on Windows.
+
 #### 1.1.0
 
 * Added Windows support.
