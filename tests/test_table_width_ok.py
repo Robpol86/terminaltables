@@ -8,7 +8,6 @@ from terminaltables import AsciiTable, UnixTable
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
-    terminaltables.DEFAULT_TERMINAL_WIDTH = 80
     table = cls([])
     assert 2 == table.table_width
     assert table.ok is True
@@ -28,7 +27,6 @@ def test_empty(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
-    terminaltables.DEFAULT_TERMINAL_WIDTH = 80
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -44,16 +42,19 @@ def test_simple(cls):
     assert 34 == table.table_width
     assert table.ok is True
 
-    terminaltables.DEFAULT_TERMINAL_WIDTH = 34
+    old_func = terminaltables.terminal_width
+    terminaltables.terminal_width = lambda: 34
     assert table.ok is True
 
-    terminaltables.DEFAULT_TERMINAL_WIDTH = 33
+    terminaltables.terminal_width = lambda: 33
     assert table.ok is False
+    terminaltables.terminal_width = old_func
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
-    terminaltables.DEFAULT_TERMINAL_WIDTH = 100
+    old_func = terminaltables.terminal_width
+    terminaltables.terminal_width = lambda: 100
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
@@ -63,6 +64,7 @@ def test_multi_line(cls):
     table = cls(table_data)
     assert 100 == table.table_width
     assert table.ok is True
+    terminaltables.terminal_width = old_func
 
 
 def test_attributes():
