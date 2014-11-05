@@ -27,4 +27,4 @@ test_script:
   - '%PYTHON%\\python.exe example2.py'
   - '%PYTHON%\\python.exe -c "import terminaltables; terminaltables.DEFAULT_TERMINAL_WIDTH=80; import example3"'
 
-after_test: '%PYTHON%\\Scripts\\coveralls.exe'
+after_test: 'cmd /C "set TRAVIS_BRANCH=%APPVEYOR_REPO_BRANCH% && %PYTHON%\\Scripts\\coveralls.exe"'
