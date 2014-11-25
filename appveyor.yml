@@ -17,7 +17,6 @@ init:
 install:
   - ps: Start-FileDownload https://raw.github.com/pypa/pip/master/contrib/get-pip.py
   - python get-pip.py
-  - easy_install pyyaml
   - ps: pip install $(python -c 'import setup; print(setup.REQUIRES_PIP)')
   - pip install robpol86-codecov colorclass
 
