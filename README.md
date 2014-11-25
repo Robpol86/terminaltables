@@ -2,24 +2,20 @@
 
 Easily draw tables in terminal/console applications from a list of lists of strings. Supports multi-line rows.
 
-* Python 2.6, 2.7, 3.3, and 3.4 supported on Linux, OS X, and Cygwin.
+* Python 2.6, 2.7, 3.3, and 3.4 supported on Linux and OS X.
 * Python 2.7, 3.3, and 3.4 supported on Windows (both 32 and 64 bit versions of Python).
 
 Tested on Windows XP and Windows 10 technical preview.
 
-[![Build Status Windows](https://ci.appveyor.com/api/projects/status/krq10akm1qxyd9d6/branch/master?svg=true)]
+[![Build Status Windows](https://img.shields.io/appveyor/ci/Robpol86/terminaltables.svg?style=flat-square)]
 (https://ci.appveyor.com/project/Robpol86/terminaltables)
-[![Build Status](https://travis-ci.org/Robpol86/terminaltables.svg?branch=master)]
+[![Build Status](https://img.shields.io/travis/Robpol86/terminaltables/master.svg?style=flat-square)]
 (https://travis-ci.org/Robpol86/terminaltables)
-[![Coverage Status](https://img.shields.io/coveralls/Robpol86/terminaltables.svg)]
-(https://coveralls.io/r/Robpol86/terminaltables)
-[![Latest Version](https://pypip.in/version/terminaltables/badge.png)]
+[![Coverage Status](https://img.shields.io/codecov/c/github/Robpol86/terminaltables/master.svg?style=flat-square)]
+(https://codecov.io/github/Robpol86/terminaltables)
+[![Latest Version](https://img.shields.io/pypi/v/terminaltables.svg?style=flat-square)]
 (https://pypi.python.org/pypi/terminaltables/)
-[![Downloads](https://pypip.in/download/terminaltables/badge.png)]
-(https://pypi.python.org/pypi/terminaltables/)
-[![Download format](https://pypip.in/format/terminaltables/badge.png)]
-(https://pypi.python.org/pypi/terminaltables/)
-[![License](https://pypip.in/license/terminaltables/badge.png)]
+[![Downloads](https://img.shields.io/pypi/dm/terminaltables.svg?style=flat-square)]
 (https://pypi.python.org/pypi/terminaltables/)
 
 ## Quickstart

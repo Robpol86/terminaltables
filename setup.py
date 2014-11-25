@@ -14,9 +14,15 @@ from setuptools.command.test import test
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 setuptools.command.sdist.READMES = tuple(list(getattr(setuptools.command.sdist, 'READMES', ())) + ['README.md'])
+
+DESCRIPTION = 'Generate simple tables in terminals from a nested list of strings.'
+KEYWORDS = 'Shell Bash ANSI ASCII terminal tables'
 NAME = 'terminaltables'
 NAME_FILE = NAME
 PACKAGE = False
+REQUIRES_INSTALL = []
+REQUIRES_TEST = ['pytest', 'pytest-cov']
+REQUIRES_PIP = '"' + '" "'.join(set(REQUIRES_INSTALL + REQUIRES_TEST)) + '"'
 
 
 def get_metadata(main_file):
@@ -44,6 +50,7 @@ def get_metadata(main_file):
 
 
 class PyTest(test):
+    description = 'Run all tests.'
     TEST_ARGS = ['--cov-report', 'term-missing', '--cov', NAME_FILE, 'tests']
 
     def finalize_options(self):
@@ -59,10 +66,12 @@ class PyTest(test):
 
 
 class PyTestPdb(PyTest):
-    TEST_ARGS = ['--pdb', 'tests']
+    description = 'Run all tests, drops to ipdb upon unhandled exception.'
+    TEST_ARGS = ['--ipdb', 'tests']
 
 
 class PyTestCovWeb(PyTest):
+    description = 'Generates HTML report on test coverage.'
     TEST_ARGS = ['--cov-report', 'html', '--cov', NAME_FILE, 'tests']
 
     def run_tests(self):
@@ -86,12 +95,13 @@ class CmdStyle(setuptools.Command):
 
 
 class CmdLint(CmdStyle):
+    description = 'Run pylint on entire project.'
     CMD_ARGS = ['pylint', '--max-line-length', '120', NAME_FILE + ('' if PACKAGE else '.py')]
 
 
 ALL_DATA = dict(
     name=NAME,
-    description='Generate simple tables in terminals from a nested list of strings.',
+    description=DESCRIPTION,
     url='https://github.com/Robpol86/{0}'.format(NAME),
     author_email='robpol86@gmail.com',
 
@@ -113,11 +123,12 @@ ALL_DATA = dict(
         'Topic :: Text Processing :: Markup',
     ],
 
-    keywords='Shell Bash ANSI ASCII terminal tables',
+    keywords=KEYWORDS,
     py_modules=[NAME_FILE],
     zip_safe=True,
 
-    tests_require=['pytest', 'pytest-cov'],
+    install_requires=REQUIRES_INSTALL,
+    tests_require=REQUIRES_TEST,
     cmdclass=dict(test=PyTest, testpdb=PyTestPdb, testcovweb=PyTestCovWeb, style=CmdStyle, lint=CmdLint),
 
     # Pass the rest from get_metadata().
