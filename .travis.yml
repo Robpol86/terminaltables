@@ -9,7 +9,7 @@ python:
 
 install:
   - python -c 'import setup; print(setup.REQUIRES_PIP)' |xargs pip install
-  - pip install robpol86-codecov colorclass
+  - pip install robpol86-codecov
   - pip install .
 
 script:

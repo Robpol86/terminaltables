@@ -8,20 +8,17 @@ import os
 import sys
 import subprocess
 
-import setuptools
 import setuptools.command.sdist
 from setuptools.command.test import test
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-setuptools.command.sdist.READMES = tuple(list(getattr(setuptools.command.sdist, 'READMES', ())) + ['README.md'])
-
 DESCRIPTION = 'Generate simple tables in terminals from a nested list of strings.'
+HERE = os.path.abspath(os.path.dirname(__file__))
 KEYWORDS = 'Shell Bash ANSI ASCII terminal tables'
 NAME = 'terminaltables'
 NAME_FILE = NAME
 PACKAGE = False
 REQUIRES_INSTALL = []
-REQUIRES_TEST = ['pytest', 'pytest-cov']
+REQUIRES_TEST = ['pytest-cov', 'colorclass']
 REQUIRES_PIP = '"' + '" "'.join(set(REQUIRES_INSTALL + REQUIRES_TEST)) + '"'
 
 
@@ -34,8 +31,8 @@ def get_metadata(main_file):
     Returns:
     Dictionary to be passed into setuptools.setup().
     """
-    with open(os.path.join(HERE, 'README.md'), encoding='utf-8') as f:
-        long_description = f.read()
+    with open(os.path.join(HERE, 'README.rst'), encoding='utf-8') as f:
+        long_description = f.read(100000)
 
     with open(os.path.join(HERE, main_file), encoding='utf-8') as f:
         lines = [l.strip() for l in f if l.startswith('__')]
@@ -120,6 +117,7 @@ ALL_DATA = dict(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Software Development :: Libraries',
         'Topic :: Terminals',
         'Topic :: Text Processing :: Markup',

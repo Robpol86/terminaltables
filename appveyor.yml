@@ -18,7 +18,7 @@ install:
   - ps: Start-FileDownload https://raw.github.com/pypa/pip/master/contrib/get-pip.py
   - python get-pip.py
   - ps: pip install $(python -c 'import setup; print(setup.REQUIRES_PIP)')
-  - pip install robpol86-codecov colorclass
+  - pip install robpol86-codecov
 
 build_script:
   - ps: mv .git ..
