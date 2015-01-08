@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from textwrap import dedent
 
 from terminaltables import AsciiTable
@@ -276,4 +278,24 @@ def test_multi_line():
         +------------+-------------------------------------------------------------------------------------+
         | South Park |                          Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick |
         +------------+-------------------------------------------------------------------------------------+""")
+    assert expected == table.table
+
+
+def test_unicode():
+    table_data = [
+        ['Name', 'Color', 'Type'],
+        ['Avocado', 'green', 'nut'],
+        [u'Cupuaçu', 'yellow', 'fruit'],
+        [u'äöüß', '', 'neither'],
+    ]
+    table = AsciiTable(table_data, 'Foods')
+
+    expected = dedent(u"""\
+        +Foods----+--------+---------+
+        | Name    | Color  | Type    |
+        +---------+--------+---------+
+        | Avocado | green  | nut     |
+        | Cupuaçu | yellow | fruit   |
+        | äöüß    |        | neither |
+        +---------+--------+---------+""")
     assert expected == table.table
