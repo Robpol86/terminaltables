@@ -1,34 +1,24 @@
 environment:
   CODECOV_TOKEN:
     secure: lRDAuCOF7traajWkLJe3cdECzcFF90IwYPae/AIthbH3LQh7hYH++L5yu1LfLGNB
-  PYTHONIOENCODING: utf-8
-
-  matrix:
-    - PYTHON: C:\Python27
-    - PYTHON: C:\Python27-x64
-    - PYTHON: C:\Python33
-    - PYTHON: C:\Python33-x64
-    - PYTHON: C:\Python34
-    - PYTHON: C:\Python34-x64
 
 init:
-  - IF DEFINED PYTHON set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - set PATH=C:\Python34-x64;C:\Python34-x64\Scripts;%PATH%
 
 install:
   - ps: Start-FileDownload https://raw.github.com/pypa/pip/master/contrib/get-pip.py
   - python get-pip.py
-  - ps: pip install $(python -c 'import setup; print(setup.REQUIRES_PIP)')
-  - pip install robpol86-codecov
 
 build_script:
-  - ps: mv .git ..
-  - pip install .
-  - ps: mv ..\.git .
+  - pip install codecov tox
 
 test_script:
-  - python setup.py test
-  - python example1.py
-  - python example2.py
-  - python -c "import terminaltables; terminaltables.DEFAULT_TERMINAL_WIDTH=80; import example3"
+  - tox
+  - cd tests
+  - ps: ls .coverage.py34x64, .coverage.py34, .coverage.py33x64, .coverage.py33, .coverage.py27x64, .coverage.py27
+  - cd ..
 
-after_test: codecov
+after_test:
+  - mv tests/.coverage.* .
+  - coverage combine
+  - codecov
