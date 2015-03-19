@@ -41,10 +41,12 @@ Install:
 Example Implementations
 -----------------------
 
-.. image:: /example.png?raw=true
+.. image:: https://github.com/Robpol86/terminaltables/raw/master/example.png?raw=true
    :alt: Example Scripts Screenshot
 
-Source code for examples: `example1.py <example1.py>`_, `example2.py <example2.py>`_, and `example3.py <example3.py>`_
+Source code for examples: `example1.py <https://github.com/Robpol86/terminaltables/blob/master/example1.py>`_,
+`example2.py <https://github.com/Robpol86/terminaltables/blob/master/example2.py>`_, and
+`example3.py <https://github.com/Robpol86/terminaltables/blob/master/example3.py>`_
 
 Usage
 -----
