@@ -5,6 +5,7 @@ Just prints sample text and exits.
 """
 
 from __future__ import print_function
+
 from terminaltables import AsciiTable, DoubleTable
 
 

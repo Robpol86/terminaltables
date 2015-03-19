@@ -88,7 +88,7 @@ ALL_DATA = dict(
     description=DESCRIPTION,
     install_requires=_REQUIRES('requirements.txt'),
     keywords=KEYWORDS,
-    long_description=open(_JOIN('README.rst'), encoding='utf-8').read(1000),
+    long_description=open(_JOIN('README.rst'), encoding='utf-8').read(10000),
     name=NAME,
     tests_require=_REQUIRES('requirements-test.txt'),
     url='https://github.com/Robpol86/{0}'.format(NAME),

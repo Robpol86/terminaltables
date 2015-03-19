@@ -5,8 +5,9 @@ Just prints sample text and exits.
 """
 
 from __future__ import print_function
-from terminaltables import SingleTable
 from textwrap import wrap
+
+from terminaltables import SingleTable
 
 
 # Setup string and table.
