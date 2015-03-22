@@ -14,6 +14,7 @@ from setuptools.command.test import test
 _JOIN = lambda *p: os.path.join(HERE, *p)
 _PACKAGES = lambda: [os.path.join(r, s) for r, d, _ in os.walk(NAME_FILE) for s in d if s != '__pycache__']
 _REQUIRES = lambda p: [i for i in open(_JOIN(p), encoding='utf-8') if i[0] != '-'] if os.path.exists(_JOIN(p)) else []
+_SAFE_READ = lambda f, l: open(_JOIN(f), encoding='utf-8').read(l) if os.path.exists(_JOIN(f)) else ''
 _VERSION_RE = re.compile(r"^__(version|author|license)__ = '([\w\.@]+)'$", re.MULTILINE)
 
 CLASSIFIERS = (
@@ -88,7 +89,7 @@ ALL_DATA = dict(
     description=DESCRIPTION,
     install_requires=_REQUIRES('requirements.txt'),
     keywords=KEYWORDS,
-    long_description=open(_JOIN('README.rst'), encoding='utf-8').read(10000),
+    long_description=_SAFE_READ('README.rst', 15000),
     name=NAME,
     tests_require=_REQUIRES('requirements-test.txt'),
     url='https://github.com/Robpol86/{0}'.format(NAME),
@@ -97,7 +98,7 @@ ALL_DATA = dict(
 
 
 # noinspection PyTypeChecker
-ALL_DATA.update(dict(_VERSION_RE.findall(open(_JOIN(VERSION_FILE), encoding='utf-8').read(1000).replace('\r\n', '\n'))))
+ALL_DATA.update(dict(_VERSION_RE.findall(_SAFE_READ(VERSION_FILE, 1500).replace('\r\n', '\n'))))
 ALL_DATA.update(dict(py_modules=[NAME_FILE]) if not PACKAGE else dict(packages=[NAME_FILE] + _PACKAGES()))
 
 
