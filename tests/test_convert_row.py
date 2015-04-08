@@ -1,8 +1,12 @@
+"""Test converting list of strings into single string representing a table row with borders."""
+
 from textwrap import dedent
+
 from terminaltables import _convert_row
 
 
 def test_single_line():
+    """Test on single lines."""
     assert '' == _convert_row([], '', '', '')
     assert '' == _convert_row([], '', '|', '')
     assert '|' == _convert_row([], '', '|', '|')
@@ -25,6 +29,7 @@ def test_single_line():
 
 
 def test_multi_line():
+    """Test on multi-lines."""
     assert '\n' == _convert_row(['\n'], '', '', '')
     assert '\n' == _convert_row(['\n'], '', '|', '')
     assert '|\n|' == _convert_row(['\n'], '', '|', '|')

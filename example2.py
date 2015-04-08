@@ -7,6 +7,7 @@ Just prints sample text and exits.
 from __future__ import print_function
 
 from colorclass import Color, Windows
+
 from terminaltables import SingleTable
 
 

@@ -1,3 +1,5 @@
+"""Test max width of table in a terminal without wrapping."""
+
 from textwrap import dedent
 
 import pytest
@@ -6,12 +8,14 @@ import terminaltables
 
 
 def test_terminal_width_height():
+    """Test terminal width/height functions."""
     assert 80 == terminaltables.terminal_width()
     assert 24 == terminaltables.terminal_height()
 
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
 def test_empty(cls):
+    """Test on empty tables."""
     table = cls([])
     with pytest.raises(IndexError):
         table.column_max_width(0)
@@ -37,6 +41,7 @@ def test_empty(cls):
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
 def test_simple(cls):
+    """Test on simple tables."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -57,6 +62,7 @@ def test_simple(cls):
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
 def test_attributes(cls):
+    """Test different table attributes."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -94,6 +100,7 @@ def test_attributes(cls):
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
 def test_multi_line(cls):
+    """Test multi-line tables."""
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'

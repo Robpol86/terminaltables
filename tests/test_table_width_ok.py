@@ -1,3 +1,5 @@
+"""Test `ok` property."""
+
 from textwrap import dedent
 
 import pytest
@@ -8,6 +10,7 @@ from terminaltables import AsciiTable, UnixTable
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
+    """Test on empty table."""
     table = cls([])
     assert 2 == table.table_width
     assert table.ok is True
@@ -27,6 +30,7 @@ def test_empty(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
+    """Test on simple table."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -53,6 +57,7 @@ def test_simple(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
+    """Test on multi-line table."""
     old_func = terminaltables.terminal_width
     terminaltables.terminal_width = lambda: 100
     table_data = [
@@ -68,6 +73,7 @@ def test_multi_line(cls):
 
 
 def test_attributes():
+    """Test with different attributes."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],

@@ -1,12 +1,15 @@
 # coding=utf-8
+"""Tests for colorclass compatibility."""
 
 from textwrap import dedent
 
 from colorclass import Color
+
 from terminaltables import AsciiTable
 
 
 def test_ascii():
+    """Test colors and ASCII characters."""
     table_data = [
         [Color('{b}Name{/b}'), Color('{b}Color{/b}'), Color('{b}Type{/b}')],
         ['Avocado', Color('{autogreen}green{/autogreen}'), 'nut'],
@@ -27,6 +30,7 @@ def test_ascii():
 
 
 def test_unicode():
+    """Test colors and Unicode characters."""
     table_data = [
         [Color('{b}Name{/b}'), Color('{b}Color{/b}'), Color('{b}Type{/b}')],
         ['Avocado', Color('{autogreen}green{/autogreen}'), 'nut'],

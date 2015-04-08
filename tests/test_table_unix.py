@@ -1,7 +1,10 @@
+"""Test end to end showing Unix-characters table."""
+
 from terminaltables import UnixTable
 
 
 def test_simple():
+    """Simple UnixTable test."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],

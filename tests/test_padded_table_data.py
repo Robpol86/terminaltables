@@ -1,3 +1,5 @@
+"""Test padding cells."""
+
 import pytest
 
 from terminaltables import AsciiTable, UnixTable
@@ -5,6 +7,7 @@ from terminaltables import AsciiTable, UnixTable
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
+    """Test on empty tables."""
     table = cls([])
     assert [] == table.padded_table_data
 
@@ -20,6 +23,7 @@ def test_empty(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
+    """Test on simple tables."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -51,6 +55,7 @@ def test_simple(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_attributes(cls):
+    """Test padding on different text justifications."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -83,6 +88,7 @@ def test_attributes(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
+    """Test on multi-line tables."""
     table_data = [
         ['A', 'B', 'C'],
         ['aaa', 'b\nbb\nbb', 'cc\nccccc'],

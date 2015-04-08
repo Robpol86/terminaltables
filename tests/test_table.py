@@ -1,4 +1,5 @@
 # coding=utf-8
+"""Test end to end showing ASCII table."""
 
 from textwrap import dedent
 
@@ -6,6 +7,7 @@ from terminaltables import AsciiTable
 
 
 def test_empty():
+    """Test empty table."""
     expected = dedent("""\
         ++
         ++""")
@@ -35,6 +37,7 @@ def test_empty():
 
 
 def test_simple():
+    """Test simple table."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -69,6 +72,7 @@ def test_simple():
 
 
 def test_title():
+    """Test that table title shows up correctly."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -122,6 +126,7 @@ def test_title():
 
 
 def test_attributes():
+    """Test table attributes."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -238,6 +243,7 @@ def test_attributes():
 
 
 def test_multi_line():
+    """Test multi-line tables."""
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
@@ -282,6 +288,7 @@ def test_multi_line():
 
 
 def test_unicode():
+    """Test Unicode characters."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],

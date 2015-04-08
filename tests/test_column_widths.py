@@ -1,3 +1,5 @@
+"""Tests for column widths."""
+
 from textwrap import dedent
 
 import pytest
@@ -7,6 +9,7 @@ from terminaltables import AsciiTable, UnixTable
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
+    """Test empty tables."""
     table = cls([])
     assert [] == table.column_widths
 
@@ -22,6 +25,7 @@ def test_empty(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
+    """Easy test."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -38,6 +42,7 @@ def test_simple(cls):
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(cls):
+    """Easy multi-line test."""
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'

@@ -34,7 +34,7 @@ __version__ = '1.1.1'
 
 
 class _WindowsCSBI(object):
-    """Interfaces with Windows CONSOLE_SCREEN_BUFFER_INFO API/DLL calls. Gets info for stderr and stdout.
+    """Interface to Windows CONSOLE_SCREEN_BUFFER_INFO API/DLL calls. Gets info for stderr and stdout.
 
     References:
         https://code.google.com/p/colorama/issues/detail?id=47.
@@ -54,23 +54,27 @@ class _WindowsCSBI(object):
 
     @staticmethod
     def _define_csbi():
-        """Defines structs and populates _WindowsCSBI.CSBI."""
+        """Define structs and populates _WindowsCSBI.CSBI."""
         if _WindowsCSBI.CSBI is not None:
             return
 
         class COORD(ctypes.Structure):
-            """Windows COORD structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms682119"""
+            """Windows COORD structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms682119."""
+
             _fields_ = [('X', ctypes.c_short), ('Y', ctypes.c_short)]
 
         class SmallRECT(ctypes.Structure):
-            """Windows SMALL_RECT structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms686311"""
+            """Windows SMALL_RECT structure. http://msdn.microsoft.com/en-us/library/windows/desktop/ms686311."""
+
             _fields_ = [('Left', ctypes.c_short), ('Top', ctypes.c_short), ('Right', ctypes.c_short),
                         ('Bottom', ctypes.c_short)]
 
         class ConsoleScreenBufferInfo(ctypes.Structure):
             """Windows CONSOLE_SCREEN_BUFFER_INFO structure.
+
             http://msdn.microsoft.com/en-us/library/windows/desktop/ms682093
             """
+
             _fields_ = [
                 ('dwSize', COORD),
                 ('dwCursorPosition', COORD),
@@ -83,7 +87,7 @@ class _WindowsCSBI(object):
 
     @staticmethod
     def initialize():
-        """Initializes the WINDLL resource and populated the CSBI class variable."""
+        """Initialize the WINDLL resource and populated the CSBI class variable."""
         _WindowsCSBI._define_csbi()
         _WindowsCSBI.HANDLE_STDERR = _WindowsCSBI.HANDLE_STDERR or _WindowsCSBI.WINDLL.kernel32.GetStdHandle(-12)
         _WindowsCSBI.HANDLE_STDOUT = _WindowsCSBI.HANDLE_STDOUT or _WindowsCSBI.WINDLL.kernel32.GetStdHandle(-11)
@@ -138,7 +142,7 @@ class _WindowsCSBI(object):
 
 
 def _align_and_pad(input_, align, width, height, lpad, rpad):
-    """Aligns a string with center/rjust/ljust and adds additional padding.
+    """Align a string with center/rjust/ljust and adds additional padding.
 
     Positional arguments:
     input_ -- input string to operate on.
@@ -176,7 +180,7 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
 
 
 def _convert_row(row, left, middle, right):
-    """Converts a row (list of strings) into a joined string with left and right borders. Supports multi-lines.
+    """Convert a row (list of strings) into a joined string with left and right borders. Supports multi-lines.
 
     Positional arguments:
     row -- list of strings representing one row.
@@ -205,7 +209,7 @@ def _convert_row(row, left, middle, right):
 
 
 def set_terminal_title(title):
-    """Sets the terminal title.
+    """Set the terminal title.
 
     Positional arguments:
     title -- the title to set.
@@ -220,7 +224,7 @@ def set_terminal_title(title):
 
 
 def terminal_height():
-    """Returns the terminal's height (number of lines)."""
+    """Return the terminal's height (number of lines)."""
     try:
         if os.name == 'nt':
             _WindowsCSBI.initialize()
@@ -231,7 +235,7 @@ def terminal_height():
 
 
 def terminal_width():
-    """Returns the terminal's width (number of character columns)."""
+    """Return the terminal's width (number of character columns)."""
     try:
         if os.name == 'nt':
             _WindowsCSBI.initialize()
@@ -243,6 +247,7 @@ def terminal_width():
 
 class AsciiTable(object):
     """Draw a table using regular ASCII characters, such as `+`, `|`, and `-`."""
+
     CHAR_CORNER_LOWER_LEFT = '+'
     CHAR_CORNER_LOWER_RIGHT = '+'
     CHAR_CORNER_UPPER_LEFT = '+'
@@ -256,6 +261,14 @@ class AsciiTable(object):
     CHAR_VERTICAL = '|'
 
     def __init__(self, table_data, title=None):
+        """Constructor.
+
+        Positional arguments:
+        table_data -- list (empty or list of lists of strings) representing the table.
+
+        Keyword arguments:
+        title -- optional title to show within the top border of the table.
+        """
         self.table_data = table_data
         self.title = title
 
@@ -268,7 +281,7 @@ class AsciiTable(object):
         self.padding_right = 1
 
     def column_max_width(self, column_number):
-        """Returns the maximum width of a column based on the current terminal width.
+        """Return the maximum width of a column based on the current terminal width.
 
         Positional arguments:
         column_number -- the column number to query.
@@ -287,7 +300,7 @@ class AsciiTable(object):
 
     @property
     def column_widths(self):
-        """Returns a list of integers representing the widths of each table column without padding."""
+        """Return a list of integers representing the widths of each table column without padding."""
         if not self.table_data:
             return list()
 
@@ -304,12 +317,12 @@ class AsciiTable(object):
 
     @property
     def ok(self):
-        """Returns True if the table fits within the terminal width, False if the table breaks."""
+        """Return True if the table fits within the terminal width, False if the table breaks."""
         return self.table_width <= terminal_width()
 
     @property
     def padded_table_data(self):
-        """Returns a list of lists of strings. It's self.table_data but with the cells padded with spaces and newlines.
+        """Return a list of lists of strings. It's self.table_data but with the cells padded with spaces and newlines.
 
         Most of the work in this class is done here.
         """
@@ -333,7 +346,7 @@ class AsciiTable(object):
 
     @property
     def table(self):
-        """Returns a large string of the entire table ready to be printed to the terminal."""
+        """Return a large string of the entire table ready to be printed to the terminal."""
         padded_table_data = self.padded_table_data
         column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
         final_table_data = list()
@@ -386,7 +399,7 @@ class AsciiTable(object):
 
     @property
     def table_width(self):
-        """Returns the width of the table including padding and borders."""
+        """Return the width of the table including padding and borders."""
         column_widths = self.column_widths
         borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
         if self.outer_border:
@@ -401,6 +414,7 @@ class UnixTable(AsciiTable):
 
     Similar to the tables shown on PC BIOS boot messages, but not double-lined.
     """
+
     CHAR_CORNER_LOWER_LEFT = '\033(0\x6d\033(B'
     CHAR_CORNER_LOWER_RIGHT = '\033(0\x6a\033(B'
     CHAR_CORNER_UPPER_LEFT = '\033(0\x6c\033(B'
@@ -415,6 +429,7 @@ class UnixTable(AsciiTable):
 
     @property
     def table(self):
+        """Return a large string of the entire table ready to be printed to the terminal."""
         ascii_table = super(UnixTable, self).table
         optimized = ascii_table.replace('\033(B\033(0', '')
         return optimized
@@ -425,6 +440,7 @@ class WindowsTable(AsciiTable):
 
     From: http://en.wikipedia.org/wiki/Code_page_437#Characters
     """
+
     CHAR_CORNER_LOWER_LEFT = b'\xc0'.decode('ibm437')
     CHAR_CORNER_LOWER_RIGHT = b'\xd9'.decode('ibm437')
     CHAR_CORNER_UPPER_LEFT = b'\xda'.decode('ibm437')
@@ -440,6 +456,7 @@ class WindowsTable(AsciiTable):
 
 class WindowsTableDouble(AsciiTable):
     """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Double-line borders."""
+
     CHAR_CORNER_LOWER_LEFT = b'\xc8'.decode('ibm437')
     CHAR_CORNER_LOWER_RIGHT = b'\xbc'.decode('ibm437')
     CHAR_CORNER_UPPER_LEFT = b'\xc9'.decode('ibm437')
@@ -455,9 +472,11 @@ class WindowsTableDouble(AsciiTable):
 
 class SingleTable(WindowsTable if os.name == 'nt' else UnixTable):
     """Cross-platform table with single-line box-drawing characters."""
+
     pass
 
 
 class DoubleTable(WindowsTableDouble):
     """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's unicode."""
+
     pass

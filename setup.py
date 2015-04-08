@@ -1,20 +1,18 @@
 #!/usr/bin/env python
+"""Setup script for the project."""
 
 import atexit
-from codecs import open
-from distutils.spawn import find_executable
+import codecs
 import os
 import re
-import sys
 import subprocess
+import sys
+from distutils.spawn import find_executable
 
-import setuptools.command.sdist
+import setuptools
 from setuptools.command.test import test
 
-_JOIN = lambda *p: os.path.join(HERE, *p)
 _PACKAGES = lambda: [os.path.join(r, s) for r, d, _ in os.walk(NAME_FILE) for s in d if s != '__pycache__']
-_REQUIRES = lambda p: [i for i in open(_JOIN(p), encoding='utf-8') if i[0] != '-'] if os.path.exists(_JOIN(p)) else []
-_SAFE_READ = lambda f, l: open(_JOIN(f), encoding='utf-8').read(l) if os.path.exists(_JOIN(f)) else ''
 _VERSION_RE = re.compile(r"^__(version|author|license)__ = '([\w\.@]+)'$", re.MULTILINE)
 
 CLASSIFIERS = (
@@ -46,19 +44,43 @@ PACKAGE = False
 VERSION_FILE = os.path.join(NAME_FILE, '__init__.py') if PACKAGE else '{0}.py'.format(NAME_FILE)
 
 
+def _requires(path):
+    """Read requirements file."""
+    if not os.path.exists(os.path.join(HERE, path)):
+        return list()
+    file_handle = codecs.open(os.path.join(HERE, path), encoding='utf-8')
+    requirements = [i.strip() for i in file_handle if i[0] != '-']
+    file_handle.close()
+    return requirements
+
+
+def _safe_read(path, length):
+    """Read file contents."""
+    if not os.path.exists(os.path.join(HERE, path)):
+        return ''
+    file_handle = codecs.open(os.path.join(HERE, path), encoding='utf-8')
+    contents = file_handle.read(length)
+    file_handle.close()
+    return contents
+
+
 class PyTest(test):
+    """Run tests with pytest."""
+
     description = 'Run all tests.'
     user_options = []
     CMD = 'test'
     TEST_ARGS = ['--cov-report', 'term-missing', '--cov', NAME_FILE, 'tests']
 
     def finalize_options(self):
+        """Finalize options."""
         overflow_args = sys.argv[sys.argv.index(self.CMD) + 1:]
         test.finalize_options(self)
         setattr(self, 'test_args', self.TEST_ARGS + overflow_args)
         setattr(self, 'test_suite', True)
 
     def run_tests(self):
+        """Run the tests."""
         # Import here, cause outside the eggs aren't loaded.
         pytest = __import__('pytest')
         err_no = pytest.main(self.test_args)
@@ -66,19 +88,25 @@ class PyTest(test):
 
 
 class PyTestPdb(PyTest):
-    description = 'Run all tests, drops to ipdb upon unhandled exception.'
+    """Run tests with pytest and drop to debugger on test failure/errors."""
+
+    _ipdb = 'ipdb' if sys.version_info[:2] > (2, 6) else 'pdb'
+    description = 'Run all tests, drops to {0} upon unhandled exception.'.format(_ipdb)
     CMD = 'testpdb'
-    TEST_ARGS = ['--ipdb', 'tests']
+    TEST_ARGS = ['--{0}'.format(_ipdb), 'tests']
 
 
 class PyTestCovWeb(PyTest):
+    """Run the tests and open a web browser (OS X only) showing coverage information."""
+
     description = 'Generates HTML report on test coverage.'
     CMD = 'testcovweb'
     TEST_ARGS = ['--cov-report', 'html', '--cov', NAME_FILE, 'tests']
 
     def run_tests(self):
+        """Run the tests and then open."""
         if find_executable('open'):
-            atexit.register(lambda: subprocess.call(['open', _JOIN('htmlcov', 'index.html')]))
+            atexit.register(lambda: subprocess.call(['open', os.path.join(HERE, 'htmlcov', 'index.html')]))
         PyTest.run_tests(self)
 
 
@@ -87,19 +115,20 @@ ALL_DATA = dict(
     classifiers=CLASSIFIERS,
     cmdclass={PyTest.CMD: PyTest, PyTestPdb.CMD: PyTestPdb, PyTestCovWeb.CMD: PyTestCovWeb},
     description=DESCRIPTION,
-    install_requires=_REQUIRES('requirements.txt'),
+    install_requires=_requires('requirements.txt'),
     keywords=KEYWORDS,
-    long_description=_SAFE_READ('README.rst', 15000),
+    long_description=_safe_read('README.rst', 15000),
     name=NAME,
-    tests_require=_REQUIRES('requirements-test.txt'),
+    tests_require=_requires('requirements-test.txt'),
     url='https://github.com/Robpol86/{0}'.format(NAME),
     zip_safe=True,
 )
 
 
 # noinspection PyTypeChecker
-ALL_DATA.update(dict(_VERSION_RE.findall(_SAFE_READ(VERSION_FILE, 1500).replace('\r\n', '\n'))))
+ALL_DATA.update(dict(_VERSION_RE.findall(_safe_read(VERSION_FILE, 1500).replace('\r\n', '\n'))))
 ALL_DATA.update(dict(py_modules=[NAME_FILE]) if not PACKAGE else dict(packages=[NAME_FILE] + _PACKAGES()))
+ALL_DATA['requires'] = ALL_DATA['install_requires']
 
 
 if __name__ == '__main__':
