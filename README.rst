@@ -65,7 +65,8 @@ and work on all platforms.
     table_data = [
         ['Heading1', 'Heading2'],
         ['row1 column1', 'row1 column2'],
-        ['row2 column1', 'row2 column2']
+        ['row2 column1', 'row2 column2'],
+        ['row3 column1', 'row3 column2']
     ]
     table = AsciiTable(table_data)
     print table.table
@@ -74,6 +75,7 @@ and work on all platforms.
     +--------------+--------------+
     | row1 column1 | row1 column2 |
     | row2 column1 | row2 column2 |
+    | row3 column1 | row3 column2 |
     +--------------+--------------+
 
 ``table_data`` is a list of lists of strings. The outer list represents the whole table, while the inner lists
@@ -90,6 +92,25 @@ thing that makes the first row a "heading" row) by setting ``table.inner_heading
     | Heading1     | Heading2     |
     | row1 column1 | row1 column2 |
     | row2 column1 | row2 column2 |
+    | row3 column1 | row3 column2 |
+    +--------------+--------------+
+
+
+Sometimes the last row can be though of a total (summary) row, by default it isn't. You can turn on the las row separator (the only
+thing that makes the last row a "total" row) by setting ``table.inner_bottom_row_border = True``.
+
+.. code:: python
+
+    table.inner_heading_row_border = True
+    table.inner_bottom_row_border = True
+    print table.table
+    +--------------+--------------+
+    | Heading1     | Heading2     |
+    +--------------+--------------+
+    | row1 column1 | row1 column2 |
+    | row2 column1 | row2 column2 |
+    +--------------+--------------+
+    | row3 column1 | row3 column2 |
     +--------------+--------------+
 
 If you want to add colors or bold the heading row, you'll have to do that yourself. Keep in mind that ``terminaltables``
@@ -148,6 +169,12 @@ Name                  Description/Notes
 ============
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
+
+`1.1.2 - 2015-05-26`_
+---------------------
+
+Added
+    * Bottom row separator.
 
 `1.1.1 - 2014-11-03`_
 ---------------------
