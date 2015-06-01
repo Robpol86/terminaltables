@@ -97,12 +97,12 @@ thing that makes the first row a "heading" row) by setting ``table.inner_heading
 
 
 Sometimes the last row can be though of a total (summary) row, by default it isn't. You can turn on the las row separator (the only
-thing that makes the last row a "total" row) by setting ``table.inner_bottom_row_border = True``.
+thing that makes the last row a "total" row) by setting ``table.inner_footing_row_border = True``.
 
 .. code:: python
 
     table.inner_heading_row_border = True
-    table.inner_bottom_row_border = True
+    table.inner_footing_row_border = True
     print table.table
     +--------------+--------------+
     | Heading1     | Heading2     |
@@ -130,6 +130,7 @@ Name                         Description/Notes
 ``table_data``               List of list of strings. Same object passed to ``__init__()``.
 ``title``                    Table title string. Default is None for no title.
 ``inner_column_border``      Default is ``True``. Separates columns.
+``inner_footing_row_border`` Default is ``False``. This is what makes the last row a "footer row".
 ``inner_heading_row_border`` Default is ``True``. This is what makes the first row a "header row".
 ``inner_row_border``         Default is ``False``. This adds lines between rows.
 ``justify_columns``          Dictionary. Keys are column numbers (0 base), values are 'left', 'right', or 'center'.
