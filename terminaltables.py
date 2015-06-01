@@ -30,7 +30,7 @@ else:
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
 
 class _WindowsCSBI(object):
@@ -274,6 +274,7 @@ class AsciiTable(object):
 
         self.inner_column_border = True
         self.inner_heading_row_border = True
+        self.inner_bottom_row_border = False
         self.inner_row_border = False
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
         self.outer_border = True
@@ -381,6 +382,13 @@ class AsciiTable(object):
             if i == indexes[-1]:
                 continue
             if self.inner_row_border or (self.inner_heading_row_border and i == 0):
+                row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
+                                   self.CHAR_INTERSECT_LEFT if self.outer_border else '',
+                                   self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
+                                   self.CHAR_INTERSECT_RIGHT if self.outer_border else '')
+                final_table_data.append(row)
+
+            if i == indexes[-2] and self.inner_bottom_row_border:
                 row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
                                    self.CHAR_INTERSECT_LEFT if self.outer_border else '',
                                    self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
