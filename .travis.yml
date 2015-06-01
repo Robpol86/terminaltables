@@ -5,9 +5,8 @@ install:
 
 script:
   - tox
-  - (cd ./tests && ls .coverage.py34 .coverage.py33 .coverage.pypy3 .coverage.pypy .coverage.py27 .coverage.py26)
+  - tox -e combine py34 py33 pypy3 pypy py27 py26
 
 after_success:
-  - mv tests/.coverage* .
-  - coverage combine
-  - codecov
+  - mv tests/.coverage .
+  - codecov || true

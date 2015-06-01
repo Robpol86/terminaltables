@@ -29,8 +29,8 @@ Tested on Windows XP and Windows 10 technical preview.
    :target: https://pypi.python.org/pypi/terminaltables/
    :alt: Downloads
 
-`Quickstart`_
-=============
+Quickstart
+==========
 
 Install:
 
@@ -38,8 +38,8 @@ Install:
 
     pip install terminaltables
 
-`Example Implementations`_
-==========================
+Example Implementations
+=======================
 
 .. image:: https://github.com/Robpol86/terminaltables/raw/master/example.png?raw=true
    :alt: Example Scripts Screenshot
@@ -48,16 +48,16 @@ Source code for examples: `example1.py <https://github.com/Robpol86/terminaltabl
 `example2.py <https://github.com/Robpol86/terminaltables/blob/master/example2.py>`_, and
 `example3.py <https://github.com/Robpol86/terminaltables/blob/master/example3.py>`_
 
-`Usage`_
-========
+Usage
+=====
 
 The below usage information is for ``AsciiTable`` which uses simple ASCII characters for the table (e.g. ``-`` ``+``
 ``|``). Use ``SingleTable`` for `box drawing characters <http://en.wikipedia.org/wiki/Box-drawing_character>`_ instead.
 You may also use ``DoubleTable`` for double-lined box characters. All three tables have the same methods and properties
 and work on all platforms.
 
-`Simple Usage`_
----------------
+Simple Usage
+------------
 
 .. code:: python
 
@@ -118,8 +118,8 @@ relies on ``len()`` and other methods for calculating table borders. I suggest l
 `colorclass <https://github.com/Robpol86/colorclass>`_ for supporting colors in ``terminaltables`` since it handles
 color string lengths correctly.
 
-`Class Attributes`_
--------------------
+Class Attributes
+----------------
 
 You can instantiate with ``AsciiTable(table_data)`` or ``AsciiTable(table_data, 'Table Title')``. These are available
 after instantiating any table class.
@@ -138,8 +138,8 @@ Name                         Description/Notes
 ``padding_right``            Default is 1. Number of spaces to add to the right of the cell.
 ============================ ===============================================================================
 
-`Class Methods`_
-----------------
+Class Methods
+-------------
 
 These are regular methods available in either class.
 
@@ -149,8 +149,8 @@ Name                 Description/Notes
 ``column_max_width`` Takes one argument, column number (0 base). Returns The maximum size it will fit in the terminal without breaking the table. Takes other columns into account.
 ==================== ==============================================================================================================================================================
 
-`Class Properties`_
--------------------
+Class Properties
+----------------
 
 These are read-only properties after you instantiate either class. They are "real-time". You do not have to
 re-instantiate if you change any of the class attributes, including ``table_data``.
@@ -165,45 +165,45 @@ Name                  Description/Notes
 ``table_width``       Returns the width of the table including padding and borders.
 ===================== ====================================================================================
 
-`Changelog`_
-============
+Changelog
+=========
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
-`1.1.2 - 2015-05-26`_
----------------------
+1.2.0 - 2015-05-31
+------------------
 
-Added
+Added:
     * Bottom row separator.
 
-`1.1.1 - 2014-11-03`_
----------------------
+1.1.1 - 2014-11-03
+------------------
 
 Fixed
     * Python 2.7 64-bit terminal width bug on Windows.
 
-`1.1.0 - 2014-11-02`_
----------------------
+1.1.0 - 2014-11-02
+------------------
 
 Added:
     * Windows support.
     * Double-lined table.
 
-`1.0.2 - 2014-09-18`_
----------------------
+1.0.2 - 2014-09-18
+------------------
 
 Added
     * ``table_width`` and ``ok`` properties.
 
-`1.0.1 - 2014-09-12`_
----------------------
+1.0.1 - 2014-09-12
+------------------
 
 Added
     * Terminal width/height defaults for testing.
     * ``terminaltables.DEFAULT_TERMINAL_WIDTH``
     * ``terminaltables.DEFAULT_TERMINAL_HEIGHT``
 
-`1.0.0 - 2014-09-11`_
----------------------
+1.0.0 - 2014-09-11
+------------------
 
 * Initial release.

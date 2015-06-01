@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+requirements*.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -47,14 +48,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
 
 # Django stuff:
 *.log
