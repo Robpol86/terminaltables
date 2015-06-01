@@ -14,11 +14,8 @@ build_script:
 
 test_script:
   - tox
-  - cd tests
-  - ps: ls .coverage.py34x64, .coverage.py34, .coverage.py33x64, .coverage.py33, .coverage.py27x64, .coverage.py27
-  - cd ..
+  - tox -e combine py34x64 py34 py33x64 py33 py27x64 py27
 
 after_test:
-  - mv tests/.coverage.* .
-  - coverage combine
+  - mv tests/.coverage .
   - codecov
