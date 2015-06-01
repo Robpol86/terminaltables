@@ -9,4 +9,4 @@ script:
 
 after_success:
   - mv tests/.coverage .
-  - codecov
+  - codecov || true
