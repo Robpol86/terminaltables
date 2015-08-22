@@ -42,18 +42,26 @@ def _get_width(string):
     """Get the real width of unicode string.
 
     Positional arguments:
-    string -- unicode string.
+    string -- string.
 
     Returns:
     String width.
     """
+    if hasattr(string, 'value_no_colors'):
+        # Colorclass instance.
+        string = string.value_no_colors
+
+    if isinstance(string, str) and hasattr(string, 'decode'):
+        # Convert to unicode.
+        string = string.decode('u8')
 
     width = 0
-    for c in string:
-        if (unicodedata.east_asian_width(c) in ('F','W','A')):
-            width += 2
+    for char in string:
+        if unicodedata.east_asian_width(char) in ('F', 'W'):
+            width = width + 2
         else:
-            width += 1
+            width = width + 1
+
     return width
 
 
@@ -79,11 +87,11 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
     # Align.
 
     if align == 'center':
-        aligned = '\n'.join(l.center(width+len(l)-_get_width(l)) for l in lines)
+        aligned = '\n'.join(l.center(width + len(l) - _get_width(l)) for l in lines)
     elif align == 'right':
-        aligned = '\n'.join(l.rjust(width+len(l)-_get_width(l)) for l in lines)
+        aligned = '\n'.join(l.rjust(width + len(l) - _get_width(l)) for l in lines)
     else:
-        aligned = '\n'.join(l.ljust(width+len(l)-_get_width(l)) for l in lines)
+        aligned = '\n'.join(l.ljust(width + len(l) - _get_width(l)) for l in lines)
 
     # Pad.
     padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
