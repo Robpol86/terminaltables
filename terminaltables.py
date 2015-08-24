@@ -22,6 +22,7 @@ import os
 import re
 import struct
 import sys
+import unicodedata
 
 try:
     import fcntl
@@ -35,6 +36,33 @@ from colorclass import _WindowsCSBI
 __author__ = '@Robpol86'
 __license__ = 'MIT'
 __version__ = '1.2.0'
+
+
+def _get_width(string):
+    """Get the real width of unicode string.
+
+    Positional arguments:
+    string -- string.
+
+    Returns:
+    String width.
+    """
+    if hasattr(string, 'value_no_colors'):
+        # Colorclass instance.
+        string = string.value_no_colors
+
+    if isinstance(string, str) and hasattr(string, 'decode'):
+        # Convert to unicode.
+        string = string.decode('u8')
+
+    width = 0
+    for char in string:
+        if unicodedata.east_asian_width(char) in ('F', 'W'):
+            width = width + 2
+        else:
+            width = width + 1
+
+    return width
 
 
 def _align_and_pad(input_, align, width, height, lpad, rpad):
@@ -57,12 +85,13 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
         lines.append('')
 
     # Align.
+
     if align == 'center':
-        aligned = '\n'.join(l.center(width) for l in lines)
+        aligned = '\n'.join(l.center(width + len(l) - _get_width(l)) for l in lines)
     elif align == 'right':
-        aligned = '\n'.join(l.rjust(width) for l in lines)
+        aligned = '\n'.join(l.rjust(width + len(l) - _get_width(l)) for l in lines)
     else:
-        aligned = '\n'.join(l.ljust(width) for l in lines)
+        aligned = '\n'.join(l.ljust(width + len(l) - _get_width(l)) for l in lines)
 
     # Pad.
     padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
@@ -208,7 +237,7 @@ class AsciiTable(object):
             for i in range(len(row)):
                 if not row[i]:
                     continue
-                widths[i] = max(widths[i], len(max(row[i].splitlines(), key=len)))
+                widths[i] = max(widths[i], _get_width(max(row[i].splitlines(), key=len)))
 
         return widths
 
@@ -250,14 +279,14 @@ class AsciiTable(object):
 
         # Append top border.
         max_title = sum(column_widths) + ((len(column_widths) - 1) if self.inner_column_border else 0)
-        if self.outer_border and self.title and len(self.title) <= max_title:
+        if self.outer_border and self.title and _get_width(self.title) <= max_title:
             pseudo_row = _convert_row(['h' * w for w in column_widths],
                                       'l', 't' if self.inner_column_border else '', 'r')
             pseudo_row_key = dict(h=self.CHAR_HORIZONTAL, l=self.CHAR_CORNER_UPPER_LEFT, t=self.CHAR_INTERSECT_TOP,
                                   r=self.CHAR_CORNER_UPPER_RIGHT)
             pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
             substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
-            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + len(self.title):])
+            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + _get_width(self.title):])
             final_table_data.append(row)
         elif self.outer_border:
             row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
