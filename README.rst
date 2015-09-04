@@ -171,6 +171,12 @@ Changelog
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+1.2.1 - 2015-09-03
+------------------
+
+Fixed:
+    * CJK character width fixed by zqqf16 and bcho: https://github.com/Robpol86/terminaltables/pull/9
+
 1.2.0 - 2015-05-31
 ------------------
 
