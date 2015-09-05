@@ -1,21 +1,11 @@
-environment:
-  CODECOV_TOKEN:
-    secure: lRDAuCOF7traajWkLJe3cdECzcFF90IwYPae/AIthbH3LQh7hYH++L5yu1LfLGNB
-
 init:
   - set PATH=C:\Python34-x64;C:\Python34-x64\Scripts;%PATH%
-
-install:
-  - ps: Start-FileDownload https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-  - python get-pip.py
 
 build_script:
   - pip install codecov tox
 
 test_script:
   - tox
-  - tox -e combine py34x64 py34 py33x64 py33 py27x64 py27
 
 after_test:
-  - mv tests/.coverage .
   - codecov || exit /B 0

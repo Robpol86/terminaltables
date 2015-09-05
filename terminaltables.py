@@ -33,10 +33,6 @@ except ImportError:
 
 from colorclass import _WindowsCSBI
 
-__author__ = '@Robpol86'
-__license__ = 'MIT'
-__version__ = '1.2.1'
-
 
 def _get_width(string):
     """Get the real width of unicode string.
@@ -58,9 +54,9 @@ def _get_width(string):
     width = 0
     for char in string:
         if unicodedata.east_asian_width(char) in ('F', 'W'):
-            width = width + 2
+            width += 2
         else:
-            width = width + 1
+            width += 1
 
     return width
 
@@ -85,7 +81,6 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
         lines.append('')
 
     # Align.
-
     if align == 'center':
         aligned = '\n'.join(l.center(width + len(l) - _get_width(l)) for l in lines)
     elif align == 'right':
@@ -242,7 +237,7 @@ class AsciiTable(object):
         return widths
 
     @property
-    def ok(self):
+    def ok(self):  # Too late to change API. # pylint: disable=invalid-name
         """Return True if the table fits within the terminal width, False if the table breaks."""
         return self.table_width <= terminal_width()
 

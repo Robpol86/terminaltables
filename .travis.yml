@@ -1,12 +1,12 @@
 language: python
 
+sudo: false
+
 install:
   - pip install codecov tox
 
 script:
   - tox
-  - tox -e combine py34 py33 pypy3 pypy py27 py26
 
 after_success:
-  - mv tests/.coverage .
   - codecov || true
