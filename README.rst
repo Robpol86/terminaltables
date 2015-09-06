@@ -7,8 +7,6 @@ Easily draw tables in terminal/console applications from a list of lists of stri
 * Python 2.6, 2.7, PyPy, PyPy3, 3.3, and 3.4 supported on Linux and OS X.
 * Python 2.7, 3.3, and 3.4 supported on Windows (both 32 and 64 bit versions of Python).
 
-Tested on Windows XP and Windows 10 technical preview.
-
 .. image:: https://img.shields.io/appveyor/ci/Robpol86/terminaltables/master.svg?style=flat-square&label=AppVeyor%20CI
    :target: https://ci.appveyor.com/project/Robpol86/terminaltables
    :alt: Build Status Windows
@@ -174,13 +172,13 @@ This project adheres to `Semantic Versioning <http://semver.org/>`_.
 1.2.1 - 2015-09-03
 ------------------
 
-Fixed:
+Fixed
     * CJK character width fixed by zqqf16 and bcho: https://github.com/Robpol86/terminaltables/pull/9
 
 1.2.0 - 2015-05-31
 ------------------
 
-Added:
+Added
     * Bottom row separator.
 
 1.1.1 - 2014-11-03
@@ -192,7 +190,7 @@ Fixed
 1.1.0 - 2014-11-02
 ------------------
 
-Added:
+Added
     * Windows support.
     * Double-lined table.
 

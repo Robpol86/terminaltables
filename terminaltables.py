@@ -37,11 +37,10 @@ from colorclass import _WindowsCSBI
 def _get_width(string):
     """Get the real width of unicode string.
 
-    Positional arguments:
-    string -- string.
+    :param str string: String to measure.
 
-    Returns:
-    String width.
+    :return: Width
+    :rtype: int
     """
     if hasattr(string, 'value_no_colors'):
         # Colorclass instance.
@@ -64,16 +63,15 @@ def _get_width(string):
 def _align_and_pad(input_, align, width, height, lpad, rpad):
     """Align a string with center/rjust/ljust and adds additional padding.
 
-    Positional arguments:
-    input_ -- input string to operate on.
-    align -- 'left', 'right', or 'center'.
-    width -- align to this column width.
-    height -- pad newlines and spaces to set cell to this height.
-    lpad -- number of spaces to pad on the left.
-    rpad -- number of spaces to pad on the right.
+    :param str input_: Input string to operate on.
+    :param str align: 'left', 'right', or 'center'.
+    :param int width: Align to this column width.
+    :param int height: Pad newlines and spaces to set cell to this height.
+    :param int lpad: Number of spaces to pad on the left.
+    :param int rpad: Number of spaces to pad on the right.
 
-    Returns:
-    Modified string.
+    :return: Modified string.
+    :rtype: str
     """
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
     lines = input_.splitlines() or ['']
@@ -102,14 +100,13 @@ def _align_and_pad(input_, align, width, height, lpad, rpad):
 def _convert_row(row, left, middle, right):
     """Convert a row (list of strings) into a joined string with left and right borders. Supports multi-lines.
 
-    Positional arguments:
-    row -- list of strings representing one row.
-    left -- left border.
-    middle -- column separator.
-    right -- right border.
+    :param iter row: List of strings representing one row.
+    :param str left: Left border.
+    :param str middle: Column separator.
+    :param str right: Right border.
 
-    Returns:
-    String representation of a row.
+    :return: String representation of a row.
+    :rtype: str
     """
     if not row:
         return left + right
@@ -131,8 +128,7 @@ def _convert_row(row, left, middle, right):
 def set_terminal_title(title):
     """Set the terminal title.
 
-    Positional arguments:
-    title -- the title to set.
+    :param str title: The title to set.
     """
     if os.name == 'nt' and sys.version_info[0] == 3:
         ctypes.windll.kernel32.SetConsoleTitleW(title)
@@ -183,11 +179,8 @@ class AsciiTable(object):
     def __init__(self, table_data, title=None):
         """Constructor.
 
-        Positional arguments:
-        table_data -- list (empty or list of lists of strings) representing the table.
-
-        Keyword arguments:
-        title -- optional title to show within the top border of the table.
+        :param iter table_data: List (empty or list of lists of strings) representing the table.
+        :param str title: Optional title to show within the top border of the table.
         """
         self.table_data = table_data
         self.title = title
@@ -204,11 +197,10 @@ class AsciiTable(object):
     def column_max_width(self, column_number):
         """Return the maximum width of a column based on the current terminal width.
 
-        Positional arguments:
-        column_number -- the column number to query.
+        :param int column_number: The column number to query.
 
-        Returns:
-        The max width of the column (integer).
+        :return: The max width of the column.
+        :rtype: int
         """
         column_widths = self.column_widths
         borders_padding = (len(column_widths) * self.padding_left) + (len(column_widths) * self.padding_right)
