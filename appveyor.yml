@@ -5,6 +5,7 @@ build_script:
   - pip install codecov tox
 
 test_script:
+  - ps: Out-File tests/__init__.py -encoding ASCII -inputObject '"""pytest-cov broken in Appveyor without this."""'
   - tox
 
 after_test:

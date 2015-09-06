@@ -29,7 +29,7 @@ def test_empty(cls):
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
-def test_simple(cls):
+def test_simple(monkeypatch, cls):
     """Test on simple table."""
     table_data = [
         ['Name', 'Color', 'Type'],
@@ -46,20 +46,17 @@ def test_simple(cls):
     assert 34 == table.table_width
     assert table.ok is True
 
-    old_func = terminaltables.terminal_width
-    terminaltables.terminal_width = lambda: 34
+    monkeypatch.setattr(terminaltables, 'terminal_size', lambda: (34, 24))
     assert table.ok is True
 
-    terminaltables.terminal_width = lambda: 33
+    monkeypatch.setattr(terminaltables, 'terminal_size', lambda: (33, 24))
     assert table.ok is False
-    terminaltables.terminal_width = old_func
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
-def test_multi_line(cls):
+def test_multi_line(monkeypatch, cls):
     """Test on multi-line table."""
-    old_func = terminaltables.terminal_width
-    terminaltables.terminal_width = lambda: 100
+    monkeypatch.setattr(terminaltables, 'terminal_size', lambda: (100, 24))
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
@@ -69,7 +66,6 @@ def test_multi_line(cls):
     table = cls(table_data)
     assert 100 == table.table_width
     assert table.ok is True
-    terminaltables.terminal_width = old_func
 
 
 def test_attributes():

@@ -9,8 +9,7 @@ import terminaltables
 
 def test_terminal_width_height():
     """Test terminal width/height functions."""
-    assert 80 == terminaltables.terminal_width()
-    assert 24 == terminaltables.terminal_height()
+    assert (80, 24) == terminaltables.terminal.terminal_size()
 
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
@@ -99,7 +98,7 @@ def test_attributes(cls):
 
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
-def test_multi_line(cls):
+def test_multi_line(monkeypatch, cls):
     """Test multi-line tables."""
     table_data = [
         ['Show', 'Characters'],
@@ -112,8 +111,6 @@ def test_multi_line(cls):
     assert -10 == table.column_max_width(0)
     assert 63 == table.column_max_width(1)
 
-    old_func = terminaltables.terminal_width
-    terminaltables.terminal_width = lambda: 100
+    monkeypatch.setattr(terminaltables, 'terminal_size', lambda: (100, 24))
     assert 10 == table.column_max_width(0)
     assert 83 == table.column_max_width(1)
-    terminaltables.terminal_width = old_func
