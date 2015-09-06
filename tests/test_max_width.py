@@ -4,15 +4,16 @@ from textwrap import dedent
 
 import pytest
 
-import terminaltables
+from terminaltables import AsciiTable, UnixTable
+from terminaltables.terminal_io import terminal_size
 
 
 def test_terminal_width_height():
     """Test terminal width/height functions."""
-    assert (80, 24) == terminaltables.terminal_io.terminal_size()
+    assert (80, 24) == terminal_size()
 
 
-@pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
     """Test on empty tables."""
     table = cls([])
@@ -38,7 +39,7 @@ def test_empty(cls):
         table.column_max_width(1)
 
 
-@pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_simple(cls):
     """Test on simple tables."""
     table_data = [
@@ -59,7 +60,7 @@ def test_simple(cls):
     assert 55 == table.column_max_width(2)
 
 
-@pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_attributes(cls):
     """Test different table attributes."""
     table_data = [
@@ -97,7 +98,7 @@ def test_attributes(cls):
     assert 49 == table.column_max_width(2)
 
 
-@pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])
+@pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(monkeypatch, cls):
     """Test multi-line tables."""
     table_data = [
@@ -111,6 +112,6 @@ def test_multi_line(monkeypatch, cls):
     assert -10 == table.column_max_width(0)
     assert 63 == table.column_max_width(1)
 
-    monkeypatch.setattr(terminaltables, 'terminal_size', lambda: (100, 24))
+    monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (100, 24))
     assert 10 == table.column_max_width(0)
     assert 83 == table.column_max_width(1)
