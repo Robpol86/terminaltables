@@ -15,16 +15,18 @@ def string_width(string):
     :return: String's width.
     :rtype: int
     """
+    # Colorclass instance.
     if hasattr(string, 'value_no_colors'):
-        # Colorclass instance.
         string = string.value_no_colors
 
-    if isinstance(string, str) and hasattr(string, 'decode'):
-        # Convert to unicode.
-        string = string.decode('u8')
+    # Convert to unicode.
+    try:
+        decoded = string.decode('u8')
+    except (AttributeError, UnicodeEncodeError):
+        decoded = string
 
     width = 0
-    for char in string:
+    for char in decoded:
         if unicodedata.east_asian_width(char) in ('F', 'W'):
             width += 2
         else:

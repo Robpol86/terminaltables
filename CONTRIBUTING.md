@@ -27,6 +27,7 @@ Keep code style consistent with the rest of the project. Some suggestions:
 5. Documentation guidelines also apply to tests, though not as strict.
 6. Keep code style consistent, such as the kind of quotes to use and spacing.
 7. Don't use `except:` or `except Exception:` unless you have a `raise` in the block. Be specific about error handling.
+8. Don't use `isinstance()` (it breaks [duck typing](https://en.wikipedia.org/wiki/Duck_typing#In_Python)).
 
 ## Thanks
 
