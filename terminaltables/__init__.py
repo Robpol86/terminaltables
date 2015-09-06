@@ -19,72 +19,9 @@ https://pypi.python.org/pypi/terminaltables
 
 import os
 import re
-import unicodedata
 
 from terminaltables.terminal_io import terminal_size
-
-
-def _get_width(string):
-    """Get the real width of unicode string.
-
-    :param str string: String to measure.
-
-    :return: Width
-    :rtype: int
-    """
-    if hasattr(string, 'value_no_colors'):
-        # Colorclass instance.
-        string = string.value_no_colors
-
-    if isinstance(string, str) and hasattr(string, 'decode'):
-        # Convert to unicode.
-        string = string.decode('u8')
-
-    width = 0
-    for char in string:
-        if unicodedata.east_asian_width(char) in ('F', 'W'):
-            width += 2
-        else:
-            width += 1
-
-    return width
-
-
-def _align_and_pad(input_, align, width, height, lpad, rpad):
-    """Align a string with center/rjust/ljust and adds additional padding.
-
-    :param str input_: Input string to operate on.
-    :param str align: 'left', 'right', or 'center'.
-    :param int width: Align to this column width.
-    :param int height: Pad newlines and spaces to set cell to this height.
-    :param int lpad: Number of spaces to pad on the left.
-    :param int rpad: Number of spaces to pad on the right.
-
-    :return: Modified string.
-    :rtype: str
-    """
-    # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
-    lines = input_.splitlines() or ['']
-    if input_.endswith('\n'):
-        lines.append('')
-
-    # Align.
-    if align == 'center':
-        aligned = '\n'.join(l.center(width + len(l) - _get_width(l)) for l in lines)
-    elif align == 'right':
-        aligned = '\n'.join(l.rjust(width + len(l) - _get_width(l)) for l in lines)
-    else:
-        aligned = '\n'.join(l.ljust(width + len(l) - _get_width(l)) for l in lines)
-
-    # Pad.
-    padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
-
-    # Increase height.
-    additional_padding = height - 1 - padded.count('\n')
-    if additional_padding > 0:
-        padded += ('\n{0}'.format(' ' * (width + lpad + rpad))) * additional_padding
-
-    return padded
+from terminaltables.width_and_alignment import align_and_pad_cell, string_width
 
 
 def _convert_row(row, left, middle, right):
@@ -178,7 +115,7 @@ class AsciiTable(object):
             for i in range(len(row)):
                 if not row[i]:
                     continue
-                widths[i] = max(widths[i], _get_width(max(row[i].splitlines(), key=len)))
+                widths[i] = max(widths[i], string_width(max(row[i].splitlines(), key=len)))
 
         return widths
 
@@ -206,7 +143,8 @@ class AsciiTable(object):
             height = max([c.count('\n') for c in row] or [0]) + 1
             for i in range(len(row)):
                 align = self.justify_columns.get(i, 'left')
-                cell = _align_and_pad(row[i], align, column_widths[i], height, self.padding_left, self.padding_right)
+                cell = align_and_pad_cell(row[i], align, column_widths[i], height, self.padding_left,
+                                          self.padding_right)
                 row[i] = cell
 
         return new_table_data
@@ -220,14 +158,14 @@ class AsciiTable(object):
 
         # Append top border.
         max_title = sum(column_widths) + ((len(column_widths) - 1) if self.inner_column_border else 0)
-        if self.outer_border and self.title and _get_width(self.title) <= max_title:
+        if self.outer_border and self.title and string_width(self.title) <= max_title:
             pseudo_row = _convert_row(['h' * w for w in column_widths],
                                       'l', 't' if self.inner_column_border else '', 'r')
             pseudo_row_key = dict(h=self.CHAR_HORIZONTAL, l=self.CHAR_CORNER_UPPER_LEFT, t=self.CHAR_INTERSECT_TOP,
                                   r=self.CHAR_CORNER_UPPER_RIGHT)
             pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
             substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
-            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + _get_width(self.title):])
+            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + string_width(self.title):])
             final_table_data.append(row)
         elif self.outer_border:
             row = _convert_row([self.CHAR_HORIZONTAL * w for w in column_widths],
