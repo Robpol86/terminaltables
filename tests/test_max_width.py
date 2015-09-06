@@ -9,7 +9,7 @@ import terminaltables
 
 def test_terminal_width_height():
     """Test terminal width/height functions."""
-    assert (80, 24) == terminaltables.terminal.terminal_size()
+    assert (80, 24) == terminaltables.terminal_io.terminal_size()
 
 
 @pytest.mark.parametrize('cls', [terminaltables.AsciiTable, terminaltables.UnixTable])

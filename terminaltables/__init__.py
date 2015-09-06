@@ -21,7 +21,7 @@ import os
 import re
 import unicodedata
 
-from terminaltables.terminal import terminal_size
+from terminaltables.terminal_io import terminal_size
 
 
 def _get_width(string):
