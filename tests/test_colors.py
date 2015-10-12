@@ -5,7 +5,7 @@ from textwrap import dedent
 
 from colorclass import Color
 
-from terminaltables import AsciiTable
+from terminaltables.tables import AsciiTable
 
 
 def test_ascii():
@@ -26,7 +26,7 @@ def test_ascii():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == Color(table.table).value_no_colors
+    assert Color(table.table).value_no_colors == expected
 
 
 def test_unicode():
@@ -47,4 +47,4 @@ def test_unicode():
         | Cupuaçu | yellow | fruit   |
         | äöüß    |        | neither |
         +---------+--------+---------+""")
-    assert expected == Color(table.table).value_no_colors
+    assert Color(table.table).value_no_colors == expected

@@ -4,13 +4,13 @@ from textwrap import dedent
 
 import pytest
 
-from terminaltables import AsciiTable, UnixTable
+from terminaltables.tables import AsciiTable, UnixTable
 from terminaltables.terminal_io import terminal_size
 
 
 def test_terminal_width_height():
     """Test terminal width/height functions."""
-    assert (80, 24) == terminal_size()
+    assert terminal_size() == (80, 24)
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -29,12 +29,12 @@ def test_empty(cls):
         table.column_max_width(1)
 
     table = cls([['']])
-    assert 76 == table.column_max_width(0)
+    assert table.column_max_width(0) == 76
     with pytest.raises(IndexError):
         table.column_max_width(1)
 
     table = cls([[' ']])
-    assert 76 == table.column_max_width(0)
+    assert table.column_max_width(0) == 76
     with pytest.raises(IndexError):
         table.column_max_width(1)
 
@@ -50,14 +50,14 @@ def test_simple(cls):
     ]
     table = cls(table_data)  # '| Lettuce | green | vegetable |'
 
-    assert 56 == table.column_max_width(0)
-    assert 54 == table.column_max_width(1)
-    assert 58 == table.column_max_width(2)
+    assert table.column_max_width(0) == 56
+    assert table.column_max_width(1) == 54
+    assert table.column_max_width(2) == 58
 
     table_data.append(['Watermelon', 'green', 'fruit'])
-    assert 56 == table.column_max_width(0)
-    assert 51 == table.column_max_width(1)
-    assert 55 == table.column_max_width(2)
+    assert table.column_max_width(0) == 56
+    assert table.column_max_width(1) == 51
+    assert table.column_max_width(2) == 55
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -72,30 +72,30 @@ def test_attributes(cls):
     table = cls(table_data)  # '| Lettuce | green | vegetable |'
 
     table.outer_border = False
-    assert 58 == table.column_max_width(0)
-    assert 56 == table.column_max_width(1)
-    assert 60 == table.column_max_width(2)
+    assert table.column_max_width(0) == 58
+    assert table.column_max_width(1) == 56
+    assert table.column_max_width(2) == 60
     table.outer_border = True
 
     table.inner_column_border = False
-    assert 58 == table.column_max_width(0)
-    assert 56 == table.column_max_width(1)
-    assert 60 == table.column_max_width(2)
+    assert table.column_max_width(0) == 58
+    assert table.column_max_width(1) == 56
+    assert table.column_max_width(2) == 60
     table.outer_border = False
-    assert 60 == table.column_max_width(0)
-    assert 58 == table.column_max_width(1)
-    assert 62 == table.column_max_width(2)
+    assert table.column_max_width(0) == 60
+    assert table.column_max_width(1) == 58
+    assert table.column_max_width(2) == 62
     table.outer_border = True
     table.inner_column_border = True
 
     table.padding_left = 0
-    assert 59 == table.column_max_width(0)
-    assert 57 == table.column_max_width(1)
-    assert 61 == table.column_max_width(2)
+    assert table.column_max_width(0) == 59
+    assert table.column_max_width(1) == 57
+    assert table.column_max_width(2) == 61
     table.padding_right = 5
-    assert 47 == table.column_max_width(0)
-    assert 45 == table.column_max_width(1)
-    assert 49 == table.column_max_width(2)
+    assert table.column_max_width(0) == 47
+    assert table.column_max_width(1) == 45
+    assert table.column_max_width(2) == 49
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -109,9 +109,9 @@ def test_multi_line(monkeypatch, cls):
     ]
     table = cls(table_data)
 
-    assert -10 == table.column_max_width(0)
-    assert 63 == table.column_max_width(1)
+    assert table.column_max_width(0) == -10
+    assert table.column_max_width(1) == 63
 
     monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (100, 24))
-    assert 10 == table.column_max_width(0)
-    assert 83 == table.column_max_width(1)
+    assert table.column_max_width(0) == 10
+    assert table.column_max_width(1) == 83

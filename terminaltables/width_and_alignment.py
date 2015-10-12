@@ -35,19 +35,18 @@ def string_width(string):
     return width
 
 
-def align_and_pad_cell(string, align, width, height, lpad, rpad):
+def align_and_pad_cell(string, align, size_dims):
     """Align a string with center/rjust/ljust and adds additional padding.
 
     :param str string: Input string to operate on.
     :param str align: 'left', 'right', or 'center'.
-    :param int width: Align to this column width.
-    :param int height: Pad newlines and spaces to set cell to this height.
-    :param int lpad: Number of spaces to pad on the left.
-    :param int rpad: Number of spaces to pad on the right.
+    :param iter size_dims: Size and dimensions. A 4-item tuple of integers representing width, height, lpad, and rpad.
 
     :return: Modified string.
     :rtype: str
     """
+    width, height, lpad, rpad = size_dims
+
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
     lines = string.splitlines() or ['']
     if string.endswith('\n'):
@@ -55,11 +54,12 @@ def align_and_pad_cell(string, align, width, height, lpad, rpad):
 
     # Align.
     if align == 'center':
-        aligned = '\n'.join(l.center(width + len(l) - string_width(l)) for l in lines)
+        method = 'center'
     elif align == 'right':
-        aligned = '\n'.join(l.rjust(width + len(l) - string_width(l)) for l in lines)
+        method = 'rjust'
     else:
-        aligned = '\n'.join(l.ljust(width + len(l) - string_width(l)) for l in lines)
+        method = 'ljust'
+    aligned = '\n'.join(getattr(l, method)(width + len(l) - string_width(l)) for l in lines)
 
     # Pad.
     padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
@@ -70,3 +70,26 @@ def align_and_pad_cell(string, align, width, height, lpad, rpad):
         padded += ('\n{0}'.format(' ' * (width + lpad + rpad))) * additional_padding
 
     return padded
+
+
+def column_widths(table_data):
+    """Get maximum widths of each column in the table.
+
+    :param iter table_data: List of list of strings. The unpadded table data.
+
+    :return: Column widths.
+    :rtype: list
+    """
+    if not table_data:
+        return list()
+
+    number_of_columns = max(len(r) for r in table_data)
+    widths = [0] * number_of_columns
+
+    for row in table_data:
+        for i in range(len(row)):
+            if not row[i]:
+                continue
+            widths[i] = max(widths[i], string_width(max(row[i].splitlines(), key=len)))
+
+    return widths

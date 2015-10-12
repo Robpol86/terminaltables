@@ -1,12 +1,14 @@
 init:
   - set PATH=C:\Python34-x64;C:\Python34-x64\Scripts;%PATH%
 
+artifacts:
+  - path: .coverage
+
 build_script:
   - pip install codecov tox
 
 test_script:
-  - ps: Out-File tests/__init__.py -encoding ASCII -inputObject '"""pytest-cov broken in Appveyor without this."""'
-  - tox
+  - tox -e lint,py34,py33,py27,py34x64,py33x64,py27x64
 
 after_test:
   - codecov || exit /B 0

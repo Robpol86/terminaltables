@@ -1,6 +1,6 @@
 """Test end to end showing Unix-characters table."""
 
-from terminaltables import UnixTable
+from terminaltables.tables import UnixTable
 
 
 def test_simple():
@@ -27,4 +27,4 @@ def test_simple():
         '\033(0\x6d\x71\x71\x71\x71\x71\x71\x71\x71\x71\x76\x71\x71\x71\x71\x71\x71\x71\x76\x71\x71\x71\x71\x71\x71'
         '\x71\x71\x71\x71\x71\x6a\033(B'
     )
-    assert expected == table.table
+    assert table.table == expected

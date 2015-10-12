@@ -169,6 +169,13 @@ Changelog
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+2.0.0 - 2015-10-11
+------------------
+
+Changed
+    * Refactored code. No new features.
+    * Breaking changes: `UnixTable`/`WindowsTable`/`WindowsTableDouble` moved. Use `SingleTable`/`DoubleTable` instead.
+
 1.2.1 - 2015-09-03
 ------------------
 

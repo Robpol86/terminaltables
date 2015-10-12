@@ -4,7 +4,7 @@ from textwrap import dedent
 
 import pytest
 
-from terminaltables import AsciiTable, UnixTable
+from terminaltables.tables import AsciiTable, UnixTable
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])

@@ -3,7 +3,7 @@
 
 from textwrap import dedent
 
-from terminaltables import AsciiTable
+from terminaltables.tables import AsciiTable
 
 
 def test_empty():
@@ -12,28 +12,28 @@ def test_empty():
         ++
         ++""")
     table = AsciiTable([])
-    assert expected == table.table
+    assert table.table == expected
 
     expected = dedent("""\
         ++
         ||
         ++""")
     table = AsciiTable([[]])
-    assert expected == table.table
+    assert table.table == expected
 
     expected = dedent("""\
         +--+
         |  |
         +--+""")
     table = AsciiTable([['']])
-    assert expected == table.table
+    assert table.table == expected
 
     expected = dedent("""\
         +---+
         |   |
         +---+""")
     table = AsciiTable([[' ']])
-    assert expected == table.table
+    assert table.table == expected
 
 
 def test_simple():
@@ -54,7 +54,7 @@ def test_simple():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table_data.append(['Watermelon', 'green'])
     table_data.append([])
@@ -68,7 +68,7 @@ def test_simple():
         | Watermelon | green |           |
         |            |       |           |
         +------------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
 
 def test_title():
@@ -89,7 +89,7 @@ def test_title():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.title = 'Foooooooooooooods'
     expected = dedent("""\
@@ -100,7 +100,7 @@ def test_title():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.title = 'Foooooooooooooodsssssssssssss'
     expected = dedent("""\
@@ -111,7 +111,7 @@ def test_title():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.title = 'Foooooooooooooodssssssssssssss'
     expected = dedent("""\
@@ -122,7 +122,7 @@ def test_title():
         | Tomato  | red   | fruit     |
         | Lettuce | green | vegetable |
         +---------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
 
 def test_attributes():
@@ -146,7 +146,7 @@ def test_attributes():
         |    Lettuce | green | vegetable |
         | Watermelon | green |           |
         +------------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.justify_columns[2] = 'center'
     expected = dedent("""\
@@ -158,7 +158,7 @@ def test_attributes():
         |    Lettuce | green | vegetable |
         | Watermelon | green |           |
         +------------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.inner_heading_row_border = False
     expected = dedent("""\
@@ -169,7 +169,7 @@ def test_attributes():
         |    Lettuce | green | vegetable |
         | Watermelon | green |           |
         +------------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.title = 'Foods'
     table.inner_column_border = False
@@ -181,7 +181,7 @@ def test_attributes():
         |    Lettuce  green  vegetable |
         | Watermelon  green            |
         +------------------------------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.outer_border = False
     expected = (
@@ -191,7 +191,7 @@ def test_attributes():
         '    Lettuce  green  vegetable \n'
         ' Watermelon  green            '
     )
-    assert expected == table.table
+    assert table.table == expected
 
     table.outer_border = True
     table.inner_row_border = True
@@ -207,7 +207,7 @@ def test_attributes():
         +------------------------------+
         | Watermelon  green            |
         +------------------------------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.title = False
     table.inner_column_border = True
@@ -225,7 +225,7 @@ def test_attributes():
         +------------+-------+-----------+
         | Watermelon | green |           |
         +------------+-------+-----------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.outer_border = False
     expected = (
@@ -239,7 +239,7 @@ def test_attributes():
         '------------+-------+-----------\n'
         ' Watermelon | green |           '
     )
-    assert expected == table.table
+    assert table.table == expected
 
 
 def test_multi_line():
@@ -260,7 +260,7 @@ def test_multi_line():
         |            | Susie Carmichael, Dil Pickles, Kimi Finster, Spike                                  |
         | South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |
         +------------+-------------------------------------------------------------------------------------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.inner_row_border = True
     expected = dedent("""\
@@ -272,7 +272,7 @@ def test_multi_line():
         +------------+-------------------------------------------------------------------------------------+
         | South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |
         +------------+-------------------------------------------------------------------------------------+""")
-    assert expected == table.table
+    assert table.table == expected
 
     table.justify_columns = {1: 'right'}
     expected = dedent("""\
@@ -284,7 +284,7 @@ def test_multi_line():
         +------------+-------------------------------------------------------------------------------------+
         | South Park |                          Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick |
         +------------+-------------------------------------------------------------------------------------+""")
-    assert expected == table.table
+    assert table.table == expected
 
 
 def test_unicode():
@@ -305,4 +305,4 @@ def test_unicode():
         | Cupuaçu | yellow | fruit   |
         | äöüß    |        | neither |
         +---------+--------+---------+""")
-    assert expected == table.table
+    assert table.table == expected

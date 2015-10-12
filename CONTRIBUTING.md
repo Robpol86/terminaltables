@@ -14,7 +14,8 @@ pip install tox  # Install tox, which runs linting and tests.
 tox  # This runs all tests on your local machine. Make sure they pass.
 ```
 
-You can ignore `InterpreterNotFound` if you see any. However you shouldn't see any `commands failed` from tox.
+If you don't have Python 2.6, 2.7, and 3.4 installed, you can manually run tests on one specific version by running
+`tox -e lint,py27` (for Python 2.7) instead.
 
 ## Consistency and Style
 

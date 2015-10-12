@@ -2,23 +2,23 @@
 
 import pytest
 
-from terminaltables import AsciiTable, UnixTable
+from terminaltables.tables import AsciiTable, UnixTable
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_empty(cls):
     """Test on empty tables."""
     table = cls([])
-    assert [] == table.padded_table_data
+    assert table.padded_table_data == []
 
     table = cls([[]])
-    assert [[]] == table.padded_table_data
+    assert table.padded_table_data == [[]]
 
     table = cls([['']])
-    assert [['  ']] == table.padded_table_data
+    assert table.padded_table_data == [['  ']]
 
     table = cls([[' ']])
-    assert [['   ']] == table.padded_table_data
+    assert table.padded_table_data == [['   ']]
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -38,7 +38,7 @@ def test_simple(cls):
         [' Tomato  ', ' red   ', ' fruit     '],
         [' Lettuce ', ' green ', ' vegetable '],
     ]
-    assert expected == table.padded_table_data
+    assert table.padded_table_data == expected
 
     table_data.append(['Watermelon', 'green'])
     table_data.append([])
@@ -50,7 +50,7 @@ def test_simple(cls):
         [' Watermelon ', ' green ', '           '],
         ['            ', '       ', '           '],
     ]
-    assert expected == table.padded_table_data
+    assert table.padded_table_data == expected
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -73,7 +73,7 @@ def test_attributes(cls):
         ['    Lettuce ', ' green ', ' vegetable '],
         [' Watermelon ', ' green ', '           ']
     ]
-    assert expected == table.padded_table_data
+    assert table.padded_table_data == expected
 
     table.justify_columns[2] = 'center'
     expected = [
@@ -83,7 +83,7 @@ def test_attributes(cls):
         ['    Lettuce ', ' green ', ' vegetable '],
         [' Watermelon ', ' green ', '           ']
     ]
-    assert expected == table.padded_table_data
+    assert table.padded_table_data == expected
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
@@ -102,4 +102,4 @@ def test_multi_line(cls):
         [' aaa \n     \n     ', ' b  \n bb \n bb ', '    cc \n ccccc \n       '],
         [' aa  \n     \n     ', ' bb \n bb \n    ', '     c \n    cc \n   ccc '],
     ]
-    assert expected == table.padded_table_data
+    assert table.padded_table_data == expected
