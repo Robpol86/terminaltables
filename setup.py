@@ -92,6 +92,6 @@ setup(
     packages=['terminaltables'],
     tests_require=['colorclass', 'pytest-cov'],
     url='https://github.com/Robpol86/terminaltables',
-    version='1.2.1',
+    version='2.0.0',
     zip_safe=True,
 )

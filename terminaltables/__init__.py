@@ -8,10 +8,6 @@ https://pypi.python.org/pypi/terminaltables
 
 from terminaltables.tables import AsciiTable, DoubleTable, SingleTable
 
-__author__ = '@Robpol86'
-__license__ = 'MIT'
-__version__ = '2.0.0'
-
 
 assert AsciiTable
 assert DoubleTable
