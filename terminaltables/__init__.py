@@ -6,9 +6,10 @@ https://github.com/Robpol86/terminaltables
 https://pypi.python.org/pypi/terminaltables
 """
 
-from terminaltables.tables import AsciiTable, DoubleTable, SingleTable
+from terminaltables.tables import AsciiTable, DoubleTable, GithubFlavoredMarkdownTable, SingleTable
 
 
 assert AsciiTable
 assert DoubleTable
 assert SingleTable
+assert GithubFlavoredMarkdownTable

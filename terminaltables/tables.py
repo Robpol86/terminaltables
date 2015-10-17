@@ -2,7 +2,7 @@
 
 import os
 
-from terminaltables.base_table import BaseTable
+from terminaltables.base_table import BaseTable, join_row
 
 
 class AsciiTable(BaseTable):
@@ -92,3 +92,64 @@ class DoubleTable(WindowsTableDouble):
     """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's unicode."""
 
     pass
+
+
+class GithubFlavoredMarkdownTable(BaseTable):
+    """Github flavored markdown table.
+
+    https://help.github.com/articles/github-flavored-markdown/#tables
+    """
+
+    CHAR_VERTICAL = '|'
+    CHAR_HORIZONTAL = '-'
+
+    def __init__(self, table_data):
+        """Constructor.
+
+        :param iter table_data: List (empty or list of lists of strings) representing the table.
+        """
+        # Github flavored markdown table won't support title.
+        super(GithubFlavoredMarkdownTable, self).__init__(table_data)
+
+    @property
+    def table(self):
+        """Return a large string of the entire table ready to be printed to the terminal."""
+        padded_table_data = self.padded_table_data
+        column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
+        final_table_data = list()
+
+        for row_index, row_data in enumerate(padded_table_data):
+            row = join_row(
+                row_data,
+                self.CHAR_VERTICAL,
+                self.CHAR_VERTICAL,
+                self.CHAR_VERTICAL
+            )
+            final_table_data.append(row)
+
+            if row_index != 0:
+                continue
+
+            # Header row separator.
+            column_separators = []
+            for column_index, column_width in enumerate(column_widths):
+                column_justify = self.justify_columns.get(column_index)
+                if column_justify == 'left':
+                    separator = ':' + self.CHAR_HORIZONTAL * (column_width - 1)
+                elif column_justify == 'right':
+                    separator = self.CHAR_HORIZONTAL * (column_width - 1) + ':'
+                elif column_justify == 'center':
+                    separator = self.CHAR_HORIZONTAL * (column_width - 2)
+                    separator = ':' + separator + ':'
+                else:
+                    separator = self.CHAR_HORIZONTAL * column_width
+                column_separators.append(separator)
+            row = join_row(
+                column_separators,
+                self.CHAR_VERTICAL,
+                self.CHAR_VERTICAL,
+                self.CHAR_VERTICAL
+            )
+            final_table_data.append(row)
+
+        return '\n'.join(final_table_data)
