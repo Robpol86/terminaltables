@@ -4,7 +4,7 @@ terminaltables
 
 Easily draw tables in terminal/console applications from a list of lists of strings. Supports multi-line rows.
 
-* Python 2.6, 2.7, PyPy, PyPy3, 3.3, and 3.4 supported on Linux and OS X.
+* Python 2.6, 2.7, PyPy, PyPy3, 3.3, 3.4, and 3.5 supported on Linux and OS X.
 * Python 2.7, 3.3, and 3.4 supported on Windows (both 32 and 64 bit versions of Python).
 
 .. image:: https://img.shields.io/appveyor/ci/Robpol86/terminaltables/master.svg?style=flat-square&label=AppVeyor%20CI
@@ -15,16 +15,16 @@ Easily draw tables in terminal/console applications from a list of lists of stri
    :target: https://travis-ci.org/Robpol86/terminaltables
    :alt: Build Status
 
-.. image:: https://img.shields.io/codecov/c/github/Robpol86/terminaltables/master.svg?style=flat-square&label=Codecov
-   :target: https://codecov.io/github/Robpol86/terminaltables
+.. image:: https://img.shields.io/coveralls/Robpol86/terminaltables/master.svg?style=flat-square&label=Coveralls
+   :target: https://coveralls.io/github/Robpol86/terminaltables
    :alt: Coverage Status
 
 .. image:: https://img.shields.io/pypi/v/terminaltables.svg?style=flat-square&label=Latest
-   :target: https://pypi.python.org/pypi/terminaltables/
+   :target: https://pypi.python.org/pypi/terminaltables
    :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/dm/terminaltables.svg?style=flat-square&label=PyPI%20Downloads
-   :target: https://pypi.python.org/pypi/terminaltables/
+   :target: https://pypi.python.org/pypi/terminaltables
    :alt: Downloads
 
 Quickstart
