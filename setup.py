@@ -59,6 +59,6 @@ setup(
     name='terminaltables',
     packages=['terminaltables'],
     url='https://github.com/Robpol86/terminaltables',
-    version='2.0.0',
+    version='2.1.0',
     zip_safe=True,
 )

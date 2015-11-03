@@ -51,8 +51,8 @@ Usage
 
 The below usage information is for ``AsciiTable`` which uses simple ASCII characters for the table (e.g. ``-`` ``+``
 ``|``). Use ``SingleTable`` for `box drawing characters <http://en.wikipedia.org/wiki/Box-drawing_character>`_ instead.
-You may also use ``DoubleTable`` for double-lined box characters. All three tables have the same methods and properties
-and work on all platforms.
+You may also use ``DoubleTable`` for double-lined box characters and ``GithubFlavoredMarkdownTable`` for GitHub flavored
+Markdown formatting. All four tables have the same methods and properties and work on all platforms.
 
 Simple Usage
 ------------
@@ -168,6 +168,13 @@ Changelog
 =========
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
+
+2.1.0 - 2015-11-02
+------------------
+
+Added
+    * GitHub Flavored Markdown table by bcho: https://github.com/Robpol86/terminaltables/pull/12
+    * Python 3.5 support (Linux/OS X and Windows).
 
 2.0.0 - 2015-10-11
 ------------------
