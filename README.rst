@@ -8,24 +8,24 @@ Easily draw tables in terminal/console applications from a list of lists of stri
 * Python 2.7, 3.3, 3.4, and 3.5 supported on Windows (both 32 and 64 bit versions of Python).
 
 .. image:: https://img.shields.io/appveyor/ci/Robpol86/terminaltables/master.svg?style=flat-square&label=AppVeyor%20CI
-   :target: https://ci.appveyor.com/project/Robpol86/terminaltables
-   :alt: Build Status Windows
+    :target: https://ci.appveyor.com/project/Robpol86/terminaltables
+    :alt: Build Status Windows
 
 .. image:: https://img.shields.io/travis/Robpol86/terminaltables/master.svg?style=flat-square&label=Travis%20CI
-   :target: https://travis-ci.org/Robpol86/terminaltables
-   :alt: Build Status
+    :target: https://travis-ci.org/Robpol86/terminaltables
+    :alt: Build Status
 
 .. image:: https://img.shields.io/coveralls/Robpol86/terminaltables/master.svg?style=flat-square&label=Coveralls
-   :target: https://coveralls.io/github/Robpol86/terminaltables
-   :alt: Coverage Status
+    :target: https://coveralls.io/github/Robpol86/terminaltables
+    :alt: Coverage Status
 
 .. image:: https://img.shields.io/pypi/v/terminaltables.svg?style=flat-square&label=Latest
-   :target: https://pypi.python.org/pypi/terminaltables
-   :alt: Latest Version
+    :target: https://pypi.python.org/pypi/terminaltables
+    :alt: Latest Version
 
 .. image:: https://img.shields.io/pypi/dm/terminaltables.svg?style=flat-square&label=PyPI%20Downloads
-   :target: https://pypi.python.org/pypi/terminaltables
-   :alt: Downloads
+    :target: https://pypi.python.org/pypi/terminaltables
+    :alt: Downloads
 
 Quickstart
 ==========
