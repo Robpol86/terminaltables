@@ -57,7 +57,7 @@ Markdown formatting. All four tables have the same methods and properties and wo
 Simple Usage
 ------------
 
-.. code:: python
+.. code::
 
     from terminaltables import AsciiTable
     table_data = [
@@ -82,7 +82,7 @@ represents rows. Each row-list holds strings which are the cells of that row.
 The first row can be though of the heading, but it doesn't have to be. You can turn off the heading separator (the only
 thing that makes the first row a "heading" row) by setting ``table.inner_heading_row_border = False``.
 
-.. code:: python
+.. code::
 
     table.inner_heading_row_border = False
     print table.table
@@ -97,7 +97,7 @@ thing that makes the first row a "heading" row) by setting ``table.inner_heading
 Sometimes the last row can be though of a total (summary) row, by default it isn't. You can turn on the las row separator (the only
 thing that makes the last row a "total" row) by setting ``table.inner_footing_row_border = True``.
 
-.. code:: python
+.. code::
 
     table.inner_heading_row_border = True
     table.inner_footing_row_border = True
