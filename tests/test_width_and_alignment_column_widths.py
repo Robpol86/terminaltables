@@ -27,6 +27,14 @@ def test_simple():
     assert column_widths(table_data) == [10, 5, 9]
 
 
+def test_values():
+    """Non string data test."""
+    table_data = [
+        ['string', 1, True],
+    ]
+    assert column_widths(table_data) == [6, 1, 4]
+
+
 def test_multi_line():
     """Multi-line test."""
     assert column_widths([['One\nTwo', 'Buckle\nMy\nShoe']]) == [3, 6]
