@@ -90,6 +90,7 @@ def column_widths(table_data):
         for i in range(len(row)):
             if not row[i]:
                 continue
-            widths[i] = max(widths[i], string_width(max(row[i].splitlines(), key=len)))
+            data = str(row[i])
+            widths[i] = max(widths[i], string_width(max(data.splitlines(), key=len)))
 
     return widths
