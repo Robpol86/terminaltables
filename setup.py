@@ -9,22 +9,21 @@ import os
 from setuptools import setup
 
 
-def safe_read(path):
-    """Try to read file or return empty string if failed.
-
-    :param str path: Relative file path to read.
+def readme():
+    """Try to read README.rst or return empty string if failed.
 
     :return: File contents.
     :rtype: str
     """
-    abspath, file_handle = os.path.join(os.path.abspath(os.path.dirname(__file__)), path), None
+    path = os.path.realpath(os.path.join(os.path.dirname(__file__), 'README.rst'))
+    handle = None
     try:
-        file_handle = codecs.open(abspath, encoding='utf-8')
-        return file_handle.read(131072)
+        handle = codecs.open(path, encoding='utf-8')
+        return handle.read(131072)
     except IOError:
         return ''
     finally:
-        getattr(file_handle, 'close', lambda: None)()
+        getattr(handle, 'close', lambda: None)()
 
 
 setup(
@@ -55,7 +54,7 @@ setup(
     install_requires=[],
     keywords='Shell Bash ANSI ASCII terminal tables',
     license='MIT',
-    long_description=safe_read('README.rst'),
+    long_description=readme(),
     name='terminaltables',
     packages=['terminaltables'],
     url='https://github.com/Robpol86/terminaltables',

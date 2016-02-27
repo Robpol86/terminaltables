@@ -6,10 +6,11 @@ https://github.com/Robpol86/terminaltables
 https://pypi.python.org/pypi/terminaltables
 """
 
-from terminaltables.tables import AsciiTable, DoubleTable, GithubFlavoredMarkdownTable, SingleTable
+from terminaltables.tables import AsciiTable  # noqa
+from terminaltables.tables import DoubleTable  # noqa
+from terminaltables.tables import GithubFlavoredMarkdownTable  # noqa
+from terminaltables.tables import SingleTable  # noqa
 
-
-assert AsciiTable
-assert DoubleTable
-assert SingleTable
-assert GithubFlavoredMarkdownTable
+__author__ = '@Robpol86'
+__license__ = 'MIT'
+__version__ = '2.1.0'

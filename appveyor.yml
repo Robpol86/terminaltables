@@ -1,5 +1,5 @@
 init:
-  - set PATH=C:\Python34-x64;C:\Python34-x64\Scripts;%PATH%
+  - set PATH=C:\Python35-x64;C:\Python35-x64\Scripts;%PATH%
 
 artifacts:
   - path: .coverage

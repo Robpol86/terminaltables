@@ -1,22 +1,15 @@
-language: python
-
-sudo: false
-
-addons:
-  apt:
-    sources:
-      - deadsnakes
-    packages:
-      - python3.5
-
-install:
-  - pip install appveyor-artifacts coveralls tox
-
-script:
-  - tox -e lint,py35,py34,py33,pypy3,pypy,py27,py26
-
 after_success:
   - mv .coverage .coverage.travis
   - appveyor-artifacts -mi download
   - coverage combine
   - coveralls
+
+install: pip install appveyor-artifacts coveralls tox
+
+language: python
+
+python: 3.5
+
+script: tox -e lint,py35,py34,py33,pypy3,pypy,py27,py26
+
+sudo: false
