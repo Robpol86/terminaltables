@@ -8,6 +8,8 @@ import sys
 
 import pytest
 
+from tests.screenshot import PROJECT_ROOT
+
 
 @pytest.mark.parametrize('suffix', range(1, 4))
 def test(suffix):
@@ -15,12 +17,14 @@ def test(suffix):
 
     :param int suffix: Numerical suffix of file name to test.
     """
-    path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'example{0}.py'.format(suffix)))
+    command = [sys.executable, str(PROJECT_ROOT.join('example{0}.py'.format(suffix)))]
     env = dict(os.environ, PYTHONIOENCODING='utf-8')
 
     # Run.
-    proc = subprocess.Popen([sys.executable, path], env=env, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(command, env=env, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
     output = proc.communicate()[0]
+
+    # Verify.
     try:
         assert proc.poll() == 0
     except AssertionError:

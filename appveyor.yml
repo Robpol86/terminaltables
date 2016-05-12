@@ -4,5 +4,12 @@ artifacts:
 
 # Run.
 init: set PATH=C:\Python35-x64;C:\Python35-x64\Scripts;%PATH%
+install:
+  - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1
+  - ps: .\enable-desktop
 build_script: pip install tox
 test_script: tox -e lint,py35,py34,py33,py27,py26,py35x64,py34x64,py33x64,py27x64,py26x64
+
+# Post.
+on_finish:
+  - appveyor PushArtifact test_terminal_io.png

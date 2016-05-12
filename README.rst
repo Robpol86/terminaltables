@@ -169,6 +169,12 @@ Changelog
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+Unreleased
+----------
+
+Changed
+    * Refactored `terminaltables.terminal_io`. Fixed set_terminal_title() Unicode handling on Windows.
+
 2.1.0 - 2015-11-02
 ------------------
 
