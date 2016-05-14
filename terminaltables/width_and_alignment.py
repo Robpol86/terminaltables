@@ -1,6 +1,9 @@
 """Functions that handle alignment, padding, widths, etc."""
 
+import re
 import unicodedata
+
+RE_COLOR_ANSI = re.compile(r'(\033\[([\d;]+)m)')
 
 
 def string_width(string):
@@ -15,9 +18,8 @@ def string_width(string):
     :return: String's width.
     :rtype: int
     """
-    # Colorclass instance.
-    if hasattr(string, 'value_no_colors'):
-        string = string.value_no_colors
+    if '\033' in string:
+        string = RE_COLOR_ANSI.sub('', string)
 
     # Convert to unicode.
     try:
