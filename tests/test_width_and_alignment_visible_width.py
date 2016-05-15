@@ -6,7 +6,7 @@ from colorama import Fore
 from colorclass import Color
 from termcolor import colored
 
-from terminaltables.width_and_alignment import string_width
+from terminaltables.width_and_alignment import visible_width
 
 
 @pytest.mark.parametrize('string,expected_length', [
@@ -56,4 +56,4 @@ def test(string, expected_length):
     :param str string: Input string to measure.
     :param int expected_length: Expected visible width of string (some characters are len() == 1 but take up 2 spaces).
     """
-    assert string_width(string) == expected_length
+    assert visible_width(string) == expected_length

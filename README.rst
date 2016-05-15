@@ -172,6 +172,11 @@ This project adheres to `Semantic Versioning <http://semver.org/>`_.
 Unreleased
 ----------
 
+Added
+    * Support for https://pypi.python.org/pypi/colorama
+    * Support for https://pypi.python.org/pypi/termcolor
+    * Support for RTL characters (Arabic and Hebrew).
+
 Changed
     * Refactored `terminaltables.terminal_io`. Fixed set_terminal_title() Unicode handling on Windows.
 

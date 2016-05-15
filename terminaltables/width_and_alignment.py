@@ -6,7 +6,7 @@ import unicodedata
 RE_COLOR_ANSI = re.compile(r'(\033\[([\d;]+)m)')
 
 
-def string_width(string):
+def visible_width(string):
     """Get the visible width of a unicode string.
 
     Some CJK unicode characters are more than one byte unlike ASCII and latin unicode characters.
@@ -37,41 +37,74 @@ def string_width(string):
     return width
 
 
-def align_and_pad_cell(string, align, size_dims):
-    """Align a string with center/rjust/ljust and adds additional padding.
+def justification(string, align):
+    """Either returns left/center/right if either are in `align`, else determines the default justification.
+
+    Default depends if any RTL (right to left) characters are present in the string (e.g. arabic/hebrew).
+
+    :param str string: String to analyze.
+    :param tuple align: Requested alignment from align_and_pad_cell() args.
+
+    :return: One of: left, center, right
+    :rtype: str
+    """
+    if 'right' in align:
+        return 'right'
+    if 'center' in align:
+        return 'center'
+    if 'left' in align:
+        return 'left'
+
+    # Convert to unicode.
+    try:
+        decoded = string.decode('u8')
+    except (AttributeError, UnicodeEncodeError):
+        decoded = string
+
+    # Look for RTL char.
+    for char in decoded:
+        if unicodedata.bidirectional(char) in ('R', 'AL', 'RLE', 'RLO'):
+            return 'right'
+    return 'left'
+
+
+def align_and_pad_cell(string, align, dimensions, padding, space=' '):
+    """Align a string horizontally and vertically. Also add additional padding in both dimensions.
 
     :param str string: Input string to operate on.
-    :param str align: 'left', 'right', or 'center'.
-    :param iter size_dims: Size and dimensions. A 4-item tuple of integers representing width, height, lpad, and rpad.
+    :param tuple align: Tuple that contains one of left/center/right and/or top/middle/bottom.
+    :param tuple dimensions: Width and height ints to expand string to without padding.
+    :param tuple padding: 4-int tuple. Number of space chars for left, right, top, and bottom.
+    :param str space: Character to use as white space for resizing/padding (use single visible chars only).
 
     :return: Modified string.
     :rtype: str
     """
-    width, height, lpad, rpad = size_dims
-
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
     lines = string.splitlines() or ['']
     if string.endswith('\n'):
         lines.append('')
 
-    # Align.
-    if align == 'center':
-        method = 'center'
-    elif align == 'right':
-        method = 'rjust'
+    # Vertically align and pad.
+    if 'bottom' in align:
+        lines = ([''] * (dimensions[1] - len(lines) + padding[2])) + lines + ([''] * padding[3])
+    elif 'middle' in align:
+        raise NotImplementedError('TODO')  # lines = ([''] * 1) + lines + ([''] * 1)
     else:
-        method = 'ljust'
-    aligned = '\n'.join(getattr(l, method)(width + len(l) - string_width(l)) for l in lines)
+        lines = ([''] * padding[2]) + lines + ([''] * (dimensions[1] - len(lines) + padding[3]))
 
-    # Pad.
-    padded = '\n'.join((' ' * lpad) + l + (' ' * rpad) for l in aligned.splitlines() or [''])
+    # Horizontally align and pad.
+    for i, line in enumerate(lines):
+        new_width = dimensions[0] + len(line) - visible_width(line)
+        justify = justification(line, align)
+        if justify == 'right':
+            lines[i] = line.rjust(padding[0] + new_width, space) + (space * padding[1])
+        elif justify == 'center':
+            lines[i] = (space * padding[0]) + line.center(new_width, space) + (space * padding[1])
+        else:
+            lines[i] = (space * padding[0]) + line.ljust(new_width + padding[1], space)
 
-    # Increase height.
-    additional_padding = height - 1 - padded.count('\n')
-    if additional_padding > 0:
-        padded += ('\n{0}'.format(' ' * (width + lpad + rpad))) * additional_padding
-
-    return padded
+    return '\n'.join(lines)
 
 
 def column_widths(table_data):
@@ -92,6 +125,6 @@ def column_widths(table_data):
         for i in range(len(row)):
             if not row[i]:
                 continue
-            widths[i] = max(widths[i], string_width(max(row[i].splitlines(), key=len)))
+            widths[i] = max(widths[i], visible_width(max(row[i].splitlines(), key=len)))
 
     return widths

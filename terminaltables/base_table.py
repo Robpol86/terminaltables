@@ -3,7 +3,7 @@
 import re
 
 from terminaltables.terminal_io import terminal_size
-from terminaltables.width_and_alignment import align_and_pad_cell, column_widths, string_width
+from terminaltables.width_and_alignment import align_and_pad_cell, column_widths, visible_width
 
 
 def join_row(row, left, middle, right):
@@ -114,8 +114,10 @@ class BaseTable(object):
         for row in new_table_data:
             height = max([c.count('\n') for c in row] or [0]) + 1
             for i in range(len(row)):
-                align = self.justify_columns.get(i, 'left')
-                cell = align_and_pad_cell(row[i], align, (widths[i], height, self.padding_left, self.padding_right))
+                align = (self.justify_columns.get(i, 'left'),)
+                dimensions = (widths[i], height)
+                padding = (self.padding_left, self.padding_right, 0, 0)
+                cell = align_and_pad_cell(row[i], align, dimensions, padding)
                 row[i] = cell
 
         return new_table_data
@@ -129,7 +131,7 @@ class BaseTable(object):
 
         # Append top border.
         max_title = sum(widths) + ((len(widths) - 1) if self.inner_column_border else 0)
-        if self.outer_border and self.title and string_width(self.title) <= max_title:
+        if self.outer_border and self.title and visible_width(self.title) <= max_title:
             pseudo_row = join_row(
                 ['h' * w for w in widths],
                 'l', 't' if self.inner_column_border else '',
@@ -139,7 +141,7 @@ class BaseTable(object):
                                   r=self.CHAR_CORNER_UPPER_RIGHT)
             pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
             substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
-            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + string_width(self.title):])
+            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + visible_width(self.title):])
             final_table_data.append(row)
         elif self.outer_border:
             row = join_row(
