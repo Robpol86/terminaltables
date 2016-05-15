@@ -3,7 +3,7 @@
 import re
 
 from terminaltables.terminal_io import terminal_size
-from terminaltables.width_and_alignment import align_and_pad_cell, column_widths, visible_width
+from terminaltables.width_and_alignment import align_and_pad_cell, max_dimensions, visible_width
 
 
 def join_row(row, left, middle, right):
@@ -89,7 +89,7 @@ class BaseTable(object):
         """Return a list of integers representing the widths of each table column without padding."""
         if not self.table_data:
             return list()
-        return column_widths(self.table_data)
+        return max_dimensions(self.table_data)[0]
 
     @property
     def ok(self):  # Too late to change API. # pylint: disable=invalid-name

@@ -76,24 +76,25 @@ def align_and_pad_cell(string, align, dimensions, padding, space=' '):
     return '\n'.join(lines)
 
 
-def column_widths(table_data):
-    """Get maximum widths of each column in the table.
+def max_dimensions(table_data):
+    """Get maximum widths of each column and maximum height of each row.
 
-    :param iter table_data: List of list of strings. The unpadded table data.
+    :param iter table_data: List of list of strings (unmodified table data).
 
-    :return: Column widths.
-    :rtype: list
+    :return: 2-item tuple of n-item lists. Column widths and row heights.
+    :rtype: tuple
     """
-    if not table_data:
-        return list()
+    widths = [0] * max(len(r) for r in table_data)
+    heights = [0] * len(table_data)
 
-    number_of_columns = max(len(r) for r in table_data)
-    widths = [0] * number_of_columns
-
-    for row in table_data:
-        for i in range(len(row)):
-            if not row[i]:
+    for j, row in enumerate(table_data):
+        for i, cell in enumerate(row):
+            if not cell:
                 continue
-            widths[i] = max(widths[i], visible_width(max(row[i].splitlines(), key=len)))
+            lines = cell.splitlines()
+            if cell.endswith('\n'):
+                lines.append('')
+            heights[j] = max(heights[j], len(lines))
+            widths[i] = max(widths[i], visible_width(max(lines, key=len)))
 
-    return widths
+    return widths, heights

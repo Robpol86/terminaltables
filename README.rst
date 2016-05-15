@@ -177,8 +177,8 @@ Added
     * Support for https://pypi.python.org/pypi/termcolor
     * Support for RTL characters (Arabic and Hebrew).
 
-Changed
-    * Refactored `terminaltables.terminal_io`. Fixed set_terminal_title() Unicode handling on Windows.
+Fixed
+    * ``set_terminal_title()`` Unicode handling on Windows.
 
 2.1.0 - 2015-11-02
 ------------------
