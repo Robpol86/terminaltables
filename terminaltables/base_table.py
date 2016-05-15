@@ -117,7 +117,7 @@ class BaseTable(object):
                 align = (self.justify_columns.get(i, 'left'),)
                 dimensions = (widths[i], height)
                 padding = (self.padding_left, self.padding_right, 0, 0)
-                cell = align_and_pad_cell(row[i], align, dimensions, padding)
+                cell = '\n'.join(align_and_pad_cell(row[i], align, dimensions, padding))
                 row[i] = cell
 
         return new_table_data

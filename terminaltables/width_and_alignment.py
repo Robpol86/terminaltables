@@ -46,8 +46,8 @@ def align_and_pad_cell(string, align, dimensions, padding, space=' '):
     :param tuple padding: 4-int tuple. Number of space chars for left, right, top, and bottom.
     :param str space: Character to use as white space for resizing/padding (use single visible chars only).
 
-    :return: Modified string.
-    :rtype: str
+    :return: Padded cell split into lines.
+    :rtype: list
     """
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
     lines = string.splitlines() or ['']
@@ -73,7 +73,7 @@ def align_and_pad_cell(string, align, dimensions, padding, space=' '):
         else:
             lines[i] = (space * padding[0]) + line.ljust(new_width + padding[1], space)
 
-    return '\n'.join(lines)
+    return lines
 
 
 def max_dimensions(table_data):
