@@ -91,10 +91,7 @@ def max_dimensions(table_data):
         for i, cell in enumerate(row):
             if not cell:
                 continue
-            lines = cell.splitlines()
-            if cell.endswith('\n'):
-                lines.append('')
-            heights[j] = max(heights[j], len(lines))
-            widths[i] = max(widths[i], visible_width(max(lines, key=len)))
+            heights[j] = max(heights[j], cell.count('\n') + 1)
+            widths[i] = max(widths[i], *[visible_width(l) for l in cell.splitlines()])
 
     return widths, heights
