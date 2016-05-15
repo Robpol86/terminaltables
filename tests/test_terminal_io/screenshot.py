@@ -12,9 +12,8 @@ try:
 except ImportError:
     izip = zip  # Py3
 
-import py
+from tests import PROJECT_ROOT
 
-PROJECT_ROOT = py.path.local(__file__).dirpath().join('..')
 STARTF_USESHOWWINDOW = getattr(subprocess, 'STARTF_USESHOWWINDOW', 1)
 STILL_ACTIVE = 259
 SW_MAXIMIZE = 3

@@ -8,7 +8,7 @@ import sys
 
 import pytest
 
-from tests.screenshot import PROJECT_ROOT
+from tests import PROJECT_ROOT
 
 
 @pytest.mark.parametrize('suffix', range(1, 4))
