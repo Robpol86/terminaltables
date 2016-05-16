@@ -1,7 +1,5 @@
 """Test max width of table in a terminal without wrapping."""
 
-from textwrap import dedent
-
 import pytest
 
 from terminaltables.tables import AsciiTable, UnixTable
@@ -103,8 +101,8 @@ def test_multi_line(monkeypatch, cls):
     """Test multi-line tables."""
     table_data = [
         ['Show', 'Characters'],
-        ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
-                           'Susie Carmichael, Dil Pickles, Kimi Finster, Spike')],
+        ['Rugrats', ('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
+                     'Susie Carmichael, Dil Pickles, Kimi Finster, Spike')],
         ['South Park', 'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick']
     ]
     table = cls(table_data)
@@ -112,6 +110,6 @@ def test_multi_line(monkeypatch, cls):
     assert table.column_max_width(0) == -10
     assert table.column_max_width(1) == 63
 
-    monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (100, 24))
+    monkeypatch.setattr('terminaltables.width_and_alignment.terminal_size', lambda: (100, 24))
     assert table.column_max_width(0) == 10
     assert table.column_max_width(1) == 83

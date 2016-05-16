@@ -3,6 +3,8 @@
 import re
 import unicodedata
 
+from terminaltables.terminal_io import terminal_size
+
 RE_COLOR_ANSI = re.compile(r'(\033\[([\d;]+)m)')
 
 
@@ -84,7 +86,7 @@ def max_dimensions(table_data):
     :return: 2-item tuple of n-item lists. Column widths and row heights.
     :rtype: tuple
     """
-    widths = [0] * max(len(r) for r in table_data)
+    widths = [0] * (max(len(r) for r in table_data) if table_data else 0)
     heights = [0] * len(table_data)
 
     for j, row in enumerate(table_data):
@@ -95,3 +97,29 @@ def max_dimensions(table_data):
             widths[i] = max(widths[i], *[visible_width(l) for l in cell.splitlines()])
 
     return widths, heights
+
+
+def column_max_width(table_data, column_number, outer_border, inner_border, padding):
+    """Determine the maximum width of a column based on the current terminal width.
+
+    :param iter table_data: List of list of strings (unmodified table data).
+    :param int column_number: The column number to query.
+    :param int outer_border: Sum of left and right outer border visible widths.
+    :param int inner_border: Visible width of the inner border character.
+    :param int padding: Total padding per cell (left + right padding).
+
+    :return: The maximum width the column can be without causing line wrapping.
+    """
+    column_widths = max_dimensions(table_data)[0]
+    column_count = len(column_widths)
+    terminal_width = terminal_size()[0]
+
+    # Count how much space padding, outer, and inner borders take up.
+    non_data_space = column_count * padding
+    non_data_space += outer_border
+    non_data_space += inner_border * (column_count - 1)
+
+    # Exclude selected column's width.
+    data_space = sum(column_widths) - column_widths[column_number]
+
+    return terminal_width - data_space - non_data_space
