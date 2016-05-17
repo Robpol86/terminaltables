@@ -2,8 +2,8 @@
 
 import re
 
+from terminaltables import width_and_alignment
 from terminaltables.terminal_io import terminal_size
-from terminaltables.width_and_alignment import align_and_pad_cell, column_max_width, max_dimensions, visible_width
 
 
 def join_row(row, left, middle, right):
@@ -78,14 +78,14 @@ class BaseTable(object):
         outer_border = 2 if self.outer_border else 0
         inner_border = 1 if self.inner_column_border else 0
         padding = self.padding_left + self.padding_right
-        return column_max_width(self.table_data, column_number, outer_border, inner_border, padding)
+        return width_and_alignment.column_max_width(self.table_data, column_number, outer_border, inner_border, padding)
 
     @property
     def column_widths(self):
         """Return a list of integers representing the widths of each table column without padding."""
         if not self.table_data:
             return list()
-        return max_dimensions(self.table_data)[0]
+        return width_and_alignment.max_dimensions(self.table_data)[0]
 
     @property
     def ok(self):  # Too late to change API. # pylint: disable=invalid-name
@@ -113,7 +113,7 @@ class BaseTable(object):
                 align = (self.justify_columns.get(i, 'left'),)
                 dimensions = (widths[i], height)
                 padding = (self.padding_left, self.padding_right, 0, 0)
-                cell = '\n'.join(align_and_pad_cell(row[i], align, dimensions, padding))
+                cell = '\n'.join(width_and_alignment.align_and_pad_cell(row[i], align, dimensions, padding))
                 row[i] = cell
 
         return new_table_data
@@ -127,7 +127,7 @@ class BaseTable(object):
 
         # Append top border.
         max_title = sum(widths) + ((len(widths) - 1) if self.inner_column_border else 0)
-        if self.outer_border and self.title and visible_width(self.title) <= max_title:
+        if self.outer_border and self.title and width_and_alignment.visible_width(self.title) <= max_title:
             pseudo_row = join_row(
                 ['h' * w for w in widths],
                 'l', 't' if self.inner_column_border else '',
@@ -137,7 +137,9 @@ class BaseTable(object):
                                   r=self.CHAR_CORNER_UPPER_RIGHT)
             pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
             substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
-            row = substitute(pseudo_row[:1]) + self.title + substitute(pseudo_row[1 + visible_width(self.title):])
+            row = substitute(pseudo_row[:1]) + self.title + substitute(
+                pseudo_row[1 + width_and_alignment.visible_width(self.title):]
+            )
             final_table_data.append(row)
         elif self.outer_border:
             row = join_row(
@@ -195,10 +197,7 @@ class BaseTable(object):
     @property
     def table_width(self):
         """Return the width of the table including padding and borders."""
-        widths = self.column_widths
-        borders_padding = (len(widths) * self.padding_left) + (len(widths) * self.padding_right)
-        if self.outer_border:
-            borders_padding += 2
-        if self.inner_column_border and widths:
-            borders_padding += len(widths) - 1
-        return sum(widths) + borders_padding
+        outer_border = 2 if self.outer_border else 0
+        inner_border = 1 if self.inner_column_border else 0
+        padding = self.padding_left + self.padding_right
+        return width_and_alignment.table_width(self.table_data, outer_border, inner_border, padding)

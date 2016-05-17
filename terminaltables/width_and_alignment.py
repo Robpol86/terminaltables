@@ -117,9 +117,33 @@ def column_max_width(table_data, column_number, outer_border, inner_border, padd
     # Count how much space padding, outer, and inner borders take up.
     non_data_space = column_count * padding
     non_data_space += outer_border
-    non_data_space += inner_border * (column_count - 1)
+    non_data_space += inner_border * max(0, column_count - 1)
 
     # Exclude selected column's width.
     data_space = sum(column_widths) - column_widths[column_number]
 
     return terminal_width - data_space - non_data_space
+
+
+def table_width(table_data, outer_border, inner_border, padding):
+    """Determine the width of the entire table including borders and padding.
+
+    :param iter table_data: List of list of strings (unmodified table data).
+    :param int outer_border: Sum of left and right outer border visible widths.
+    :param int inner_border: Visible width of the inner border character.
+    :param int padding: Total padding per cell (left + right padding).
+
+    :return: The width of the table.
+    :rtype: int
+    """
+    column_widths = max_dimensions(table_data)[0]
+    column_count = len(column_widths)
+
+    # Count how much space padding, outer, and inner borders take up.
+    non_data_space = column_count * padding
+    non_data_space += outer_border
+    non_data_space += inner_border * max(0, column_count - 1)
+
+    # Space of all columns.
+    data_space = sum(column_widths)
+    return data_space + non_data_space
