@@ -115,9 +115,10 @@ def column_max_width(table_data, column_number, outer_border, inner_border, padd
     terminal_width = terminal_size()[0]
 
     # Count how much space padding, outer, and inner borders take up.
-    non_data_space = column_count * padding
-    non_data_space += outer_border
-    non_data_space += inner_border * max(0, column_count - 1)
+    non_data_space = outer_border
+    if column_count:
+        non_data_space += inner_border * (column_count - 1)
+        non_data_space += column_count * padding
 
     # Exclude selected column's width.
     data_space = sum(column_widths) - column_widths[column_number]
@@ -140,9 +141,10 @@ def table_width(table_data, outer_border, inner_border, padding):
     column_count = len(column_widths)
 
     # Count how much space padding, outer, and inner borders take up.
-    non_data_space = column_count * padding
-    non_data_space += outer_border
-    non_data_space += inner_border * max(0, column_count - 1)
+    non_data_space = outer_border
+    if column_count:
+        non_data_space += inner_border * (column_count - 1)
+        non_data_space += column_count * padding
 
     # Space of all columns.
     data_space = sum(column_widths)
