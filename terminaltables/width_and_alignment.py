@@ -39,13 +39,13 @@ def visible_width(string):
     return width
 
 
-def align_and_pad_cell(string, align, dimensions, padding, space=' '):
+def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
     """Align a string horizontally and vertically. Also add additional padding in both dimensions.
 
     :param str string: Input string to operate on.
     :param tuple align: Tuple that contains one of left/center/right and/or top/middle/bottom.
-    :param tuple dimensions: Width and height ints to expand string to without padding.
-    :param tuple padding: 4-int tuple. Number of space chars for left, right, top, and bottom.
+    :param tuple inner_dimensions: Width and height ints to expand string to without padding.
+    :param iter padding: Number of space chars for left, right, top, and bottom (4 ints).
     :param str space: Character to use as white space for resizing/padding (use single visible chars only).
 
     :return: Padded cell split into lines.
@@ -58,16 +58,16 @@ def align_and_pad_cell(string, align, dimensions, padding, space=' '):
 
     # Vertically align and pad.
     if 'bottom' in align:
-        lines = ([''] * (dimensions[1] - len(lines) + padding[2])) + lines + ([''] * padding[3])
+        lines = ([''] * (inner_dimensions[1] - len(lines) + padding[2])) + lines + ([''] * padding[3])
     elif 'middle' in align:
-        delta = dimensions[1] - len(lines)
+        delta = inner_dimensions[1] - len(lines)
         lines = ([''] * (delta // 2 + delta % 2 + padding[2])) + lines + ([''] * (delta // 2 + padding[3]))
     else:
-        lines = ([''] * padding[2]) + lines + ([''] * (dimensions[1] - len(lines) + padding[3]))
+        lines = ([''] * padding[2]) + lines + ([''] * (inner_dimensions[1] - len(lines) + padding[3]))
 
     # Horizontally align and pad.
     for i, line in enumerate(lines):
-        new_width = dimensions[0] + len(line) - visible_width(line)
+        new_width = inner_dimensions[0] + len(line) - visible_width(line)
         if 'right' in align:
             lines[i] = line.rjust(padding[0] + new_width, space) + (space * padding[1])
         elif 'center' in align:
@@ -78,10 +78,13 @@ def align_and_pad_cell(string, align, dimensions, padding, space=' '):
     return lines
 
 
-def max_dimensions(table_data):
+def max_dimensions(table_data, padding=None):
     """Get maximum widths of each column and maximum height of each row.
 
+    If padding is not specified, inner dimensions are returned. If specified, outer dimensions are returned.
+
     :param iter table_data: List of list of strings (unmodified table data).
+    :param iter padding: Number of space chars for left, right, top, and bottom (4 ints).
 
     :return: 2-item tuple of n-item lists. Column widths and row heights.
     :rtype: tuple
@@ -89,12 +92,19 @@ def max_dimensions(table_data):
     widths = [0] * (max(len(r) for r in table_data) if table_data else 0)
     heights = [0] * len(table_data)
 
+    # Find max width and heights.
     for j, row in enumerate(table_data):
         for i, cell in enumerate(row):
             if not cell:
                 continue
             heights[j] = max(heights[j], cell.count('\n') + 1)
             widths[i] = max(widths[i], *[visible_width(l) for l in cell.splitlines()])
+
+    # Include padding in calculation.
+    if padding and (padding[0] or padding[1]):
+        widths = [padding[0] + i + padding[1] for i in widths]
+    if padding and (padding[2] or padding[3]):
+        heights = [padding[2] + i + padding[3] for i in heights]
 
     return widths, heights
 
@@ -137,15 +147,14 @@ def table_width(table_data, outer_border, inner_border, padding):
     :return: The width of the table.
     :rtype: int
     """
-    column_widths = max_dimensions(table_data)[0]
+    column_widths = max_dimensions(table_data, (padding, 0, 0, 0))[0]
     column_count = len(column_widths)
 
-    # Count how much space padding, outer, and inner borders take up.
+    # Count how much space outer and inner borders take up.
     non_data_space = outer_border
     if column_count:
         non_data_space += inner_border * (column_count - 1)
-        non_data_space += column_count * padding
 
-    # Space of all columns.
+    # Space of all columns and their padding.
     data_space = sum(column_widths)
     return data_space + non_data_space

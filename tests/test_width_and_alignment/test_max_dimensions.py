@@ -39,9 +39,11 @@ def test_single_line():
         ['Lettuce', 'green', 'vegetable'],
     ]
     assert max_dimensions(table_data) == ([7, 5, 9], [1, 1, 1, 1])
+    assert max_dimensions(table_data, [1, 1, 0, 0]) == ([9, 7, 11], [1, 1, 1, 1])
 
     table_data.append(['Watermelon', 'green', 'fruit'])
     assert max_dimensions(table_data) == ([10, 5, 9], [1, 1, 1, 1, 1])
+    assert max_dimensions(table_data, [2, 2, 0, 0]) == ([14, 9, 13], [1, 1, 1, 1, 1])
 
 
 def test_multi_line():
@@ -50,6 +52,7 @@ def test_multi_line():
         ['One\nTwo', 'Buckle\nMy\nShoe'],
     ]
     assert max_dimensions(table_data) == ([3, 6], [3])
+    assert max_dimensions(table_data, [0, 0, 1, 1]) == ([3, 6], [5])
 
     table_data = [
         ['Show', 'Characters'],
@@ -58,6 +61,7 @@ def test_multi_line():
         ['South Park', 'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick']
     ]
     assert max_dimensions(table_data) == ([10, 83], [1, 2, 1])
+    assert max_dimensions(table_data, [0, 0, 2, 2]) == ([10, 83], [5, 6, 5])
 
 
 def test_trailing_newline():

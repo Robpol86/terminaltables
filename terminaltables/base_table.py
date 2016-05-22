@@ -1,7 +1,5 @@
 """Main table class."""
 
-import re
-
 from terminaltables import width_and_alignment
 from terminaltables.build import build_border
 from terminaltables.terminal_io import terminal_size
@@ -127,32 +125,18 @@ class BaseTable(object):
         final_table_data = list()
 
         # Append top border.
-        max_title = sum(widths) + ((len(widths) - 1) if self.inner_column_border else 0)
-        if self.outer_border and self.title and width_and_alignment.visible_width(self.title) <= max_title:
-            pseudo_row = join_row(
-                ['h' * w for w in widths],
-                'l', 't' if self.inner_column_border else '',
-                'r'
-            )
-            pseudo_row_key = dict(h=self.CHAR_HORIZONTAL, l=self.CHAR_CORNER_UPPER_LEFT, t=self.CHAR_INTERSECT_TOP,
-                                  r=self.CHAR_CORNER_UPPER_RIGHT)
-            pseudo_row_re = re.compile('({0})'.format('|'.join(pseudo_row_key.keys())))
-            substitute = lambda s: pseudo_row_re.sub(lambda x: pseudo_row_key[x.string[x.start():x.end()]], s)
-            row = substitute(pseudo_row[:1]) + self.title + substitute(
-                pseudo_row[1 + width_and_alignment.visible_width(self.title):]
-            )
-            final_table_data.append(row)
-        elif self.outer_border:
+        if self.outer_border:
             final_table_data.append(''.join(build_border(
                 widths,
                 self.CHAR_HORIZONTAL,
                 self.CHAR_CORNER_UPPER_LEFT,
                 self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
-                self.CHAR_CORNER_UPPER_RIGHT
+                self.CHAR_CORNER_UPPER_RIGHT,
+                self.title
             )))
 
         # Build table body.
-        indexes = range(len(padded_table_data))
+        indexes = range(len(self.table_data))
         for i in indexes:
             row = join_row(
                 padded_table_data[i],
