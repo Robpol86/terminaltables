@@ -3,6 +3,7 @@
 import re
 
 from terminaltables import width_and_alignment
+from terminaltables.build import build_border
 from terminaltables.terminal_io import terminal_size
 
 
@@ -184,13 +185,13 @@ class BaseTable(object):
 
         # Append bottom border.
         if self.outer_border:
-            row = join_row(
-                [self.CHAR_HORIZONTAL * w for w in widths],
+            final_table_data.append(''.join(build_border(
+                widths,
+                self.CHAR_HORIZONTAL,
                 self.CHAR_CORNER_LOWER_LEFT,
                 self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else '',
                 self.CHAR_CORNER_LOWER_RIGHT
-            )
-            final_table_data.append(row)
+            )))
 
         return '\n'.join(final_table_data)
 

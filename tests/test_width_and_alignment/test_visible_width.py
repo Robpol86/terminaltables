@@ -27,12 +27,12 @@ from terminaltables.width_and_alignment import visible_width
     ('\x1b[34mhello 世界\x1b[39m', 10),
 
     # colorclass
-    (Color(u'{autoblue}hello, world{/autoblue}'), 12),
-    (Color(u'{autoblue}世界你好{/autoblue}'), 8),
-    (Color(u'{autoblue}蓝色{/autoblue}'), 4),
-    (Color(u'{autoblue}שלום{/autoblue}'), 4),
-    (Color(u'{autoblue}معرب{/autoblue}'), 4),
-    (Color(u'{autoblue}hello 世界{/autoblue}'), 10),
+    (Color(u'{blue}hello, world{/blue}'), 12),
+    (Color(u'{blue}世界你好{/blue}'), 8),
+    (Color(u'{blue}蓝色{/blue}'), 4),
+    (Color(u'{blue}שלום{/blue}'), 4),
+    (Color(u'{blue}معرب{/blue}'), 4),
+    (Color(u'{blue}hello 世界{/blue}'), 10),
 
     # colorama
     (Fore.BLUE + 'hello, world' + Fore.RESET, 12),

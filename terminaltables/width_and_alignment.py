@@ -5,7 +5,7 @@ import unicodedata
 
 from terminaltables.terminal_io import terminal_size
 
-RE_COLOR_ANSI = re.compile(r'(\033\[([\d;]+)m)')
+RE_COLOR_ANSI = re.compile(r'(\033\[[\d;]+m)')
 
 
 def visible_width(string):
@@ -25,12 +25,12 @@ def visible_width(string):
 
     # Convert to unicode.
     try:
-        decoded = string.decode('u8')
+        string = string.decode('u8')
     except (AttributeError, UnicodeEncodeError):
-        decoded = string
+        pass
 
     width = 0
-    for char in decoded:
+    for char in string:
         if unicodedata.east_asian_width(char) in ('F', 'W'):
             width += 2
         else:
