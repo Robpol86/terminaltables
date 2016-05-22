@@ -36,17 +36,17 @@ def join_row(row, left, middle, right):
 class BaseTable(object):
     """Base table class."""
 
-    CHAR_CORNER_LOWER_LEFT = ''
-    CHAR_CORNER_LOWER_RIGHT = ''
-    CHAR_CORNER_UPPER_LEFT = ''
-    CHAR_CORNER_UPPER_RIGHT = ''
-    CHAR_HORIZONTAL = ''
-    CHAR_INTERSECT_BOTTOM = ''
-    CHAR_INTERSECT_CENTER = ''
-    CHAR_INTERSECT_LEFT = ''
-    CHAR_INTERSECT_RIGHT = ''
-    CHAR_INTERSECT_TOP = ''
-    CHAR_VERTICAL = ''
+    CHAR_CORNER_LOWER_LEFT = '+'
+    CHAR_CORNER_LOWER_RIGHT = '+'
+    CHAR_CORNER_UPPER_LEFT = '+'
+    CHAR_CORNER_UPPER_RIGHT = '+'
+    CHAR_HORIZONTAL = '-'
+    CHAR_INTERSECT_BOTTOM = '+'
+    CHAR_INTERSECT_CENTER = '+'
+    CHAR_INTERSECT_LEFT = '+'
+    CHAR_INTERSECT_RIGHT = '+'
+    CHAR_INTERSECT_TOP = '+'
+    CHAR_VERTICAL = '|'
 
     def __init__(self, table_data, title=None):
         """Constructor.

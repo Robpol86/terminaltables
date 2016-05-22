@@ -8,17 +8,7 @@ from terminaltables.base_table import BaseTable, join_row
 class AsciiTable(BaseTable):
     """Draw a table using regular ASCII characters, such as `+`, `|`, and `-`."""
 
-    CHAR_CORNER_LOWER_LEFT = '+'
-    CHAR_CORNER_LOWER_RIGHT = '+'
-    CHAR_CORNER_UPPER_LEFT = '+'
-    CHAR_CORNER_UPPER_RIGHT = '+'
-    CHAR_HORIZONTAL = '-'
-    CHAR_INTERSECT_BOTTOM = '+'
-    CHAR_INTERSECT_CENTER = '+'
-    CHAR_INTERSECT_LEFT = '+'
-    CHAR_INTERSECT_RIGHT = '+'
-    CHAR_INTERSECT_TOP = '+'
-    CHAR_VERTICAL = '|'
+    pass
 
 
 class UnixTable(BaseTable):
