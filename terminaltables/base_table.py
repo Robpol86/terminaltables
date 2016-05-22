@@ -143,13 +143,13 @@ class BaseTable(object):
             )
             final_table_data.append(row)
         elif self.outer_border:
-            row = join_row(
-                [self.CHAR_HORIZONTAL * w for w in widths],
+            final_table_data.append(''.join(build_border(
+                widths,
+                self.CHAR_HORIZONTAL,
                 self.CHAR_CORNER_UPPER_LEFT,
                 self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
                 self.CHAR_CORNER_UPPER_RIGHT
-            )
-            final_table_data.append(row)
+            )))
 
         # Build table body.
         indexes = range(len(padded_table_data))
@@ -164,24 +164,24 @@ class BaseTable(object):
 
             # Insert row separator.
             if i == indexes[-1]:
-                continue
+                continue  # Last row.
             if self.inner_row_border or (self.inner_heading_row_border and i == 0):
-                row = join_row(
-                    [self.CHAR_HORIZONTAL * w for w in widths],
+                final_table_data.append(''.join(build_border(
+                    widths,
+                    self.CHAR_HORIZONTAL,
                     self.CHAR_INTERSECT_LEFT if self.outer_border else '',
                     self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
                     self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
-                )
-                final_table_data.append(row)
+                )))
 
             if i == indexes[-2] and self.inner_footing_row_border:
-                row = join_row(
-                    [self.CHAR_HORIZONTAL * w for w in widths],
+                final_table_data.append(''.join(build_border(
+                    widths,
+                    self.CHAR_HORIZONTAL,
                     self.CHAR_INTERSECT_LEFT if self.outer_border else '',
                     self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
                     self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
-                )
-                final_table_data.append(row)
+                )))
 
         # Append bottom border.
         if self.outer_border:

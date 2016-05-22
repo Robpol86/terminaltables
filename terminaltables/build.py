@@ -50,8 +50,6 @@ def combine(line, left, intersect, right):
 def build_border(column_widths, horizontal, left, intersect, right):
     """Build the top/bottom/middle row. Optionally embed the table title within the border.
 
-    Title is truncated to fit in between left/right characters.
-
     Example return value:
     ('<', '-----', '+', '------', '+', '-------', '>')
 
