@@ -3,6 +3,7 @@
 import os
 
 from terminaltables.base_table import BaseTable, join_row
+from terminaltables.width_and_alignment import max_dimensions
 
 
 class AsciiTable(BaseTable):
@@ -104,18 +105,13 @@ class GithubFlavoredMarkdownTable(BaseTable):
     @property
     def table(self):
         """Return a large string of the entire table ready to be printed to the terminal."""
-        padded_table_data = self.padded_table_data
         column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
+        widths, heights = max_dimensions(self.table_data)
         final_table_data = list()
 
-        for row_index, row_data in enumerate(padded_table_data):
-            row = join_row(
-                row_data,
-                self.CHAR_VERTICAL,
-                self.CHAR_VERTICAL,
-                self.CHAR_VERTICAL
-            )
-            final_table_data.append(row)
+        for row_index, row_data in enumerate(self.table_data):
+            for line in self.gen_cell_lines(row_data, widths, heights[row_index]):
+                final_table_data.append(''.join(line))
 
             if row_index != 0:
                 continue
