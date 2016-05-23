@@ -5,34 +5,6 @@ from terminaltables.build import build_border, build_row
 from terminaltables.terminal_io import terminal_size
 
 
-def join_row(row, left, middle, right):
-    """Convert a row (list of strings) into a joined string with left and right borders. Supports multi-lines.
-
-    :param iter row: List of strings representing one row.
-    :param str left: Left border.
-    :param str middle: Column separator.
-    :param str right: Right border.
-
-    :return: String representation of a row.
-    :rtype: str
-    """
-    if not row:
-        return left + right
-
-    if not any('\n' in c for c in row):
-        return left + middle.join(row) + right
-
-    # Split cells in the row by newlines. This creates new rows.
-    split_cells = [(c.splitlines() or ['']) + ([''] if c.endswith('\n') else []) for c in row]
-    height = len(split_cells[0])
-
-    # Merge rows into strings.
-    converted_rows = list()
-    for row_number in range(height):
-        converted_rows.append(left + middle.join([c[row_number] for c in split_cells]) + right)
-    return '\n'.join(converted_rows)
-
-
 class BaseTable(object):
     """Base table class."""
 
@@ -142,32 +114,6 @@ class BaseTable(object):
     def ok(self):  # Too late to change API. # pylint: disable=invalid-name
         """Return True if the table fits within the terminal width, False if the table breaks."""
         return self.table_width <= terminal_size()[0]
-
-    @property
-    def padded_table_data(self):
-        """Return a list of lists of strings. It's self.table_data but with the cells padded with spaces and newlines.
-
-        Most of the work in this class is done here.
-        """
-        if not self.table_data:
-            return list()
-
-        # Set all rows to the same number of columns.
-        max_columns = max(len(r) for r in self.table_data)
-        new_table_data = [r + [''] * (max_columns - len(r)) for r in self.table_data]
-
-        # Pad strings in each cell, and apply text-align/justification.
-        widths = self.column_widths
-        for row in new_table_data:
-            height = max([c.count('\n') for c in row] or [0]) + 1
-            for i in range(len(row)):
-                align = (self.justify_columns.get(i, 'left'),)
-                dimensions = (widths[i], height)
-                padding = (self.padding_left, self.padding_right, 0, 0)
-                cell = '\n'.join(width_and_alignment.align_and_pad_cell(row[i], align, dimensions, padding))
-                row[i] = cell
-
-        return new_table_data
 
     @property
     def table(self):

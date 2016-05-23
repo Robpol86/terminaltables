@@ -2,7 +2,7 @@
 
 import os
 
-from terminaltables.base_table import BaseTable, join_row
+from terminaltables.base_table import BaseTable
 from terminaltables.width_and_alignment import max_dimensions
 
 
@@ -130,12 +130,8 @@ class GithubFlavoredMarkdownTable(BaseTable):
                 else:
                     separator = self.CHAR_HORIZONTAL * column_width
                 column_separators.append(separator)
-            row = join_row(
-                column_separators,
-                self.CHAR_VERTICAL,
-                self.CHAR_VERTICAL,
-                self.CHAR_VERTICAL
+            final_table_data.append(
+                self.CHAR_VERTICAL + self.CHAR_VERTICAL.join(column_separators) + self.CHAR_VERTICAL
             )
-            final_table_data.append(row)
 
         return '\n'.join(final_table_data)

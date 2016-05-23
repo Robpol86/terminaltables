@@ -159,7 +159,6 @@ Name                  Description/Notes
 ===================== ====================================================================================
 ``column_widths``     Returns a list with the current column widths (one int per column) without padding.
 ``ok``                Returns True if the table fits within the terminal width, False if the table breaks.
-``padded_table_data`` Returns the padding table data. With spaces and newlines. Does not include borders.
 ``table``             Returns a large string, the whole table. This may be printed to the terminal.
 ``table_width``       Returns the width of the table including padding and borders.
 ===================== ====================================================================================
@@ -176,6 +175,9 @@ Added
     * Support for https://pypi.python.org/pypi/colorama
     * Support for https://pypi.python.org/pypi/termcolor
     * Support for RTL characters (Arabic and Hebrew).
+
+Removed
+    * ``padded_table_data`` property and ``join_row()``. Moving away from repeated string joining/splitting.
 
 Fixed
     * ``set_terminal_title()`` Unicode handling on Windows.
