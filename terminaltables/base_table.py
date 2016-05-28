@@ -38,8 +38,34 @@ class BaseTable(object):
         self.padding_left = 1
         self.padding_right = 1
 
-    def gen_cell_lines(self, row, widths, height):
-        r"""Combine cells in row and group them into lines with borders.
+    def horizontal_border(self, style, outer_widths):
+        """Build any kind of horizontal border for the table.
+
+        :param str style: Type of border to return (top, bottom, row).
+        :param iter outer_widths: List of widths (with padding) for each column.
+
+        :return: Prepared border as a tuple of strings.
+        :rtype: tuple
+        """
+        if style == 'top':
+            left = self.CHAR_CORNER_UPPER_LEFT if self.outer_border else ''
+            center = self.CHAR_INTERSECT_TOP if self.inner_column_border else ''
+            right = self.CHAR_CORNER_UPPER_RIGHT if self.outer_border else ''
+            title = self.title
+        elif style == 'bottom':
+            left = self.CHAR_CORNER_LOWER_LEFT if self.outer_border else ''
+            center = self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else ''
+            right = self.CHAR_CORNER_LOWER_RIGHT if self.outer_border else ''
+            title = None
+        else:
+            left = self.CHAR_INTERSECT_LEFT if self.outer_border else ''
+            center = self.CHAR_INTERSECT_CENTER if self.inner_column_border else ''
+            right = self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
+            title = None
+        return build_border(outer_widths, self.CHAR_HORIZONTAL, left, center, right, title)
+
+    def gen_row_lines(self, row, inner_widths, height):
+        r"""Combine cells in row and group them into lines with vertical borders.
 
         Caller is expected to pass yielded lines to ''.join() to combine them into a printable line. Caller must append
         newline character to the end of joined line.
@@ -60,7 +86,7 @@ class BaseTable(object):
         ]
 
         :param iter row: One row in the table. List of cells.
-        :param iter widths: List of inner widths (no padding) for each column.
+        :param iter inner_widths: List of widths (no padding) for each column.
         :param int height: Inner height (no padding) (number of lines) to expand row to.
 
         :return: Yields lines split into components in a list. Caller must ''.join() line.
@@ -68,13 +94,13 @@ class BaseTable(object):
         cells_in_row = list()
 
         # Resize row if it doesn't have enough cells.
-        if len(row) != len(widths):
-            row = row + [''] * (len(widths) - len(row))
+        if len(row) != len(inner_widths):
+            row = row + [''] * (len(inner_widths) - len(row))
 
         # Pad and align each cell. Split each cell into lines to support multi-line cells.
         for i, cell in enumerate(row):
             align = (self.justify_columns.get(i),)
-            inner_dimensions = (widths[i], height)
+            inner_dimensions = (inner_widths[i], height)
             padding = (self.padding_left, self.padding_right, 0, 0)
             cells_in_row.append(width_and_alignment.align_and_pad_cell(cell, align, inner_dimensions, padding))
 
@@ -124,51 +150,26 @@ class BaseTable(object):
 
         # Append top border.
         if self.outer_border:
-            final_table_data.append(''.join(build_border(
-                widths,
-                self.CHAR_HORIZONTAL,
-                self.CHAR_CORNER_UPPER_LEFT,
-                self.CHAR_INTERSECT_TOP if self.inner_column_border else '',
-                self.CHAR_CORNER_UPPER_RIGHT,
-                self.title
-            )))
+            final_table_data.append(''.join(self.horizontal_border('top', widths)))
 
         # Build table body.
         indexes = range(len(self.table_data))
         for i in indexes:
-            for line in self.gen_cell_lines(self.table_data[i], inner_widths, inner_heights[i]):
+            for line in self.gen_row_lines(self.table_data[i], inner_widths, inner_heights[i]):
                 final_table_data.append(''.join(line))
 
             # Insert row separator.
             if i == indexes[-1]:
                 continue  # Last row.
             if self.inner_row_border or (self.inner_heading_row_border and i == 0):
-                final_table_data.append(''.join(build_border(
-                    widths,
-                    self.CHAR_HORIZONTAL,
-                    self.CHAR_INTERSECT_LEFT if self.outer_border else '',
-                    self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
-                    self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
-                )))
+                final_table_data.append(''.join(self.horizontal_border('row', widths)))
 
             if i == indexes[-2] and self.inner_footing_row_border:
-                final_table_data.append(''.join(build_border(
-                    widths,
-                    self.CHAR_HORIZONTAL,
-                    self.CHAR_INTERSECT_LEFT if self.outer_border else '',
-                    self.CHAR_INTERSECT_CENTER if self.inner_column_border else '',
-                    self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
-                )))
+                final_table_data.append(''.join(self.horizontal_border('row', widths)))
 
         # Append bottom border.
         if self.outer_border:
-            final_table_data.append(''.join(build_border(
-                widths,
-                self.CHAR_HORIZONTAL,
-                self.CHAR_CORNER_LOWER_LEFT,
-                self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else '',
-                self.CHAR_CORNER_LOWER_RIGHT
-            )))
+            final_table_data.append(''.join(self.horizontal_border('bottom', widths)))
 
         return '\n'.join(final_table_data)
 

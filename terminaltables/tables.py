@@ -110,7 +110,7 @@ class GithubFlavoredMarkdownTable(BaseTable):
         final_table_data = list()
 
         for row_index, row_data in enumerate(self.table_data):
-            for line in self.gen_cell_lines(row_data, widths, heights[row_index]):
+            for line in self.gen_row_lines(row_data, widths, heights[row_index]):
                 final_table_data.append(''.join(line))
 
             if row_index != 0:
