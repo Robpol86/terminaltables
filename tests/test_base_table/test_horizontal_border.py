@@ -21,7 +21,7 @@ def test(vertical_borders):
     table = BaseTable(table_data, 'Example')
     table.inner_column_border = vertical_borders
     table.outer_border = vertical_borders
-    outer_widths = max_dimensions(table.table_data, (table.padding_left, table.padding_right, 0, 0))[0]
+    outer_widths = max_dimensions(table.table_data, table.padding_left, table.padding_right)[2]
 
     expected = '+Example--+-------+-----------+' if vertical_borders else 'Example--------------------'
     actual = ''.join(table.horizontal_border('top', outer_widths))

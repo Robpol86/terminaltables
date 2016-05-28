@@ -49,7 +49,7 @@ def combine(line, left, intersect, right):
         yield right
 
 
-def build_border(column_widths, horizontal, left, intersect, right, title=None):
+def build_border(outer_widths, horizontal, left, intersect, right, title=None):
     """Build the top/bottom/middle row. Optionally embed the table title within the border.
 
     Title is hidden if it doesn't fit between the left/right characters/edges.
@@ -58,7 +58,7 @@ def build_border(column_widths, horizontal, left, intersect, right, title=None):
     ('<', '-----', '+', '------', '+', '-------', '>')
     ('<', 'My Table', '----', '+', '------->')
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of widths (with padding) for each column.
     :param str horizontal: Character to stretch across each column.
     :param str left: Left border.
     :param str intersect: Column separator.
@@ -71,25 +71,25 @@ def build_border(column_widths, horizontal, left, intersect, right, title=None):
     length = 0
 
     # Hide title if it doesn't fit.
-    if title and column_widths:
+    if title and outer_widths:
         length = visible_width(title)
-        if length > sum(column_widths) + len(intersect) * (len(column_widths) - 1):
+        if length > sum(outer_widths) + len(intersect) * (len(outer_widths) - 1):
             title = None
 
     # Handle no title.
-    if not title or not column_widths or not horizontal:
-        return tuple(combine((horizontal * c for c in column_widths), left, intersect, right))
+    if not title or not outer_widths or not horizontal:
+        return tuple(combine((horizontal * c for c in outer_widths), left, intersect, right))
 
     # Handle title fitting in the first column.
-    if length == column_widths[0]:
-        return tuple(combine([title] + [horizontal * c for c in column_widths[1:]], left, intersect, right))
-    if length < column_widths[0]:
-        columns = [title + horizontal * (column_widths[0] - length)] + [horizontal * c for c in column_widths[1:]]
+    if length == outer_widths[0]:
+        return tuple(combine([title] + [horizontal * c for c in outer_widths[1:]], left, intersect, right))
+    if length < outer_widths[0]:
+        columns = [title + horizontal * (outer_widths[0] - length)] + [horizontal * c for c in outer_widths[1:]]
         return tuple(combine(columns, left, intersect, right))
 
     # Handle wide titles/narrow columns.
     columns_and_intersects = [title]
-    for width in combine(column_widths, None, bool(intersect), None):
+    for width in combine(outer_widths, None, bool(intersect), None):
         # If title is taken care of.
         if length < 1:
             columns_and_intersects.append(intersect if width is True else horizontal * width)

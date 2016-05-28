@@ -78,41 +78,40 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
     return lines
 
 
-def max_dimensions(table_data, padding=None):
+def max_dimensions(table_data, padding_left=0, padding_right=0, padding_top=0, padding_bottom=0):
     """Get maximum widths of each column and maximum height of each row.
 
-    If padding is not specified, inner dimensions are returned. If specified, outer dimensions are returned.
-
     :param iter table_data: List of list of strings (unmodified table data).
-    :param iter padding: Number of space chars for left, right, top, and bottom (4 ints).
+    :param int padding_left: Number of space chars on left side of cell.
+    :param int padding_right: Number of space chars on right side of cell.
+    :param int padding_top: Number of empty lines on top side of cell.
+    :param int padding_bottom: Number of empty lines on bottom side of cell.
 
-    :return: 2-item tuple of n-item lists. Column widths and row heights.
+    :return: 4-item tuple of n-item lists. Inner column widths and row heights, outer column widths and row heights.
     :rtype: tuple
     """
-    widths = [0] * (max(len(r) for r in table_data) if table_data else 0)
-    heights = [0] * len(table_data)
+    inner_widths = [0] * (max(len(r) for r in table_data) if table_data else 0)
+    inner_heights = [0] * len(table_data)
 
     # Find max width and heights.
     for j, row in enumerate(table_data):
         for i, cell in enumerate(row):
             if not cell:
                 continue
-            heights[j] = max(heights[j], cell.count('\n') + 1)
-            widths[i] = max(widths[i], *[visible_width(l) for l in cell.splitlines()])
+            inner_heights[j] = max(inner_heights[j], cell.count('\n') + 1)
+            inner_widths[i] = max(inner_widths[i], *[visible_width(l) for l in cell.splitlines()])
 
-    # Include padding in calculation.
-    if padding and (padding[0] or padding[1]):
-        widths = [padding[0] + i + padding[1] for i in widths]
-    if padding and (padding[2] or padding[3]):
-        heights = [padding[2] + i + padding[3] for i in heights]
+    # Calculate with padding.
+    outer_widths = [padding_left + i + padding_right for i in inner_widths]
+    outer_heights = [padding_top + i + padding_bottom for i in inner_heights]
 
-    return widths, heights
+    return inner_widths, inner_heights, outer_widths, outer_heights
 
 
-def column_max_width(table_data, column_number, outer_border, inner_border, padding):
+def column_max_width(inner_widths, column_number, outer_border, inner_border, padding):
     """Determine the maximum width of a column based on the current terminal width.
 
-    :param iter table_data: List of list of strings (unmodified table data).
+    :param iter inner_widths: List of widths (no padding) for each column.
     :param int column_number: The column number to query.
     :param int outer_border: Sum of left and right outer border visible widths.
     :param int inner_border: Visible width of the inner border character.
@@ -120,35 +119,31 @@ def column_max_width(table_data, column_number, outer_border, inner_border, padd
 
     :return: The maximum width the column can be without causing line wrapping.
     """
-    column_widths = max_dimensions(table_data)[0]
-    column_count = len(column_widths)
+    column_count = len(inner_widths)
     terminal_width = terminal_size()[0]
 
     # Count how much space padding, outer, and inner borders take up.
     non_data_space = outer_border
-    if column_count:
-        non_data_space += inner_border * (column_count - 1)
-        non_data_space += column_count * padding
+    non_data_space += inner_border * (column_count - 1)
+    non_data_space += column_count * padding
 
     # Exclude selected column's width.
-    data_space = sum(column_widths) - column_widths[column_number]
+    data_space = sum(inner_widths) - inner_widths[column_number]
 
     return terminal_width - data_space - non_data_space
 
 
-def table_width(table_data, outer_border, inner_border, padding):
+def table_width(outer_widths, outer_border, inner_border):
     """Determine the width of the entire table including borders and padding.
 
-    :param iter table_data: List of list of strings (unmodified table data).
+    :param iter outer_widths: List of widths (with padding) for each column.
     :param int outer_border: Sum of left and right outer border visible widths.
     :param int inner_border: Visible width of the inner border character.
-    :param int padding: Total padding per cell (left + right padding).
 
     :return: The width of the table.
     :rtype: int
     """
-    column_widths = max_dimensions(table_data, (padding, 0, 0, 0))[0]
-    column_count = len(column_widths)
+    column_count = len(outer_widths)
 
     # Count how much space outer and inner borders take up.
     non_data_space = outer_border
@@ -156,5 +151,5 @@ def table_width(table_data, outer_border, inner_border, padding):
         non_data_space += inner_border * (column_count - 1)
 
     # Space of all columns and their padding.
-    data_space = sum(column_widths)
+    data_space = sum(outer_widths)
     return data_space + non_data_space

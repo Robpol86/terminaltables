@@ -124,10 +124,11 @@ class BaseTable(object):
         :return: The max width of the column.
         :rtype: int
         """
+        inner_widths = width_and_alignment.max_dimensions(self.table_data)[0]
         outer_border = 2 if self.outer_border else 0
         inner_border = 1 if self.inner_column_border else 0
         padding = self.padding_left + self.padding_right
-        return width_and_alignment.column_max_width(self.table_data, column_number, outer_border, inner_border, padding)
+        return width_and_alignment.column_max_width(inner_widths, column_number, outer_border, inner_border, padding)
 
     @property
     def column_widths(self):
@@ -144,13 +145,14 @@ class BaseTable(object):
     @property
     def table(self):
         """Return a large string of the entire table ready to be printed to the terminal."""
-        widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
-        inner_widths, inner_heights = width_and_alignment.max_dimensions(self.table_data)
+        inner_widths, inner_heights, outer_widths = width_and_alignment.max_dimensions(
+            self.table_data, self.padding_left, self.padding_right
+        )[:3]
         final_table_data = list()
 
         # Append top border.
         if self.outer_border:
-            final_table_data.append(''.join(self.horizontal_border('top', widths)))
+            final_table_data.append(''.join(self.horizontal_border('top', outer_widths)))
 
         # Build table body.
         indexes = range(len(self.table_data))
@@ -162,21 +164,21 @@ class BaseTable(object):
             if i == indexes[-1]:
                 continue  # Last row.
             if self.inner_row_border or (self.inner_heading_row_border and i == 0):
-                final_table_data.append(''.join(self.horizontal_border('row', widths)))
+                final_table_data.append(''.join(self.horizontal_border('row', outer_widths)))
 
             if i == indexes[-2] and self.inner_footing_row_border:
-                final_table_data.append(''.join(self.horizontal_border('row', widths)))
+                final_table_data.append(''.join(self.horizontal_border('row', outer_widths)))
 
         # Append bottom border.
         if self.outer_border:
-            final_table_data.append(''.join(self.horizontal_border('bottom', widths)))
+            final_table_data.append(''.join(self.horizontal_border('bottom', outer_widths)))
 
         return '\n'.join(final_table_data)
 
     @property
     def table_width(self):
         """Return the width of the table including padding and borders."""
+        outer_widths = width_and_alignment.max_dimensions(self.table_data, self.padding_left, self.padding_right)[2]
         outer_border = 2 if self.outer_border else 0
         inner_border = 1 if self.inner_column_border else 0
-        padding = self.padding_left + self.padding_right
-        return width_and_alignment.table_width(self.table_data, outer_border, inner_border, padding)
+        return width_and_alignment.table_width(outer_widths, outer_border, inner_border)

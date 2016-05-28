@@ -9,28 +9,28 @@ from termcolor import colored
 from terminaltables.build import build_border
 
 
-@pytest.mark.parametrize('column_widths,horizontal,left,intersect,right,expected', [
+@pytest.mark.parametrize('outer_widths,horizontal,left,intersect,right,expected', [
     ([5, 6, 7], '-', '<', '+', '>', '<-----+------+------->'),
     ([1, 1, 1], '-', '', '', '', '---'),
     ([1, 1, 1], '', '', '', '', ''),
     ([1], '-', '<', '+', '>', '<->'),
     ([], '-', '<', '+', '>', '<>'),
 ])
-def test_no_title(column_widths, horizontal, left, intersect, right, expected):
+def test_no_title(outer_widths, horizontal, left, intersect, right, expected):
     """Test without title.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths with padding.
     :param str horizontal: Character to stretch across each column.
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
     :param str expected: Expected output.
     """
-    actual = build_border(column_widths, horizontal, left, intersect, right)
+    actual = build_border(outer_widths, horizontal, left, intersect, right)
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,intersect,expected', [
+@pytest.mark.parametrize('outer_widths,intersect,expected', [
     ([20], '+', 'Applications--------'),
     ([20], '', 'Applications--------'),
 
@@ -47,10 +47,10 @@ def test_no_title(column_widths, horizontal, left, intersect, right, expected):
     ([12, 0], '', 'Applications'),
 ])
 @pytest.mark.parametrize('left,right', [('', ''), ('<', '>')])
-def test_first_column_fit(column_widths, left, intersect, right, expected):
+def test_first_column_fit(outer_widths, left, intersect, right, expected):
     """Test with title that fits in the first column.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths with padding.
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
@@ -58,11 +58,11 @@ def test_first_column_fit(column_widths, left, intersect, right, expected):
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, intersect, right, title='Applications')
+    actual = build_border(outer_widths, '-', left, intersect, right, title='Applications')
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,expected', [
+@pytest.mark.parametrize('outer_widths,expected', [
     ([20], 'Applications--------'),
     ([10, 10], 'Applications--------'),
     ([5, 5, 5, 5], 'Applications--------'),
@@ -75,21 +75,21 @@ def test_first_column_fit(column_widths, left, intersect, right, expected):
     ([6, 5], '-----------'),
 ])
 @pytest.mark.parametrize('left,right', [('', ''), ('<', '>')])
-def test_no_intersect(column_widths, left, right, expected):
+def test_no_intersect(outer_widths, left, right, expected):
     """Test with no column dividers.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths.
     :param str left: Left border.
     :param str right: Right border.
     :param str expected: Expected output.
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, '', right, title='Applications')
+    actual = build_border(outer_widths, '-', left, '', right, title='Applications')
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,expected', [
+@pytest.mark.parametrize('outer_widths,expected', [
     ([20], 'Applications--------'),
     ([0, 20], 'Applications---------'),
     ([20, 0], 'Applications--------+'),
@@ -116,21 +116,21 @@ def test_no_intersect(column_widths, left, right, expected):
     ([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], '+++++++++'),
 ])
 @pytest.mark.parametrize('left,right', [('', ''), ('<', '>')])
-def test_intersect(column_widths, left, right, expected):
+def test_intersect(outer_widths, left, right, expected):
     """Test with column dividers.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths.
     :param str left: Left border.
     :param str right: Right border.
     :param str expected: Expected output.
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, '+', right, title='Applications')
+    actual = build_border(outer_widths, '-', left, '+', right, title='Applications')
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,intersect,expected', [
+@pytest.mark.parametrize('outer_widths,intersect,expected', [
     ([12], '+', u'蓝色--------'),
     ([12], '', u'蓝色--------'),
     ([7, 5], '+', u'蓝色---+-----'),
@@ -168,10 +168,10 @@ def test_intersect(column_widths, left, right, expected):
     ([1, 1], '+', u'-+-'),
 ])
 @pytest.mark.parametrize('left,right', [('', ''), ('<', '>')])
-def test_cjk(column_widths, left, intersect, right, expected):
+def test_cjk(outer_widths, left, intersect, right, expected):
     """Test with CJK characters in title.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths.
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
@@ -179,11 +179,11 @@ def test_cjk(column_widths, left, intersect, right, expected):
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, intersect, right, title=u'蓝色')
+    actual = build_border(outer_widths, '-', left, intersect, right, title=u'蓝色')
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,intersect,expected', [
+@pytest.mark.parametrize('outer_widths,intersect,expected', [
     ([12], '+', u'معرب--------'),
     ([12], '', u'معرب--------'),
     ([7, 5], '+', u'معرب---+-----'),
@@ -221,10 +221,10 @@ def test_cjk(column_widths, left, intersect, right, expected):
     ([1, 1], '+', u'-+-'),
 ])
 @pytest.mark.parametrize('left,right', [('', ''), ('<', '>')])
-def test_rtl(column_widths, left, intersect, right, expected):
+def test_rtl(outer_widths, left, intersect, right, expected):
     """Test with RTL characters in title.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths.
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
@@ -232,11 +232,11 @@ def test_rtl(column_widths, left, intersect, right, expected):
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, intersect, right, title=u'معرب')
+    actual = build_border(outer_widths, '-', left, intersect, right, title=u'معرب')
     assert ''.join(actual) == expected
 
 
-@pytest.mark.parametrize('column_widths,intersect,expected', [
+@pytest.mark.parametrize('outer_widths,intersect,expected', [
     ([12], '+', '\x1b[34mTEST\x1b[0m--------'),
     ([12], '', '\x1b[34mTEST\x1b[0m--------'),
     ([7, 5], '+', '\x1b[34mTEST\x1b[0m---+-----'),
@@ -279,10 +279,10 @@ def test_rtl(column_widths, left, intersect, right, expected):
     Fore.BLUE + 'TEST' + Style.RESET_ALL,
     colored('TEST', 'blue'),
 ])
-def test_colors(column_widths, left, intersect, right, title, expected):
+def test_colors(outer_widths, left, intersect, right, title, expected):
     """Test with color title characters.
 
-    :param iter column_widths: List of integers representing column widths.
+    :param iter outer_widths: List of integers representing column widths with padding.
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
@@ -291,5 +291,5 @@ def test_colors(column_widths, left, intersect, right, title, expected):
     """
     if left and right:
         expected = left + expected + right
-    actual = build_border(column_widths, '-', left, intersect, right, title=title)
+    actual = build_border(outer_widths, '-', left, intersect, right, title=title)
     assert ''.join(actual) == expected
