@@ -1,6 +1,6 @@
 """Test end to end showing Unix-characters table."""
 
-from terminaltables.tables import UnixTable
+from terminaltables.other_tables import UnixTable
 
 
 def test_simple():

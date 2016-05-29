@@ -3,7 +3,7 @@
 
 from textwrap import dedent
 
-from terminaltables.tables import AsciiTable
+from terminaltables.other_tables import AsciiTable
 
 
 def test_empty():

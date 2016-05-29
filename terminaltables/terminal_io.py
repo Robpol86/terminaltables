@@ -5,7 +5,7 @@ import struct
 import sys
 
 DEFAULT_HEIGHT = 24
-DEFAULT_WIDTH = 80
+DEFAULT_WIDTH = 79
 INVALID_HANDLE_VALUE = -1
 IS_WINDOWS = sys.platform == 'win32'
 STD_ERROR_HANDLE = -12

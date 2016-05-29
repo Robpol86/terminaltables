@@ -2,7 +2,7 @@
 
 import pytest
 
-from terminaltables.tables import AsciiTable
+from terminaltables.other_tables import AsciiTable
 
 SINGLE_LINE = (
     ('Name', 'Color', 'Type'),
