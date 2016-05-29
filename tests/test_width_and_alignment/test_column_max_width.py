@@ -1,15 +1,21 @@
 """Test function in module."""
 
+import pytest
+
 from terminaltables.width_and_alignment import column_max_width, max_dimensions
 
 
-def test_empty(monkeypatch):
-    """Test with zero-length cells.
+@pytest.fixture(autouse=True)
+def patch(monkeypatch):
+    """Monkeypatch before every test function in this module.
 
     :param monkeypatch: pytest fixture.
     """
     monkeypatch.setattr('terminaltables.width_and_alignment.terminal_size', lambda: (79, 24))
 
+
+def test_empty():
+    """Test with zero-length cells."""
     assert column_max_width(max_dimensions([['']])[0], 0, 0, 0, 0) == 79
     assert column_max_width(max_dimensions([['', '', '']])[0], 0, 0, 0, 0) == 79
     assert column_max_width(max_dimensions([['', '', ''], ['', '', '']])[0], 0, 0, 0, 0) == 79
@@ -19,13 +25,8 @@ def test_empty(monkeypatch):
     assert column_max_width(max_dimensions([['', '', ''], ['', '', '']])[0], 0, 2, 1, 2) == 69
 
 
-def test_single_line(monkeypatch):
-    """Test with single-line cells.
-
-    :param monkeypatch: pytest fixture.
-    """
-    monkeypatch.setattr('terminaltables.width_and_alignment.terminal_size', lambda: (79, 24))
-
+def test_single_line():
+    """Test with single-line cells."""
     table_data = [
         ['Name', 'Color', 'Type'],
         ['Avocado', 'green', 'nut'],
@@ -89,8 +90,6 @@ def test_multi_line(monkeypatch):
 
     :param monkeypatch: pytest fixture.
     """
-    monkeypatch.setattr('terminaltables.width_and_alignment.terminal_size', lambda: (79, 24))
-
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', ('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'

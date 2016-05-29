@@ -20,13 +20,6 @@ class AsciiTable(BaseTable):
     :ivar int padding_right: Number of spaces to pad on the right side of every cell.
     """
 
-    @property
-    def column_widths(self):
-        """Return a list of integers representing the widths of each table column without padding."""
-        if not self.table_data:
-            return list()
-        return max_dimensions(self.table_data)[0]
-
     def column_max_width(self, column_number):
         """Return the maximum width of a column based on the current terminal width.
 
@@ -40,6 +33,13 @@ class AsciiTable(BaseTable):
         inner_border = 1 if self.inner_column_border else 0
         padding = self.padding_left + self.padding_right
         return column_max_width(inner_widths, column_number, outer_border, inner_border, padding)
+
+    @property
+    def column_widths(self):
+        """Return a list of integers representing the widths of each table column without padding."""
+        if not self.table_data:
+            return list()
+        return max_dimensions(self.table_data)[0]
 
     @property
     def ok(self):  # Too late to change API. # pylint: disable=invalid-name
