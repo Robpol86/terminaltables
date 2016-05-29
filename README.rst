@@ -181,6 +181,8 @@ Removed
 
 Fixed
     * ``set_terminal_title()`` Unicode handling on Windows.
+    * https://github.com/Robpol86/terminaltables/issues/20
+    * https://github.com/Robpol86/terminaltables/issues/23
 
 2.1.0 - 2015-11-02
 ------------------

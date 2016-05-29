@@ -2,17 +2,11 @@
 
 import os
 
-from terminaltables.base_table import BaseTable
+from terminaltables.ascii_table import AsciiTable
 from terminaltables.build import combine
 
 
-class AsciiTable(BaseTable):
-    """Draw a table using regular ASCII characters, such as `+`, `|`, and `-`."""
-
-    pass
-
-
-class UnixTable(BaseTable):
+class UnixTable(AsciiTable):
     """Draw a table using box-drawing characters on Unix platforms. Table borders won't have any gaps between lines.
 
     Similar to the tables shown on PC BIOS boot messages, but not double-lined.
@@ -38,7 +32,7 @@ class UnixTable(BaseTable):
         return optimized
 
 
-class WindowsTable(BaseTable):
+class WindowsTable(AsciiTable):
     """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Single-line borders.
 
     From: http://en.wikipedia.org/wiki/Code_page_437#Characters
@@ -57,7 +51,7 @@ class WindowsTable(BaseTable):
     CHAR_VERTICAL = b'\xb3'.decode('ibm437')
 
 
-class WindowsTableDouble(BaseTable):
+class WindowsTableDouble(AsciiTable):
     """Draw a table using box-drawing characters on Windows platforms. This uses Code Page 437. Double-line borders."""
 
     CHAR_CORNER_LOWER_LEFT = b'\xc8'.decode('ibm437')
@@ -85,7 +79,7 @@ class DoubleTable(WindowsTableDouble):
     pass
 
 
-class GithubFlavoredMarkdownTable(BaseTable):
+class GithubFlavoredMarkdownTable(AsciiTable):
     """Github flavored markdown table.
 
     https://help.github.com/articles/github-flavored-markdown/#tables

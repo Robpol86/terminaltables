@@ -45,17 +45,17 @@ def test_simple(monkeypatch, cls):
     assert 34 == table.table_width
     assert table.ok is True
 
-    monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (34, 24))
+    monkeypatch.setattr('terminaltables.ascii_table.terminal_size', lambda: (34, 24))
     assert table.ok is True
 
-    monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (33, 24))
+    monkeypatch.setattr('terminaltables.ascii_table.terminal_size', lambda: (33, 24))
     assert table.ok is False
 
 
 @pytest.mark.parametrize('cls', [AsciiTable, UnixTable])
 def test_multi_line(monkeypatch, cls):
     """Test on multi-line table."""
-    monkeypatch.setattr('terminaltables.base_table.terminal_size', lambda: (100, 24))
+    monkeypatch.setattr('terminaltables.ascii_table.terminal_size', lambda: (100, 24))
     table_data = [
         ['Show', 'Characters'],
         ['Rugrats', dedent('Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\n'
