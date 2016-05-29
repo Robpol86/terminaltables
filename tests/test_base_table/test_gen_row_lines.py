@@ -7,7 +7,7 @@ def test_single_line():
     """Test with single-line row."""
     row = ['Row One Column One', 'Two', 'Three']
     table = BaseTable([row])
-    actual = list(table.gen_row_lines(row, [18, 3, 5], 1))
+    actual = [tuple(i) for i in table.gen_row_lines(row, [18, 3, 5], 1)]
     expected = [
         ('|', ' Row One Column One ', '|', ' Two ', '|', ' Three ', '|'),
     ]
@@ -18,7 +18,7 @@ def test_multi_line():
     """Test with multi-line row."""
     row = ['Row One\nColumn One', 'Two', 'Three']
     table = BaseTable([row])
-    actual = list(table.gen_row_lines(row, [10, 3, 5], 2))
+    actual = [tuple(i) for i in table.gen_row_lines(row, [10, 3, 5], 2)]
     expected = [
         ('|', ' Row One    ', '|', ' Two ', '|', ' Three ', '|'),
         ('|', ' Column One ', '|', '     ', '|', '       ', '|'),
@@ -34,7 +34,7 @@ def test_no_padding_no_borders():
     table.outer_border = False
     table.padding_left = 0
     table.padding_right = 0
-    actual = list(table.gen_row_lines(row, [10, 3, 5], 2))
+    actual = [tuple(i) for i in table.gen_row_lines(row, [10, 3, 5], 2)]
     expected = [
         ('Row One   ', 'Two', 'Three'),
         ('Column One', '   ', '     '),
@@ -46,7 +46,7 @@ def test_uneven():
     """Test with row missing cells."""
     row = ['Row One Column One']
     table = BaseTable([row])
-    actual = list(table.gen_row_lines(row, [18, 3, 5], 1))
+    actual = [tuple(i) for i in table.gen_row_lines(row, [18, 3, 5], 1)]
     expected = [
         ('|', ' Row One Column One ', '|', '     ', '|', '       ', '|'),
     ]
@@ -57,7 +57,7 @@ def test_empty_table():
     """Test empty table."""
     row = []
     table = BaseTable([row])
-    actual = list(table.gen_row_lines(row, [], 0))
+    actual = [tuple(i) for i in table.gen_row_lines(row, [], 0)]
     expected = [
         ('|', '|'),
     ]

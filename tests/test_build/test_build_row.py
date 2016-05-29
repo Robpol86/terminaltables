@@ -8,7 +8,7 @@ def test_one_line():
     row = [
         ['Left Cell'], ['Center Cell'], ['Right Cell'],
     ]
-    actual = build_row(row, '>', '|', '<')
+    actual = [tuple(i) for i in build_row(row, '>', '|', '<')]
     expected = [
         ('>', 'Left Cell', '|', 'Center Cell', '|', 'Right Cell', '<'),
     ]
@@ -33,7 +33,7 @@ def test_two_line():
             'Cell3',
         ],
     ]
-    actual = build_row(row, '>', '|', '<')
+    actual = [tuple(i) for i in build_row(row, '>', '|', '<')]
     expected = [
         ('>', 'Left ', '|', 'Center', '|', 'Right', '<'),
         ('>', 'Cell1', '|', 'Cell2 ', '|', 'Cell3', '<'),
@@ -62,7 +62,7 @@ def test_three_line():
             '     ',
         ],
     ]
-    actual = build_row(row, '>', '|', '<')
+    actual = [tuple(i) for i in build_row(row, '>', '|', '<')]
     expected = [
         ('>', 'Left ', '|', 'Center', '|', 'Right', '<'),
         ('>', 'Cell1', '|', 'Cell2 ', '|', 'Cell3', '<'),
@@ -73,7 +73,7 @@ def test_three_line():
 
 def test_single():
     """Test with single cell."""
-    actual = build_row([['Cell']], '>', '|', '<')
+    actual = [tuple(i) for i in build_row([['Cell']], '>', '|', '<')]
     expected = [
         ('>', 'Cell', '<'),
     ]
@@ -82,7 +82,7 @@ def test_single():
 
 def test_empty():
     """Test with empty cell."""
-    actual = build_row([['']], '>', '|', '<')
+    actual = [tuple(i) for i in build_row([['']], '>', '|', '<')]
     expected = [
         ('>', '', '<'),
     ]
@@ -91,13 +91,13 @@ def test_empty():
 
 def test_no_cells():
     """Test with no cells."""
-    actual = build_row([[]], '>', '|', '<')
+    actual = [tuple(i) for i in build_row([[]], '>', '|', '<')]
     expected = [
         ('>', '<'),
     ]
     assert actual == expected
 
-    actual = build_row([], '>', '|', '<')
+    actual = [tuple(i) for i in build_row([], '>', '|', '<')]
     expected = [
         ('>', '<'),
     ]

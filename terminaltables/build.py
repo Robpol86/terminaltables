@@ -65,8 +65,8 @@ def build_border(outer_widths, horizontal, left, intersect, right, title=None):
     :param str right: Right border.
     :param str title: Overlay the title on the border between the left and right characters.
 
-    :return: Prepared border as a tuple of strings.
-    :rtype: tuple
+    :return: Returns a generator of strings representing a border.
+    :rtype: iter
     """
     length = 0
 
@@ -78,14 +78,14 @@ def build_border(outer_widths, horizontal, left, intersect, right, title=None):
 
     # Handle no title.
     if not title or not outer_widths or not horizontal:
-        return tuple(combine((horizontal * c for c in outer_widths), left, intersect, right))
+        return combine((horizontal * c for c in outer_widths), left, intersect, right)
 
     # Handle title fitting in the first column.
     if length == outer_widths[0]:
-        return tuple(combine([title] + [horizontal * c for c in outer_widths[1:]], left, intersect, right))
+        return combine([title] + [horizontal * c for c in outer_widths[1:]], left, intersect, right)
     if length < outer_widths[0]:
         columns = [title + horizontal * (outer_widths[0] - length)] + [horizontal * c for c in outer_widths[1:]]
-        return tuple(combine(columns, left, intersect, right))
+        return combine(columns, left, intersect, right)
 
     # Handle wide titles/narrow columns.
     columns_and_intersects = [title]
@@ -107,7 +107,7 @@ def build_border(outer_widths, horizontal, left, intersect, right, title=None):
         else:
             length -= width
 
-    return tuple(combine(columns_and_intersects, left, None, right))
+    return combine(columns_and_intersects, left, None, right)
 
 
 def build_row(row, left, center, right):
@@ -126,15 +126,14 @@ def build_row(row, left, center, right):
     :param str center: Column separator.
     :param str right: Right border.
 
-    :return: Prepared row as a list of tuple of strings.
-    :rtype: tuple
+    :return: Yields other generators that yield strings.
+    :rtype: iter
     """
     if not row or not row[0]:
-        return [tuple(combine((), left, center, right))]
-    combined = list()
+        yield combine((), left, center, right)
+        return
     for row_index in range(len(row[0])):
-        combined.append(tuple(combine((c[row_index] for c in row), left, center, right)))
-    return combined
+        yield combine((c[row_index] for c in row), left, center, right)
 
 
 def flatten(table):
