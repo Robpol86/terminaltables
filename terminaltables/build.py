@@ -135,3 +135,14 @@ def build_row(row, left, center, right):
     for row_index in range(len(row[0])):
         combined.append(tuple(combine((c[row_index] for c in row), left, center, right)))
     return combined
+
+
+def flatten(table):
+    """Flatten table data into a single string with newlines.
+
+    :param iter table: Padded and bordered table data.
+
+    :return: Joined rows/cells.
+    :rtype: str
+    """
+    return '\n'.join(''.join(r) for r in table)

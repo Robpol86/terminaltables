@@ -6,11 +6,15 @@ from terminaltables.base_table import BaseTable
 from terminaltables.width_and_alignment import max_dimensions
 
 
-@pytest.mark.parametrize('vertical_borders', [True, False])
-def test(vertical_borders):
-    """Test with and without inner_column_border.
+@pytest.mark.parametrize('inner_column_border', [True, False])
+@pytest.mark.parametrize('outer_border', [True, False])
+@pytest.mark.parametrize('style', ['top', 'bottom', 'row'])
+def test(inner_column_border, outer_border, style):
+    """Test method.
 
-    :param bool vertical_borders: Enable/disable vertical borders.
+    :param bool inner_column_border: Passed to table class.
+    :param bool outer_border: Passed to table class.
+    :param str style: Passed to method.
     """
     table_data = [
         ['Name', 'Color', 'Type'],
@@ -19,18 +23,28 @@ def test(vertical_borders):
         ['Lettuce', 'green', 'vegetable'],
     ]
     table = BaseTable(table_data, 'Example')
-    table.inner_column_border = vertical_borders
-    table.outer_border = vertical_borders
+    table.inner_column_border = inner_column_border
+    table.outer_border = outer_border
     outer_widths = max_dimensions(table.table_data, table.padding_left, table.padding_right)[2]
 
-    expected = '+Example--+-------+-----------+' if vertical_borders else 'Example--------------------'
-    actual = ''.join(table.horizontal_border('top', outer_widths))
-    assert actual == expected
+    # Skip illogical.
+    if outer_border and style in ('top', 'bottom'):
+        return pytest.skip('Not expected to be called with no outer border.')
 
-    expected = '+---------+-------+-----------+' if vertical_borders else '---------------------------'
-    actual = ''.join(table.horizontal_border('row', outer_widths))
-    assert actual == expected
+    # Determine expected.
+    if style == 'top':
+        expected = '+Example--+-------+-----------+' if inner_column_border else '+Example--------------------+'
+    elif style == 'bottom':
+        expected = '+---------+-------+-----------+' if inner_column_border else '+---------------------------+'
+    elif inner_column_border and outer_border:
+        expected = '+---------+-------+-----------+'
+    elif inner_column_border:
+        expected = '---------+-------+-----------'
+    elif outer_border:
+        expected = '+---------------------------+'
+    else:
+        expected = '---------------------------'
 
-    expected = '+---------+-------+-----------+' if vertical_borders else '---------------------------'
-    actual = ''.join(table.horizontal_border('bottom', outer_widths))
+    # Test.
+    actual = ''.join(table.horizontal_border(style, outer_widths))
     assert actual == expected

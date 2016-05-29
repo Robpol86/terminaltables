@@ -1,7 +1,7 @@
 """Main table class."""
 
 from terminaltables import width_and_alignment
-from terminaltables.build import build_border, build_row
+from terminaltables.build import build_border, build_row, flatten
 from terminaltables.terminal_io import terminal_size
 
 
@@ -41,21 +41,21 @@ class BaseTable(object):
     def horizontal_border(self, style, outer_widths):
         """Build any kind of horizontal border for the table.
 
-        :param str style: Type of border to return (top, bottom, row).
+        :param str style: Type of border to return.
         :param iter outer_widths: List of widths (with padding) for each column.
 
         :return: Prepared border as a tuple of strings.
         :rtype: tuple
         """
         if style == 'top':
-            left = self.CHAR_CORNER_UPPER_LEFT if self.outer_border else ''
+            left = self.CHAR_CORNER_UPPER_LEFT
             center = self.CHAR_INTERSECT_TOP if self.inner_column_border else ''
-            right = self.CHAR_CORNER_UPPER_RIGHT if self.outer_border else ''
+            right = self.CHAR_CORNER_UPPER_RIGHT
             title = self.title
         elif style == 'bottom':
-            left = self.CHAR_CORNER_LOWER_LEFT if self.outer_border else ''
+            left = self.CHAR_CORNER_LOWER_LEFT
             center = self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else ''
-            right = self.CHAR_CORNER_LOWER_RIGHT if self.outer_border else ''
+            right = self.CHAR_CORNER_LOWER_RIGHT
             title = None
         else:
             left = self.CHAR_INTERSECT_LEFT if self.outer_border else ''
@@ -116,6 +116,42 @@ class BaseTable(object):
         for line in lines:
             yield line
 
+    def gen_table(self, inner_widths, inner_heights, outer_widths):
+        """Combine everything and yield every line of the entire table with borders.
+
+        :param iter inner_widths: List of widths (no padding) for each column.
+        :param iter inner_heights: List of heights (no padding) for each row.
+        :param iter outer_widths: List of widths (with padding) for each column.
+        :return:
+        """
+        # Yield top border.
+        if self.outer_border:
+            yield self.horizontal_border('top', outer_widths)
+
+        # Yield table body.
+        row_count = len(self.table_data)
+        last_row_index, before_last_row_index = row_count - 1, row_count - 2
+        for i, row in enumerate(self.table_data):
+            # Yield the row line by line (e.g. multi-line rows).
+            for line in self.gen_row_lines(row, inner_widths, inner_heights[i]):
+                yield line
+            # If this is the last row then break. No separator needed.
+            if i == last_row_index:
+                break
+            # Yield header separator.
+            if self.inner_heading_row_border and i == 0:
+                yield self.horizontal_border('heading', outer_widths)
+            # Yield footer separator.
+            elif self.inner_footing_row_border and i == before_last_row_index:
+                yield self.horizontal_border('footing', outer_widths)
+            # Yield row separator.
+            elif self.inner_row_border:
+                yield self.horizontal_border('row', outer_widths)
+
+        # Yield bottom border.
+        if self.outer_border:
+            yield self.horizontal_border('bottom', outer_widths)
+
     def column_max_width(self, column_number):
         """Return the maximum width of a column based on the current terminal width.
 
@@ -148,32 +184,7 @@ class BaseTable(object):
         inner_widths, inner_heights, outer_widths = width_and_alignment.max_dimensions(
             self.table_data, self.padding_left, self.padding_right
         )[:3]
-        final_table_data = list()
-
-        # Append top border.
-        if self.outer_border:
-            final_table_data.append(''.join(self.horizontal_border('top', outer_widths)))
-
-        # Build table body.
-        indexes = range(len(self.table_data))
-        for i in indexes:
-            for line in self.gen_row_lines(self.table_data[i], inner_widths, inner_heights[i]):
-                final_table_data.append(''.join(line))
-
-            # Insert row separator.
-            if i == indexes[-1]:
-                continue  # Last row.
-            if self.inner_row_border or (self.inner_heading_row_border and i == 0):
-                final_table_data.append(''.join(self.horizontal_border('row', outer_widths)))
-
-            if i == indexes[-2] and self.inner_footing_row_border:
-                final_table_data.append(''.join(self.horizontal_border('row', outer_widths)))
-
-        # Append bottom border.
-        if self.outer_border:
-            final_table_data.append(''.join(self.horizontal_border('bottom', outer_widths)))
-
-        return '\n'.join(final_table_data)
+        return flatten(self.gen_table(inner_widths, inner_heights, outer_widths))
 
     @property
     def table_width(self):

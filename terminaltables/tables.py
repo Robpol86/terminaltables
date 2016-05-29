@@ -3,7 +3,7 @@
 import os
 
 from terminaltables.base_table import BaseTable
-from terminaltables.width_and_alignment import max_dimensions
+from terminaltables.build import combine
 
 
 class AsciiTable(BaseTable):
@@ -91,7 +91,6 @@ class GithubFlavoredMarkdownTable(BaseTable):
     https://help.github.com/articles/github-flavored-markdown/#tables
     """
 
-    CHAR_VERTICAL = '|'
     CHAR_HORIZONTAL = '-'
 
     def __init__(self, table_data):
@@ -102,36 +101,45 @@ class GithubFlavoredMarkdownTable(BaseTable):
         # Github flavored markdown table won't support title.
         super(GithubFlavoredMarkdownTable, self).__init__(table_data)
 
-    @property
-    def table(self):
-        """Return a large string of the entire table ready to be printed to the terminal."""
-        column_widths = [c + self.padding_left + self.padding_right for c in self.column_widths]
-        inner_widths, inner_heights = max_dimensions(self.table_data)[:2]
-        final_table_data = list()
+    def horizontal_border(self, _, outer_widths):
+        """Handle the GitHub header border.
 
-        for row_index, row_data in enumerate(self.table_data):
-            for line in self.gen_row_lines(row_data, inner_widths, inner_heights[row_index]):
-                final_table_data.append(''.join(line))
+        E.g.:
+        |:---|:---:|---:|----|
 
-            if row_index != 0:
-                continue
+        :param _: Unused.
+        :param iter outer_widths: List of widths (with padding) for each column.
 
-            # Header row separator.
-            column_separators = []
-            for column_index, column_width in enumerate(column_widths):
-                column_justify = self.justify_columns.get(column_index)
-                if column_justify == 'left':
-                    separator = ':' + self.CHAR_HORIZONTAL * (column_width - 1)
-                elif column_justify == 'right':
-                    separator = self.CHAR_HORIZONTAL * (column_width - 1) + ':'
-                elif column_justify == 'center':
-                    separator = self.CHAR_HORIZONTAL * (column_width - 2)
-                    separator = ':' + separator + ':'
-                else:
-                    separator = self.CHAR_HORIZONTAL * column_width
-                column_separators.append(separator)
-            final_table_data.append(
-                self.CHAR_VERTICAL + self.CHAR_VERTICAL.join(column_separators) + self.CHAR_VERTICAL
-            )
+        :return: Prepared border strings in a generator.
+        :rtype: iter
+        """
+        columns = list()
+        for i, width in enumerate(outer_widths):
+            justify = self.justify_columns.get(i)
+            width = max(3, width)  # Width should be at least 3 so justification can be applied.
+            if justify == 'left':
+                columns.append(':' + self.CHAR_HORIZONTAL * (width - 1))
+            elif justify == 'right':
+                columns.append(self.CHAR_HORIZONTAL * (width - 1) + ':')
+            elif justify == 'center':
+                columns.append(':' + self.CHAR_HORIZONTAL * (width - 2) + ':')
+            else:
+                columns.append(self.CHAR_HORIZONTAL * width)
 
-        return '\n'.join(final_table_data)
+        return combine(columns, self.CHAR_VERTICAL, self.CHAR_VERTICAL, self.CHAR_VERTICAL)
+
+    def gen_table(self, inner_widths, inner_heights, outer_widths):
+        """Combine everything and yield every line of the entire table with borders.
+
+        :param iter inner_widths: List of widths (no padding) for each column.
+        :param iter inner_heights: List of heights (no padding) for each row.
+        :param iter outer_widths: List of widths (with padding) for each column.
+        :return:
+        """
+        for i, row in enumerate(self.table_data):
+            # Yield the row line by line (e.g. multi-line rows).
+            for line in self.gen_row_lines(row, inner_widths, inner_heights[i]):
+                yield line
+            # Yield header separator.
+            if i == 0:
+                yield self.horizontal_border(None, outer_widths)
