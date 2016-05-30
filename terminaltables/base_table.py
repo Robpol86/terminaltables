@@ -19,17 +19,35 @@ class BaseTable(object):
     :ivar int padding_right: Number of spaces to pad on the right side of every cell.
     """
 
-    CHAR_CORNER_LOWER_LEFT = '+'
-    CHAR_CORNER_LOWER_RIGHT = '+'
-    CHAR_CORNER_UPPER_LEFT = '+'
-    CHAR_CORNER_UPPER_RIGHT = '+'
-    CHAR_HORIZONTAL = '-'
-    CHAR_INTERSECT_BOTTOM = '+'
-    CHAR_INTERSECT_CENTER = '+'
-    CHAR_INTERSECT_LEFT = '+'
-    CHAR_INTERSECT_RIGHT = '+'
-    CHAR_INTERSECT_TOP = '+'
-    CHAR_VERTICAL = '|'
+    CHAR_F_INNER_HORIZONTAL = '-'
+    CHAR_F_INNER_INTERSECT = '+'
+    CHAR_F_INNER_VERTICAL = '|'
+    CHAR_F_OUTER_LEFT_INTERSECT = '+'
+    CHAR_F_OUTER_LEFT_VERTICAL = '|'
+    CHAR_F_OUTER_RIGHT_INTERSECT = '+'
+    CHAR_F_OUTER_RIGHT_VERTICAL = '|'
+    CHAR_H_INNER_HORIZONTAL = '-'
+    CHAR_H_INNER_INTERSECT = '+'
+    CHAR_H_INNER_VERTICAL = '|'
+    CHAR_H_OUTER_LEFT_INTERSECT = '+'
+    CHAR_H_OUTER_LEFT_VERTICAL = '|'
+    CHAR_H_OUTER_RIGHT_INTERSECT = '+'
+    CHAR_H_OUTER_RIGHT_VERTICAL = '|'
+    CHAR_INNER_HORIZONTAL = '-'
+    CHAR_INNER_INTERSECT = '+'
+    CHAR_INNER_VERTICAL = '|'
+    CHAR_OUTER_BOTTOM_HORIZONTAL = '-'
+    CHAR_OUTER_BOTTOM_INTERSECT = '+'
+    CHAR_OUTER_BOTTOM_LEFT = '+'
+    CHAR_OUTER_BOTTOM_RIGHT = '+'
+    CHAR_OUTER_LEFT_INTERSECT = '+'
+    CHAR_OUTER_LEFT_VERTICAL = '|'
+    CHAR_OUTER_RIGHT_INTERSECT = '+'
+    CHAR_OUTER_RIGHT_VERTICAL = '|'
+    CHAR_OUTER_TOP_HORIZONTAL = '-'
+    CHAR_OUTER_TOP_INTERSECT = '+'
+    CHAR_OUTER_TOP_LEFT = '+'
+    CHAR_OUTER_TOP_RIGHT = '+'
 
     def __init__(self, table_data, title=None):
         """Constructor.
@@ -60,23 +78,38 @@ class BaseTable(object):
         :rtype: tuple
         """
         if style == 'top':
-            left = self.CHAR_CORNER_UPPER_LEFT
-            center = self.CHAR_INTERSECT_TOP if self.inner_column_border else ''
-            right = self.CHAR_CORNER_UPPER_RIGHT
+            horizontal = self.CHAR_OUTER_TOP_HORIZONTAL
+            left = self.CHAR_OUTER_TOP_LEFT
+            intersect = self.CHAR_OUTER_TOP_INTERSECT if self.inner_column_border else ''
+            right = self.CHAR_OUTER_TOP_RIGHT
             title = self.title
         elif style == 'bottom':
-            left = self.CHAR_CORNER_LOWER_LEFT
-            center = self.CHAR_INTERSECT_BOTTOM if self.inner_column_border else ''
-            right = self.CHAR_CORNER_LOWER_RIGHT
+            horizontal = self.CHAR_OUTER_BOTTOM_HORIZONTAL
+            left = self.CHAR_OUTER_BOTTOM_LEFT
+            intersect = self.CHAR_OUTER_BOTTOM_INTERSECT if self.inner_column_border else ''
+            right = self.CHAR_OUTER_BOTTOM_RIGHT
+            title = None
+        elif style == 'heading':
+            horizontal = self.CHAR_H_INNER_HORIZONTAL
+            left = self.CHAR_H_OUTER_LEFT_INTERSECT if self.outer_border else ''
+            intersect = self.CHAR_H_INNER_INTERSECT if self.inner_column_border else ''
+            right = self.CHAR_H_OUTER_RIGHT_INTERSECT if self.outer_border else ''
+            title = None
+        elif style == 'footing':
+            horizontal = self.CHAR_F_INNER_HORIZONTAL
+            left = self.CHAR_F_OUTER_LEFT_INTERSECT if self.outer_border else ''
+            intersect = self.CHAR_F_INNER_INTERSECT if self.inner_column_border else ''
+            right = self.CHAR_F_OUTER_RIGHT_INTERSECT if self.outer_border else ''
             title = None
         else:
-            left = self.CHAR_INTERSECT_LEFT if self.outer_border else ''
-            center = self.CHAR_INTERSECT_CENTER if self.inner_column_border else ''
-            right = self.CHAR_INTERSECT_RIGHT if self.outer_border else ''
+            horizontal = self.CHAR_INNER_HORIZONTAL
+            left = self.CHAR_OUTER_LEFT_INTERSECT if self.outer_border else ''
+            intersect = self.CHAR_INNER_INTERSECT if self.inner_column_border else ''
+            right = self.CHAR_OUTER_RIGHT_INTERSECT if self.outer_border else ''
             title = None
-        return build_border(outer_widths, self.CHAR_HORIZONTAL, left, center, right, title)
+        return build_border(outer_widths, horizontal, left, intersect, right, title)
 
-    def gen_row_lines(self, row, inner_widths, height):
+    def gen_row_lines(self, row, style, inner_widths, height):
         r"""Combine cells in row and group them into lines with vertical borders.
 
         Caller is expected to pass yielded lines to ''.join() to combine them into a printable line. Caller must append
@@ -98,6 +131,7 @@ class BaseTable(object):
         ]
 
         :param iter row: One row in the table. List of cells.
+        :param str style: Type of border characters to use.
         :param iter inner_widths: List of widths (no padding) for each column.
         :param int height: Inner height (no padding) (number of lines) to expand row to.
 
@@ -116,16 +150,22 @@ class BaseTable(object):
             padding = (self.padding_left, self.padding_right, 0, 0)
             cells_in_row.append(align_and_pad_cell(cell, align, inner_dimensions, padding))
 
-        # Combine cells and borders.
-        lines = build_row(
-            cells_in_row,
-            self.CHAR_VERTICAL if self.outer_border else '',
-            self.CHAR_VERTICAL if self.inner_column_border else '',
-            self.CHAR_VERTICAL if self.outer_border else ''
-        )
+        # Determine border characters.
+        if style == 'heading':
+            left = self.CHAR_H_OUTER_LEFT_VERTICAL if self.outer_border else ''
+            center = self.CHAR_H_INNER_VERTICAL if self.inner_column_border else ''
+            right = self.CHAR_H_OUTER_RIGHT_VERTICAL if self.outer_border else ''
+        elif style == 'footing':
+            left = self.CHAR_F_OUTER_LEFT_VERTICAL if self.outer_border else ''
+            center = self.CHAR_F_INNER_VERTICAL if self.inner_column_border else ''
+            right = self.CHAR_F_OUTER_RIGHT_VERTICAL if self.outer_border else ''
+        else:
+            left = self.CHAR_OUTER_LEFT_VERTICAL if self.outer_border else ''
+            center = self.CHAR_INNER_VERTICAL if self.inner_column_border else ''
+            right = self.CHAR_OUTER_RIGHT_VERTICAL if self.outer_border else ''
 
         # Yield each line.
-        for line in lines:
+        for line in build_row(cells_in_row, left, center, right):
             yield line
 
     def gen_table(self, inner_widths, inner_heights, outer_widths):
@@ -145,15 +185,21 @@ class BaseTable(object):
         last_row_index, before_last_row_index = row_count - 1, row_count - 2
         for i, row in enumerate(self.table_data):
             # Yield the row line by line (e.g. multi-line rows).
-            for line in self.gen_row_lines(row, inner_widths, inner_heights[i]):
+            if self.inner_heading_row_border and i == 0:
+                style = 'heading'
+            elif self.inner_footing_row_border and i == last_row_index:
+                style = 'footing'
+            else:
+                style = 'row'
+            for line in self.gen_row_lines(row, style, inner_widths, inner_heights[i]):
                 yield line
             # If this is the last row then break. No separator needed.
             if i == last_row_index:
                 break
-            # Yield header separator.
+            # Yield heading separator.
             if self.inner_heading_row_border and i == 0:
                 yield self.horizontal_border('heading', outer_widths)
-            # Yield footer separator.
+            # Yield footing separator.
             elif self.inner_footing_row_border and i == before_last_row_index:
                 yield self.horizontal_border('footing', outer_widths)
             # Yield row separator.

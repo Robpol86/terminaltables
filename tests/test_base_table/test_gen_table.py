@@ -11,7 +11,7 @@ from terminaltables.width_and_alignment import max_dimensions
 @pytest.mark.parametrize('inner_footing_row_border', [True, False])
 @pytest.mark.parametrize('inner_row_border', [True, False])
 def test_inner_row_borders(inner_heading_row_border, inner_footing_row_border, inner_row_border):
-    """Test header/footer/row borders.
+    """Test heading/footing/row borders.
 
     :param bool inner_heading_row_border: Passed to table.
     :param bool inner_footing_row_border: Passed to table.

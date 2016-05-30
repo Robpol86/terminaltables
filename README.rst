@@ -176,6 +176,9 @@ Added
     * Support for https://pypi.python.org/pypi/termcolor
     * Support for RTL characters (Arabic and Hebrew).
 
+Changed
+    * Refactored again, but this time entire project including tests.
+
 Removed
     * ``padded_table_data`` property and ``join_row()``. Moving away from repeated string joining/splitting.
 
@@ -183,6 +186,7 @@ Fixed
     * ``set_terminal_title()`` Unicode handling on Windows.
     * https://github.com/Robpol86/terminaltables/issues/20
     * https://github.com/Robpol86/terminaltables/issues/23
+    * https://github.com/Robpol86/terminaltables/issues/26
 
 2.1.0 - 2015-11-02
 ------------------
