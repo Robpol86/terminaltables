@@ -1,5 +1,4 @@
-# coding=utf-8
-"""SingleTable end to end testing."""
+"""SingleTable end to end testing on Windows."""
 
 import pytest
 

@@ -1,6 +1,6 @@
-"""AsciiTable end to end testing."""
+"""GithubFlavoredMarkdownTable end to end testing."""
 
-from terminaltables import AsciiTable
+from terminaltables import GithubFlavoredMarkdownTable
 
 
 def test_single_line():
@@ -13,7 +13,7 @@ def test_single_line():
         ['Watermelon', 'green'],
         [],
     ]
-    table = AsciiTable(table_data, 'Example')
+    table = GithubFlavoredMarkdownTable(table_data)
     table.inner_footing_row_border = True
     table.justify_columns[0] = 'left'
     table.justify_columns[1] = 'center'
@@ -21,16 +21,13 @@ def test_single_line():
     actual = table.table
 
     expected = (
-        '+Example-----+-------+-----------+\n'
         '| Name       | Color |      Type |\n'
-        '+------------+-------+-----------+\n'
+        '|:-----------|:-----:|----------:|\n'
         '| Avocado    | green |       nut |\n'
         '| Tomato     |  red  |     fruit |\n'
         '| Lettuce    | green | vegetable |\n'
         '| Watermelon | green |           |\n'
-        '+------------+-------+-----------+\n'
-        '|            |       |           |\n'
-        '+------------+-------+-----------+'
+        '|            |       |           |'
     )
     assert actual == expected
 
@@ -42,18 +39,16 @@ def test_multi_line():
         ['Rugrats', 'Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles,\nDil Pickles'],
         ['South Park', 'Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick']
     ]
-    table = AsciiTable(table_data)
+    table = GithubFlavoredMarkdownTable(table_data)
 
     # Test defaults.
     actual = table.table
     expected = (
-        '+------------+-------------------------------------------------------------------------------------+\n'
         '| Show       | Characters                                                                          |\n'
-        '+------------+-------------------------------------------------------------------------------------+\n'
+        '|------------|-------------------------------------------------------------------------------------|\n'
         '| Rugrats    | Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, |\n'
         '|            | Dil Pickles                                                                         |\n'
-        '| South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |\n'
-        '+------------+-------------------------------------------------------------------------------------+'
+        '| South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |'
     )
     assert actual == expected
 
@@ -61,14 +56,11 @@ def test_multi_line():
     table.inner_row_border = True
     actual = table.table
     expected = (
-        '+------------+-------------------------------------------------------------------------------------+\n'
         '| Show       | Characters                                                                          |\n'
-        '+------------+-------------------------------------------------------------------------------------+\n'
+        '|------------|-------------------------------------------------------------------------------------|\n'
         '| Rugrats    | Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, |\n'
         '|            | Dil Pickles                                                                         |\n'
-        '+------------+-------------------------------------------------------------------------------------+\n'
-        '| South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |\n'
-        '+------------+-------------------------------------------------------------------------------------+'
+        '| South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          |'
     )
     assert actual == expected
 
@@ -76,13 +68,10 @@ def test_multi_line():
     table.justify_columns = {1: 'right'}
     actual = table.table
     expected = (
-        '+------------+-------------------------------------------------------------------------------------+\n'
         '| Show       |                                                                          Characters |\n'
-        '+------------+-------------------------------------------------------------------------------------+\n'
+        '|------------|------------------------------------------------------------------------------------:|\n'
         '| Rugrats    | Tommy Pickles, Chuckie Finster, Phillip DeVille, Lillian DeVille, Angelica Pickles, |\n'
         '|            |                                                                         Dil Pickles |\n'
-        '+------------+-------------------------------------------------------------------------------------+\n'
-        '| South Park |                          Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick |\n'
-        '+------------+-------------------------------------------------------------------------------------+'
+        '| South Park |                          Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick |'
     )
     assert actual == expected

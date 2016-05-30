@@ -11,13 +11,13 @@ import pytest
 from tests import PROJECT_ROOT
 
 
-@pytest.mark.parametrize('suffix', range(1, 4))
-def test(suffix):
+@pytest.mark.parametrize('filename', map('example{0}.py'.format, (1, 2, 3)))
+def test(filename):
     """Test with subprocess.
 
-    :param int suffix: Numerical suffix of file name to test.
+    :param str filename: Example script filename to run.
     """
-    command = [sys.executable, str(PROJECT_ROOT.join('example{0}.py'.format(suffix)))]
+    command = [sys.executable, str(PROJECT_ROOT.join(filename))]
     env = dict(os.environ, PYTHONIOENCODING='utf-8')
 
     # Run.
