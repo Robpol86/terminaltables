@@ -175,6 +175,7 @@ Added
     * Support for https://pypi.python.org/pypi/colorama
     * Support for https://pypi.python.org/pypi/termcolor
     * Support for RTL characters (Arabic and Hebrew).
+    * Support for non-string items in ``table_data`` like integers.
 
 Changed
     * Refactored again, but this time entire project including tests.
@@ -184,6 +185,7 @@ Removed
 
 Fixed
     * ``set_terminal_title()`` Unicode handling on Windows.
+    * https://github.com/Robpol86/terminaltables/issues/18
     * https://github.com/Robpol86/terminaltables/issues/20
     * https://github.com/Robpol86/terminaltables/issues/23
     * https://github.com/Robpol86/terminaltables/issues/26

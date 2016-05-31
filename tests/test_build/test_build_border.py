@@ -293,3 +293,20 @@ def test_colors(outer_widths, left, intersect, right, title, expected):
         expected = left + expected + right
     actual = build_border(outer_widths, '-', left, intersect, right, title=title)
     assert ''.join(actual) == expected
+
+
+@pytest.mark.parametrize('outer_widths,title,expected', [
+    ([3, 3, 3], 123, '<123+---+--->'),
+    ([3, 3, 3], 0.9, '<0.9+---+--->'),
+    ([3, 3, 3], True, '<True---+--->'),
+    ([3, 3, 3], False, '<False--+--->'),
+])
+def test_non_string(outer_widths, title, expected):
+    """Test with non-string values.
+
+    :param iter outer_widths: List of integers representing column widths with padding.
+    :param title: Title in border.
+    :param str expected: Expected output.
+    """
+    actual = build_border(outer_widths, '-', '<', '+', '>', title=title)
+    assert ''.join(actual) == expected

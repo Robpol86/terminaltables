@@ -51,6 +51,9 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
     :return: Padded cell split into lines.
     :rtype: list
     """
+    if not hasattr(string, 'splitlines'):
+        string = str(string)
+
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
     lines = string.splitlines() or ['']
     if string.endswith('\n'):
@@ -96,6 +99,8 @@ def max_dimensions(table_data, padding_left=0, padding_right=0, padding_top=0, p
     # Find max width and heights.
     for j, row in enumerate(table_data):
         for i, cell in enumerate(row):
+            if not hasattr(cell, 'count') or not hasattr(cell, 'splitlines'):
+                cell = str(cell)
             if not cell:
                 continue
             inner_heights[j] = max(inner_heights[j], cell.count('\n') + 1)

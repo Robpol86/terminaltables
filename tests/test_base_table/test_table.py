@@ -32,6 +32,78 @@ def test_ascii():
     assert actual == expected
 
 
+def test_int():
+    """Test with integers instead of strings."""
+    table_data = [
+        [100, 10, 1],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+    ]
+    table = BaseTable(table_data, 1234567890)
+    actual = table.table
+
+    expected = (
+        '+1234567890+---+\n'
+        '| 100 | 10 | 1 |\n'
+        '+-----+----+---+\n'
+        '| 0   | 3  | 6 |\n'
+        '| 1   | 4  | 7 |\n'
+        '| 2   | 5  | 8 |\n'
+        '+-----+----+---+'
+    )
+
+    assert actual == expected
+
+
+def test_float():
+    """Test with floats instead of strings."""
+    table_data = [
+        [1.0, 22.0, 333.0],
+        [0.1, 3.1, 6.1],
+        [1.1, 4.1, 7.1],
+        [2.1, 5.1, 8.1],
+    ]
+    table = BaseTable(table_data, 0.12345678)
+    actual = table.table
+
+    expected = (
+        '+0.12345678--+-------+\n'
+        '| 1.0 | 22.0 | 333.0 |\n'
+        '+-----+------+-------+\n'
+        '| 0.1 | 3.1  | 6.1   |\n'
+        '| 1.1 | 4.1  | 7.1   |\n'
+        '| 2.1 | 5.1  | 8.1   |\n'
+        '+-----+------+-------+'
+    )
+
+    assert actual == expected
+
+
+def test_bool_none():
+    """Test with NoneType/boolean instead of strings."""
+    table_data = [
+        [True, False, None],
+        [True, False, None],
+        [False, None, True],
+        [None, True, False],
+    ]
+    table = BaseTable(table_data, True)
+    actual = table.table
+
+    expected = (
+        '+True---+-------+-------+\n'
+        '| True  | False | None  |\n'
+        '+-------+-------+-------+\n'
+        '| True  | False | None  |\n'
+        '| False | None  | True  |\n'
+        '| None  | True  | False |\n'
+        '+-------+-------+-------+'
+    )
+
+    assert actual == expected
+
+
 def test_cjk():
     """Test with CJK characters."""
     table_data = [

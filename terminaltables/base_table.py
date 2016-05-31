@@ -53,7 +53,7 @@ class BaseTable(object):
         """Constructor.
 
         :param iter table_data: List (empty or list of lists of strings) representing the table.
-        :param str title: Optional title to show within the top border of the table.
+        :param title: Optional title to show within the top border of the table.
         """
         self.table_data = table_data
         self.title = title

@@ -90,3 +90,11 @@ def test_colors_cjk_rtl():
         ['معرب'],
     ]
     assert max_dimensions(table_data) == ([4], [1, 1], [4], [1, 1])
+
+
+def test_non_string():
+    """Test with non-string values."""
+    table_data = [
+        [123, 0.9, None, True, False],
+    ]
+    assert max_dimensions(table_data) == ([3, 3, 4, 4, 5], [1], [3, 3, 4, 4, 5], [1])

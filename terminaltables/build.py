@@ -63,7 +63,7 @@ def build_border(outer_widths, horizontal, left, intersect, right, title=None):
     :param str left: Left border.
     :param str intersect: Column separator.
     :param str right: Right border.
-    :param str title: Overlay the title on the border between the left and right characters.
+    :param title: Overlay the title on the border between the left and right characters.
 
     :return: Returns a generator of strings representing a border.
     :rtype: iter
@@ -71,13 +71,17 @@ def build_border(outer_widths, horizontal, left, intersect, right, title=None):
     length = 0
 
     # Hide title if it doesn't fit.
-    if title and outer_widths:
-        length = visible_width(title)
+    if title is not None and outer_widths:
+        try:
+            length = visible_width(title)
+        except TypeError:
+            title = str(title)
+            length = visible_width(title)
         if length > sum(outer_widths) + len(intersect) * (len(outer_widths) - 1):
             title = None
 
     # Handle no title.
-    if not title or not outer_widths or not horizontal:
+    if title is None or not outer_widths or not horizontal:
         return combine((horizontal * c for c in outer_widths), left, intersect, right)
 
     # Handle title fitting in the first column.
