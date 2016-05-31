@@ -1,10 +1,6 @@
 """Common objects used by tests in directory."""
 
-import py
-
 from terminaltables import terminal_io
-
-HERE = py.path.local(__file__).dirpath()
 
 
 class MockKernel32(object):

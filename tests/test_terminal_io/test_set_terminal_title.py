@@ -4,13 +4,16 @@
 import sys
 from textwrap import dedent
 
+import py
 import pytest
 
 from terminaltables.terminal_io import IS_WINDOWS, set_terminal_title
 
 from tests import PROJECT_ROOT
-from tests.test_terminal_io import HERE, MockKernel32
-from tests.test_terminal_io.screenshot import RunNewConsole, screenshot_until_match
+from tests.screenshot import RunNewConsole, screenshot_until_match
+from tests.test_terminal_io import MockKernel32
+
+HERE = py.path.local(__file__).dirpath()
 
 
 @pytest.mark.parametrize('is_windows', [False, True])

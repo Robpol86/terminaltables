@@ -12,4 +12,5 @@ test_script: tox -e lint,py35,py34,py33,py27,py26,py35x64,py34x64,py33x64,py27x6
 
 # Post.
 on_finish:
+  - appveyor PushArtifact test_ascii_table.png
   - appveyor PushArtifact test_terminal_io.png
