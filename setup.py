@@ -58,6 +58,6 @@ setup(
     name='terminaltables',
     packages=['terminaltables'],
     url='https://github.com/Robpol86/terminaltables',
-    version='2.1.0',
+    version='3.0.0',
     zip_safe=True,
 )

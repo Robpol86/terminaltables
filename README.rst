@@ -168,8 +168,8 @@ Changelog
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
-Unreleased
-----------
+3.0.0 - 2016-05-30
+------------------
 
 Added
     * Support for https://pypi.python.org/pypi/colorama
