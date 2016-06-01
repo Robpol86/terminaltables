@@ -23,10 +23,6 @@ Easily draw tables in terminal/console applications from a list of lists of stri
     :target: https://pypi.python.org/pypi/terminaltables
     :alt: Latest Version
 
-.. image:: https://img.shields.io/pypi/dm/terminaltables.svg?style=flat-square&label=PyPI%20Downloads
-    :target: https://pypi.python.org/pypi/terminaltables
-    :alt: Downloads
-
 Quickstart
 ==========
 
