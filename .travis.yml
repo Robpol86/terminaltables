@@ -1,0 +1,10 @@
+# Configure.
+language: python
+python: 3.5
+sudo: false
+
+# Run.
+install: pip install Sphinx==1.4.2 sphinx-rtd-theme==0.1.9
+script: echo TODO
+after_success:
+  - echo git push
