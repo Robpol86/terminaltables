@@ -6,6 +6,8 @@ set -f  # Disable filename expansion (globbing).
 set -u  # Treat unset variables as an error.
 set -o pipefail  # Fail if any commands in a pipeline exits non-zero.
 
+branch="gh-pages"
+origin=$(git config --get remote.origin.url)
 prefix="AUTO Travis $TRAVIS_BUILD_ID"
 travis_disabled=".disabled.travis.yml"
 travis_enabled=".travis.yml"
@@ -19,7 +21,7 @@ fi
 
 # Push or retry.
 function push {
-    if git push --atomic origin gh-pages; then
+    if git push --atomic origin "$branch"; then
         echo "Success"
         return 0
     fi
@@ -33,7 +35,7 @@ function push {
 
 # Clone the repo into empty directory and cd into it.
 pushd $(mktemp -d)
-git clone --depth=1 --branch=gh-pages "https://github.com/$TRAVIS_REPO_SLUG.git" .
+git clone --depth=1 --branch="$branch" "$origin" .
 if [ ! -e "$travis_disabled" ]; then
     if [ ! -e "$travis_enabled" ]; then
         echo "No Travis YAML file present. Aborting!"
