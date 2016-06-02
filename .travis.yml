@@ -1,4 +1,6 @@
 # Configure.
+branches:
+  gh_pages: true
 language: python
 python: 3.5
 sudo: false
