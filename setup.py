@@ -23,7 +23,7 @@ def readme():
     url_prefix = 'https://raw.githubusercontent.com/Robpol86/{name}/v{version}/'.format(name=NAME, version=VERSION)
     try:
         handle = codecs.open(path, encoding='utf-8')
-        return handle.read(131072).replace('.. image:: example', '.. image:: {0}example'.format(url_prefix))
+        return handle.read(131072).replace('.. image:: docs', '.. image:: {0}docs'.format(url_prefix))
     except IOError:
         return ''
     finally:

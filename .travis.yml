@@ -5,7 +5,7 @@ sudo: false
 
 # Run.
 install: pip install appveyor-artifacts coveralls tox
-script: tox -e lint,py35,py34,py33,pypy3,pypy,py27,py26
+script: tox -e lint,py35,py34,py33,pypy3,pypy,py27,py26,docs
 after_success:
   - mv .coverage .coverage.travis
   - appveyor-artifacts -mi download

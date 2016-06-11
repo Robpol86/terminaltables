@@ -35,7 +35,7 @@ Install:
 Example Implementations
 =======================
 
-.. image:: example.png?raw=true
+.. image:: docs/examples.png?raw=true
    :alt: Example Scripts Screenshot
 
 Source code for examples: `example1.py <https://github.com/Robpol86/terminaltables/blob/master/example1.py>`_,
