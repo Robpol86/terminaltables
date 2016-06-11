@@ -15,7 +15,9 @@ copyright = '{}, {}'.format(time.strftime('%Y'), author)
 master_doc = 'index'
 nitpicky = True
 project = check_output([SETUP, '--name']).strip().decode('ascii')
+pygments_style = 'friendly'
 release = version = check_output([SETUP, '--version']).strip().decode('ascii')
+templates_path = ['_templates']
 
 
 # Options for HTML output.
