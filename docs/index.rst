@@ -53,11 +53,20 @@ Contents
 
 .. toctree::
     :maxdepth: 2
+    :caption: General
 
     install
     quickstart
     settings
-    tables
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Table Styles
+
+    asciitable
+    singletable
+    doubletable
+    githubtable
 
 .. _colorclass: https://github.com/Robpol86/colorclass
 .. _colorama: https://github.com/tartley/colorama

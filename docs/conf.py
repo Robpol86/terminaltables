@@ -13,11 +13,11 @@ SETUP = os.path.join(os.path.dirname(__file__), '..', 'setup.py')
 author = check_output([SETUP, '--author']).strip().decode('ascii')
 copyright = '{}, {}'.format(time.strftime('%Y'), author)
 master_doc = 'index'
-nitpicky = True
 project = check_output([SETUP, '--name']).strip().decode('ascii')
 pygments_style = 'friendly'
 release = version = check_output([SETUP, '--version']).strip().decode('ascii')
 templates_path = ['_templates']
+extensions = list()
 
 
 # Options for HTML output.
@@ -36,6 +36,10 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_title = project
 
 
-# Extensions.
-extensions = ['sphinx.ext.extlinks']
+# extlinks.
+extensions.append('sphinx.ext.extlinks')
 extlinks = {'github': ('https://github.com/robpol86/{0}/blob/v{1}/%s'.format(project, version), '')}
+
+
+# autodoc
+extensions.append('sphinx.ext.autodoc')

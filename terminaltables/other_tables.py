@@ -120,12 +120,36 @@ class WindowsTableDouble(AsciiTable):
 
 
 class SingleTable(WindowsTable if IS_WINDOWS else UnixTable):
-    """Cross-platform table with single-line box-drawing characters."""
+    """Cross-platform table with single-line box-drawing characters.
+
+    :ivar iter table_data: List (empty or list of lists of strings) representing the table.
+    :ivar str title: Optional title to show within the top border of the table.
+    :ivar bool inner_column_border: Separates columns.
+    :ivar bool inner_footing_row_border: Show a border before the last row.
+    :ivar bool inner_heading_row_border: Show a border before the first row.
+    :ivar bool inner_row_border: Show a border in between every row.
+    :ivar bool outer_border: Show the top, left, right, and bottom border.
+    :ivar dict justify_columns: Horizontal justification. Keys are column indexes (int). Values are right/left/center.
+    :ivar int padding_left: Number of spaces to pad on the left side of every cell.
+    :ivar int padding_right: Number of spaces to pad on the right side of every cell.
+    """
 
     pass
 
 
 class DoubleTable(WindowsTableDouble):
-    """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's unicode."""
+    """Cross-platform table with box-drawing characters. On Windows it's double borders, on Linux/OSX it's unicode.
+
+    :ivar iter table_data: List (empty or list of lists of strings) representing the table.
+    :ivar str title: Optional title to show within the top border of the table.
+    :ivar bool inner_column_border: Separates columns.
+    :ivar bool inner_footing_row_border: Show a border before the last row.
+    :ivar bool inner_heading_row_border: Show a border before the first row.
+    :ivar bool inner_row_border: Show a border in between every row.
+    :ivar bool outer_border: Show the top, left, right, and bottom border.
+    :ivar dict justify_columns: Horizontal justification. Keys are column indexes (int). Values are right/left/center.
+    :ivar int padding_left: Number of spaces to pad on the left side of every cell.
+    :ivar int padding_right: Number of spaces to pad on the right side of every cell.
+    """
 
     pass

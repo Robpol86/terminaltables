@@ -85,7 +85,9 @@ Maybe you want lines in between all rows:
     | Row three column one | Row three column two |
     +----------------------+----------------------+
 
-There are many more settings available. You can find out more by reading the :ref:`settings` section.
+There are many more settings available. You can find out more by reading the :ref:`settings` section. Each table style
+pretty much shares the same settings but there are a few minor exceptions. Refer to each table style's documentation on
+the sidebar.
 
 Other Table Styles
 ==================
@@ -105,4 +107,4 @@ API.
     │ Row three column one │ Row three column two │
     └──────────────────────┴──────────────────────┘
 
-You can find documentation for all table styles over at the :ref:`tables` section.
+You can find documentation for all table styles on the sidebar.

@@ -6,7 +6,7 @@ from terminaltables.width_and_alignment import column_max_width, max_dimensions,
 
 
 class AsciiTable(BaseTable):
-    """Draw a table using regular ASCII characters, such as `+`, `|`, and `-`.
+    """Draw a table using regular ASCII characters, such as ``+``, ``|``, and ``-``.
 
     :ivar iter table_data: List (empty or list of lists of strings) representing the table.
     :ivar str title: Optional title to show within the top border of the table.
