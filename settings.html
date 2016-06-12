@@ -146,7 +146,95 @@
             
   <div class="section" id="settings">
 <span id="id1"></span><h1>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h1>
-<p>TODO.</p>
+<p>All tables (except <a class="reference internal" href="githubtable.html#githubtable"><span class="std std-ref">GithubFlavoredMarkdownTable</span></a>) have the same settings to change the way the table is displayed. These attributes
+are available after instantiation.</p>
+<dl class="attribute">
+<dt id="Table.table_data">
+<code class="descclassname">Table.</code><code class="descname">table_data</code><a class="headerlink" href="#Table.table_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The actual table data to render. This must be a list (or tuple) of lists of strings. The outer list holds the rows
+and the inner lists holds the cells (aka columns in that row).</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">table_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Color&#39;</span><span class="p">,</span> <span class="s1">&#39;Type&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Avocado&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;nut&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;fruit&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Lettuce&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;vegetable&#39;</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.title">
+<code class="descclassname">Table.</code><code class="descname">title</code><a class="headerlink" href="#Table.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional title to show within the top border of the table. This is ignored if None or a blank string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.inner_column_border">
+<code class="descclassname">Table.</code><code class="descname">inner_column_border</code><a class="headerlink" href="#Table.inner_column_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggles the column dividers. Set to <strong>False</strong> to disable these vertically dividing borders.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.inner_footing_row_border">
+<code class="descclassname">Table.</code><code class="descname">inner_footing_row_border</code><a class="headerlink" href="#Table.inner_footing_row_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a horizontal dividing border before the last row. If <strong>True</strong> this defines the last row as the table footer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.inner_heading_row_border">
+<code class="descclassname">Table.</code><code class="descname">inner_heading_row_border</code><a class="headerlink" href="#Table.inner_heading_row_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a horizontal dividing border after the first row. If <strong>False</strong> this removes the border so the first row is no
+longer considered a header row. It&#8217;ll look just like any other row.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.inner_row_border">
+<code class="descclassname">Table.</code><code class="descname">inner_row_border</code><a class="headerlink" href="#Table.inner_row_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <strong>True</strong> terminaltables will show dividing borders between every row.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.outer_border">
+<code class="descclassname">Table.</code><code class="descname">outer_border</code><a class="headerlink" href="#Table.outer_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggles the four outer borders. If <strong>False</strong> the top, left, right, and bottom borders will not be shown.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.justify_columns">
+<code class="descclassname">Table.</code><code class="descname">justify_columns</code><a class="headerlink" href="#Table.justify_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aligns text in entire columns. The keys in this dict are column integers (0 for the first column) and the values
+are either &#8216;left&#8217;, &#8216;right&#8217;, or &#8216;center&#8217;. Left is the default.</p>
+<p>Example:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">justify_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span>  <span class="c1"># Name column.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">justify_columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span>  <span class="c1"># Color column.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<span class="go">+---------+-------+-----------+</span>
+<span class="go">|    Name | Color | Type      |</span>
+<span class="go">+---------+-------+-----------+</span>
+<span class="go">| Avocado | green | nut       |</span>
+<span class="go">|  Tomato |  red  | fruit     |</span>
+<span class="go">| Lettuce | green | vegetable |</span>
+<span class="go">+---------+-------+-----------+</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.padding_left">
+<code class="descclassname">Table.</code><code class="descname">padding_left</code><a class="headerlink" href="#Table.padding_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of spaces to pad on the left side of every cell. Default is <strong>1</strong>. Padding adds spacing between the cell text
+and the column border.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Table.padding_right">
+<code class="descclassname">Table.</code><code class="descname">padding_right</code><a class="headerlink" href="#Table.padding_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of spaces to pad on the right side of every cell. Default is <strong>1</strong>. Padding adds spacing between the cell
+text and the column border.</p>
+</dd></dl>
+
 </div>
 
 
