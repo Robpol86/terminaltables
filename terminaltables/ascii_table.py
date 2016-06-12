@@ -12,7 +12,7 @@ class AsciiTable(BaseTable):
     :ivar str title: Optional title to show within the top border of the table.
     :ivar bool inner_column_border: Separates columns.
     :ivar bool inner_footing_row_border: Show a border before the last row.
-    :ivar bool inner_heading_row_border: Show a border before the first row.
+    :ivar bool inner_heading_row_border: Show a border after the first row.
     :ivar bool inner_row_border: Show a border in between every row.
     :ivar bool outer_border: Show the top, left, right, and bottom border.
     :ivar dict justify_columns: Horizontal justification. Keys are column indexes (int). Values are right/left/center.
