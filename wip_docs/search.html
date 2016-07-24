@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Table Styles &mdash; terminaltables</title>
+  <title>Search &mdash; terminaltables</title>
   
 
   
@@ -37,8 +37,7 @@
   
 
   
-    <link rel="top" title="terminaltables" href="index.html"/>
-        <link rel="prev" title="Settings" href="settings.html"/> 
+    <link rel="top" title="terminaltables" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -73,7 +72,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="#" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -87,11 +86,22 @@
           
             
             
-                <ul class="current">
+                <p class="caption"><span class="caption-text">General</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Table Styles</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Table Styles</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="asciitable.html">AsciiTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="singletable.html">SingleTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doubletable.html">DoubleTable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="githubtable.html">GithubFlavoredMarkdownTable</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -114,7 +124,7 @@
         <div class="rst-content">
           
 
- 
+
 
 
 
@@ -122,12 +132,8 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Table Styles</li>
+    <li></li>
       <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="https://github.com/robpol86/terminaltables/blob/master/docs/tables.rst" class="fa fa-github"> Edit on GitHub</a>
-          
         
       </li>
   </ul>
@@ -136,22 +142,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="table-styles">
-<span id="tables"></span><h1>Table Styles<a class="headerlink" href="#table-styles" title="Permalink to this headline">¶</a></h1>
-<p>TODO</p>
-</div>
+  <noscript>
+  <div id="fallback" class="admonition warning">
+    <p class="last">
+      Please activate JavaScript to enable the search
+      functionality.
+    </p>
+  </div>
+  </noscript>
 
+  
+  <div id="search-results">
+  
+  </div>
 
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="settings.html" class="btn btn-neutral" title="Settings" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -173,6 +180,20 @@
 
   </div>
   
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: wip_docs
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../wip_docs/index.html">wip_docs</a></dd>
+            <dd><a href="../index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
 
 
   
@@ -189,6 +210,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -204,7 +226,14 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
+  
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
+  <script type="text/javascript" id="searchindexloader"></script>
    
+
 
 </body>
 </html>
