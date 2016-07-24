@@ -65,6 +65,8 @@ Source code for examples: `example1.py <https://github.com/Robpol86/terminaltabl
 `example2.py <https://github.com/Robpol86/terminaltables/blob/master/example2.py>`_, and
 `example3.py <https://github.com/Robpol86/terminaltables/blob/master/example3.py>`_
 
+.. changelog-section-start
+
 Changelog
 =========
 
@@ -149,3 +151,5 @@ Added
 ------------------
 
 * Initial release.
+
+.. changelog-section-end

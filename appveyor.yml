@@ -11,8 +11,8 @@ build_script: pip install tox
 test_script: tox -e lint,py35,py34,py33,py27,py26,py35x64,py34x64,py33x64,py27x64,py26x64
 
 # Post.
-on_finish:
-  - appveyor PushArtifact test_ascii_table.png
-  - appveyor PushArtifact test_double_table.png
-  - appveyor PushArtifact test_single_table.png
-  - appveyor PushArtifact test_terminal_io.png
+# on_finish: https://github.com/Robpol86/terminaltables/issues/30
+  #- appveyor PushArtifact test_ascii_table.png https://github.com/Robpol86/terminaltables/issues/30
+  #- appveyor PushArtifact test_double_table.png https://github.com/Robpol86/terminaltables/issues/30
+  #- appveyor PushArtifact test_single_table.png https://github.com/Robpol86/terminaltables/issues/30
+  #- appveyor PushArtifact test_terminal_io.png https://github.com/Robpol86/terminaltables/issues/30

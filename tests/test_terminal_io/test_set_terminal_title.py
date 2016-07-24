@@ -54,6 +54,7 @@ def test(monkeypatch, is_windows, mode):
 
 
 @pytest.mark.skipif(str(not IS_WINDOWS))
+@pytest.mark.skipif('True')  # https://github.com/Robpol86/terminaltables/issues/30
 @pytest.mark.parametrize('mode', ['ascii', 'unicode', 'bytes'])
 def test_windows_screenshot(tmpdir, mode):
     """Test function on Windows in a new console window. Take a screenshot to verify it works.

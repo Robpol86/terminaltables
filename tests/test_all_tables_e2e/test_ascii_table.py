@@ -100,6 +100,7 @@ def test_multi_line():
 
 
 @pytest.mark.skipif(str(not IS_WINDOWS))
+@pytest.mark.skipif('True')  # https://github.com/Robpol86/terminaltables/issues/30
 def test_windows_screenshot(tmpdir):
     """Test on Windows in a new console window. Take a screenshot to verify it works.
 

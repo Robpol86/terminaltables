@@ -4,8 +4,6 @@ import os
 import time
 from subprocess import check_output
 
-import sphinx_rtd_theme
-
 SETUP = os.path.join(os.path.dirname(__file__), '..', 'setup.py')
 
 
@@ -32,7 +30,6 @@ html_context = dict(
 html_copy_source = False
 html_favicon = 'favicon.ico'
 html_theme = 'sphinx_rtd_theme'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_title = project
 
 

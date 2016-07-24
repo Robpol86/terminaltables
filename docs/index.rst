@@ -48,9 +48,6 @@ Project Links
 * Source code: https://github.com/Robpol86/terminaltables
 * PyPI homepage: https://pypi.python.org/pypi/terminaltables
 
-Contents
-========
-
 .. toctree::
     :maxdepth: 2
     :caption: General
@@ -67,6 +64,12 @@ Contents
     singletable
     doubletable
     githubtable
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Appendix
+
+    changelog
 
 .. _colorclass: https://github.com/Robpol86/colorclass
 .. _colorama: https://github.com/tartley/colorama
