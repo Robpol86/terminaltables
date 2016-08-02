@@ -156,7 +156,7 @@ class DoubleTable(WindowsTableDouble):
 
 
 class PorcelainTable(AsciiTable):
-    """ An AsciiTable stripped to a minimum.
+    """An AsciiTable stripped to a minimum.
 
     Meant to be machine passable and roughly follow format set by git --porcelain option (hence the name).
 
