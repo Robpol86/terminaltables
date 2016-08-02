@@ -156,14 +156,19 @@ class DoubleTable(WindowsTableDouble):
 
 
 class PorcelainTable(AsciiTable):
-    """ An AsciiTable stripped to a minimum, meant to be machine passable and roughly follow format set by git
-     --porcelain option (hence the name)
-     """
+    """ An AsciiTable stripped to a minimum.
+
+    Meant to be machine passable and roughly follow format set by git --porcelain option (hence the name).
+
+    :ivar iter table_data: List (empty or list of lists of strings) representing the table.
+    """
 
     def __init__(self, table_data):
-        """
+        """Constructor.
+
         :param iter table_data: List (empty or list of lists of strings) representing the table.
         """
+        # Porcelain table won't support title since it has no outer birders.
         super(PorcelainTable, self).__init__(table_data)
 
         # Removes outer border, and inner footing and header row borders.
