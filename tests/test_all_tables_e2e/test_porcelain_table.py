@@ -24,7 +24,7 @@ def test_single_line():
         ' Tomato     |  red  |     fruit \n'
         ' Lettuce    | green | vegetable \n'
         ' Watermelon | green |           '
-     )
+    )
     assert actual == expected
 
 
@@ -46,7 +46,6 @@ def test_multi_line():
         ' South Park | Stan Marsh, Kyle Broflovski, Eric Cartman, Kenny McCormick                          '
     )
     assert actual == expected
-
 
     # Justify right.
     table.justify_columns = {1: 'right'}
