@@ -33,10 +33,21 @@ html_theme = 'sphinx_rtd_theme'
 html_title = project
 
 
+# autodoc
+extensions.append('sphinx.ext.autodoc')
+
+
 # extlinks.
 extensions.append('sphinx.ext.extlinks')
 extlinks = {'github': ('https://github.com/robpol86/{0}/blob/v{1}/%s'.format(project, version), '')}
 
 
-# autodoc
-extensions.append('sphinx.ext.autodoc')
+# google analytics
+extensions.append('sphinxcontrib.googleanalytics')
+googleanalytics_id = 'UA-82627369-1'
+
+# SCVersioning.
+scv_banner_greatest_tag = True
+scv_grm_exclude = ('.gitignore', '.nojekyll', 'README.rst')
+scv_show_banner = True
+scv_sort = ('semver', 'time')

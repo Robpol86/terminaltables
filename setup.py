@@ -9,7 +9,6 @@ import re
 
 from setuptools import Command, setup
 
-AUTHOR = '@Robpol86'
 INSTALL_REQUIRES = []
 LICENSE = 'MIT'
 NAME = IMPORT = 'terminaltables'
@@ -55,8 +54,8 @@ class CheckVersion(Command):
     @classmethod
     def run(cls):
         """Check variables."""
-        project = __import__(IMPORT)
-        for expected, var in [(AUTHOR, '__author__'), (LICENSE, '__license__'), (VERSION, '__version__')]:
+        project = __import__(IMPORT, fromlist=[''])
+        for expected, var in [('@Robpol86', '__author__'), (LICENSE, '__license__'), (VERSION, '__version__')]:
             if getattr(project, var) != expected:
                 raise SystemExit('Mismatch: {0}'.format(var))
         # Check changelog.
@@ -64,13 +63,16 @@ class CheckVersion(Command):
             raise SystemExit('Version not found in readme/changelog file.')
         # Check tox.
         if INSTALL_REQUIRES:
-            in_tox = re.findall(r'\ninstall_requires =\n(?:    ([^=]+)==[\w\d.-]+\n)+?', readme('tox.ini'))
-            if set(INSTALL_REQUIRES) != set(in_tox):
-                raise SystemExit('Missing pinned dependencies in tox.ini.')
+            section = re.compile(r'\ninstall_requires =\n(.+?)\n\w', re.DOTALL).findall(readme('tox.ini'))
+            if not section:
+                raise SystemExit('Missing install_requires section in tox.ini.')
+            in_tox = re.findall(r'    ([^=]+)==[\w\d.-]+', section[0])
+            if INSTALL_REQUIRES != in_tox:
+                raise SystemExit('Missing/unordered pinned dependencies in tox.ini.')
 
 
 setup(
-    author=AUTHOR,
+    author='@Robpol86',
     author_email='robpol86@gmail.com',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -101,7 +103,7 @@ setup(
     long_description=readme(),
     name=NAME,
     packages=[IMPORT],
-    url='https://github.com/{0}/{1}'.format(AUTHOR, NAME),
+    url='https://github.com/Robpol86/' + NAME,
     version=VERSION,
     zip_safe=True,
 )
