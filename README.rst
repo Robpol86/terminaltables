@@ -36,7 +36,7 @@ Install:
 
 Usage:
 
-.. code::
+.. code:: python
 
     from terminaltables import AsciiTable
     table_data = [
