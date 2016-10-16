@@ -72,6 +72,12 @@ Changelog
 
 This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
+3.1.0 - 2016-10-16
+------------------
+
+Added
+    * ``git --porcelain``-like table by liiight: https://github.com/Robpol86/terminaltables/pull/31
+
 3.0.0 - 2016-05-30
 ------------------
 
@@ -106,7 +112,8 @@ Added
 
 Changed
     * Refactored code. No new features.
-    * Breaking changes: `UnixTable`/`WindowsTable`/`WindowsTableDouble` moved. Use `SingleTable`/`DoubleTable` instead.
+    * Breaking changes: ``UnixTable``/``WindowsTable``/``WindowsTableDouble`` moved. Use ``SingleTable``/``DoubleTable``
+      instead.
 
 1.2.1 - 2015-09-03
 ------------------

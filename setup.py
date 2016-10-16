@@ -12,7 +12,7 @@ from setuptools import Command, setup
 INSTALL_REQUIRES = []
 LICENSE = 'MIT'
 NAME = IMPORT = 'terminaltables'
-VERSION = '3.0.0'
+VERSION = '3.1.0'
 
 
 def readme(path='README.rst'):
