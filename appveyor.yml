@@ -1,14 +1,29 @@
 # Configure.
-artifacts:
-  - path: .coverage
+environment:
+  PYTHON: Python35
+  matrix:
+    - TOX_ENV: lint
+    - TOX_ENV: py35
+    - TOX_ENV: py34
+    - TOX_ENV: py33
+    - TOX_ENV: py27
+    - TOX_ENV: py
+      PYTHON: Python35-x64
+    - TOX_ENV: py
+      PYTHON: Python34-x64
+    - TOX_ENV: py
+      PYTHON: Python33-x64
+    - TOX_ENV: py
+      PYTHON: Python27-x64
 
 # Run.
-init: set PATH=C:\Python35-x64;C:\Python35-x64\Scripts;%PATH%
+init: set PATH=C:\%PYTHON%;C:\%PYTHON%\Scripts;%PATH%
 install:
   - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1
   - ps: .\enable-desktop
 build_script: pip install tox
-test_script: tox -e lint,py35,py34,py33,py27,py26,py35x64,py34x64,py33x64,py27x64,py26x64
+test_script: tox -e %TOX_ENV%
+on_success: IF %TOX_ENV% NEQ lint pip install codecov & codecov
 
 # Post.
 # on_finish: https://github.com/Robpol86/terminaltables/issues/30

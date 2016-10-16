@@ -17,8 +17,8 @@ Easily draw tables in terminal/console applications from a list of lists of stri
     :target: https://travis-ci.org/Robpol86/terminaltables
     :alt: Build Status
 
-.. image:: https://img.shields.io/coveralls/Robpol86/terminaltables/master.svg?style=flat-square&label=Coveralls
-    :target: https://coveralls.io/github/Robpol86/terminaltables
+.. image:: https://img.shields.io/codecov/c/github/Robpol86/terminaltables/master.svg?style=flat-square&label=Codecov
+    :target: https://codecov.io/gh/Robpol86/terminaltables
     :alt: Coverage Status
 
 .. image:: https://img.shields.io/pypi/v/terminaltables.svg?style=flat-square&label=Latest
