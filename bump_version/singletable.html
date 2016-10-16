@@ -22,7 +22,7 @@
     </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AsciiTable &mdash; terminaltables</title>
+  <title>SingleTable &mdash; terminaltables</title>
   
 
   
@@ -54,8 +54,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="terminaltables" href="index.html"/>
-        <link rel="next" title="SingleTable" href="singletable.html"/>
-        <link rel="prev" title="Settings" href="settings.html"/> 
+        <link rel="next" title="DoubleTable" href="doubletable.html"/>
+        <link rel="prev" title="AsciiTable" href="asciitable.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,7 +84,7 @@
             
             
               <div class="version">
-                3.0.0
+                3.1.0
               </div>
             
           
@@ -113,11 +113,12 @@
 </ul>
 <p class="caption"><span class="caption-text">Table Styles</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">AsciiTable</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="asciitable.html">AsciiTable</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SingleTable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gaps-on-windows-10">Gaps on Windows 10</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="singletable.html">SingleTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="doubletable.html">DoubleTable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="githubtable.html">GithubFlavoredMarkdownTable</a></li>
 </ul>
@@ -158,12 +159,12 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>AsciiTable</li>
+    <li>SingleTable</li>
     <li class="wy-breadcrumbs-aside">
       
           
           
-            <a href="https://github.com/Robpol86/terminaltables/blob/fix_screenshots/docs/asciitable.rst" class="fa fa-github"> Edit on GitHub</a>
+            <a href="https://github.com/Robpol86/terminaltables/blob/bump_version/docs/singletable.rst" class="fa fa-github"> Edit on GitHub</a>
           
         
       
@@ -182,17 +183,23 @@
 
 
 
-    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../master/asciitable.html"><b>Warning:</b> This document is for the development version of terminaltables. The main version is master.</a></p>
-<div class="section" id="asciitable">
-<span id="id1"></span><h1>AsciiTable<a class="headerlink" href="#asciitable" title="Permalink to this headline">¶</a></h1>
-<p>AsciiTable is the simplest table. It uses <code class="docutils literal"><span class="pre">+</span></code>, <code class="docutils literal"><span class="pre">|</span></code>, and <code class="docutils literal"><span class="pre">-</span></code> characters to build the borders.</p>
-<a class="reference external image-reference" href="_images/asciitable.png"><img alt="_images/asciitable.png" src="_images/asciitable.png" /></a>
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../master/singletable.html"><b>Warning:</b> This document is for the development version of terminaltables. The main version is master.</a></p>
+<div class="section" id="singletable">
+<span id="id1"></span><h1>SingleTable<a class="headerlink" href="#singletable" title="Permalink to this headline">¶</a></h1>
+<p>SingleTable uses <a class="reference external" href="https://en.wikipedia.org/wiki/Box-drawing_character">box drawing characters</a> for table borders. On POSIX (Linux/OS X) terminaltables uses <code class="docutils literal"><span class="pre">Esc</span> <span class="pre">(</span> <span class="pre">0</span></code>
+characters while on Windows it uses <a class="reference external" href="https://en.wikipedia.org/wiki/Code_page_437">code page 437</a> characters.</p>
+<a class="reference external image-reference" href="_images/singletable.png"><img alt="_images/singletable.png" src="_images/singletable.png" /></a>
+<div class="section" id="gaps-on-windows-10">
+<h2>Gaps on Windows 10<a class="headerlink" href="#gaps-on-windows-10" title="Permalink to this headline">¶</a></h2>
+<p>Unfortunately the console on Windows 10 changed the default font face to <code class="docutils literal"><span class="pre">Consolas</span></code>. This new font seems to show gaps
+between lines. Switching the font back to <code class="docutils literal"><span class="pre">Lucida</span> <span class="pre">Console</span></code> eliminates the gaps.</p>
+</div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="terminaltables.AsciiTable">
-<em class="property">class </em><code class="descclassname">terminaltables.</code><code class="descname">AsciiTable</code><span class="sig-paren">(</span><em>table_data</em>, <em>title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#terminaltables.AsciiTable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a table using regular ASCII characters, such as <code class="docutils literal"><span class="pre">+</span></code>, <code class="docutils literal"><span class="pre">|</span></code>, and <code class="docutils literal"><span class="pre">-</span></code>.</p>
+<dt id="terminaltables.SingleTable">
+<em class="property">class </em><code class="descclassname">terminaltables.</code><code class="descname">SingleTable</code><span class="sig-paren">(</span><em>table_data</em>, <em>title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#terminaltables.SingleTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cross-platform table with single-line box-drawing characters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -214,8 +221,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="terminaltables.AsciiTable.column_max_width">
-<code class="descname">column_max_width</code><span class="sig-paren">(</span><em>column_number</em><span class="sig-paren">)</span><a class="headerlink" href="#terminaltables.AsciiTable.column_max_width" title="Permalink to this definition">¶</a></dt>
+<dt id="terminaltables.SingleTable.column_max_width">
+<code class="descname">column_max_width</code><span class="sig-paren">(</span><em>column_number</em><span class="sig-paren">)</span><a class="headerlink" href="#terminaltables.SingleTable.column_max_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the maximum width of a column based on the current terminal width.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -232,26 +239,26 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="terminaltables.AsciiTable.column_widths">
-<code class="descname">column_widths</code><a class="headerlink" href="#terminaltables.AsciiTable.column_widths" title="Permalink to this definition">¶</a></dt>
+<dt id="terminaltables.SingleTable.column_widths">
+<code class="descname">column_widths</code><a class="headerlink" href="#terminaltables.SingleTable.column_widths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of integers representing the widths of each table column without padding.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="terminaltables.AsciiTable.ok">
-<code class="descname">ok</code><a class="headerlink" href="#terminaltables.AsciiTable.ok" title="Permalink to this definition">¶</a></dt>
+<dt id="terminaltables.SingleTable.ok">
+<code class="descname">ok</code><a class="headerlink" href="#terminaltables.SingleTable.ok" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if the table fits within the terminal width, False if the table breaks.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="terminaltables.AsciiTable.table">
-<code class="descname">table</code><a class="headerlink" href="#terminaltables.AsciiTable.table" title="Permalink to this definition">¶</a></dt>
+<dt id="terminaltables.SingleTable.table">
+<code class="descname">table</code><a class="headerlink" href="#terminaltables.SingleTable.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a large string of the entire table ready to be printed to the terminal.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="terminaltables.AsciiTable.table_width">
-<code class="descname">table_width</code><a class="headerlink" href="#terminaltables.AsciiTable.table_width" title="Permalink to this definition">¶</a></dt>
+<dt id="terminaltables.SingleTable.table_width">
+<code class="descname">table_width</code><a class="headerlink" href="#terminaltables.SingleTable.table_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the width of the table including padding and borders.</p>
 </dd></dl>
 
@@ -267,10 +274,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="singletable.html" class="btn btn-neutral float-right" title="SingleTable" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="doubletable.html" class="btn btn-neutral float-right" title="DoubleTable" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="settings.html" class="btn btn-neutral" title="Settings" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="asciitable.html" class="btn btn-neutral" title="AsciiTable" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -297,15 +304,15 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: fix_screenshots
+        v: bump_version
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Branches</dt>
-            <dd><a href="asciitable.html">fix_screenshots</a></dd>
-            <dd><a href="../master/asciitable.html">master</a></dd>
-            <dd><a href="../close_stdin/asciitable.html">close_stdin</a></dd>
+            <dd><a href="singletable.html">bump_version</a></dd>
+            <dd><a href="../master/singletable.html">master</a></dd>
+            <dd><a href="../close_stdin/singletable.html">close_stdin</a></dd>
         </dl>
     </div>
 </div>
@@ -316,7 +323,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.0.0',
+            VERSION:'3.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
