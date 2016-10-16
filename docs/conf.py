@@ -1,19 +1,18 @@
 """Sphinx configuration file."""
 
 import os
+import sys
 import time
-from subprocess import check_output
-
-SETUP = os.path.join(os.path.dirname(__file__), '..', 'setup.py')
 
 
 # General configuration.
-author = check_output([SETUP, '--author']).strip().decode('ascii')
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
+author = '@Robpol86'
 copyright = '{}, {}'.format(time.strftime('%Y'), author)
 master_doc = 'index'
-project = check_output([SETUP, '--name']).strip().decode('ascii')
+project = __import__('setup').NAME
 pygments_style = 'friendly'
-release = version = check_output([SETUP, '--version']).strip().decode('ascii')
+release = version = __import__('setup').VERSION
 templates_path = ['_templates']
 extensions = list()
 
@@ -45,6 +44,7 @@ extlinks = {'github': ('https://github.com/robpol86/{0}/blob/v{1}/%s'.format(pro
 # google analytics
 extensions.append('sphinxcontrib.googleanalytics')
 googleanalytics_id = 'UA-82627369-1'
+
 
 # SCVersioning.
 scv_banner_greatest_tag = True

@@ -14,8 +14,8 @@ pip install tox  # Install tox, which runs linting and tests.
 tox  # This runs all tests on your local machine. Make sure they pass.
 ```
 
-If you don't have Python 2.6, 2.7, and 3.4 installed, you can manually run tests on one specific version by running
-`tox -e lint,py27` (for Python 2.7) instead.
+If you don't have Python 2.6, 2.7, or 3.4 installed you can manually run tests on one specific version by running
+`tox -e lint,py35` (for Python 3.5) instead.
 
 ## Updating Docs
 
