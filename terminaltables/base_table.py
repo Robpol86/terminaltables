@@ -67,6 +67,8 @@ class BaseTable(object):
         self.justify_columns = dict()  # {0: 'right', 1: 'left', 2: 'center'}
         self.padding_left = 1
         self.padding_right = 1
+        self.vertical_align = True
+        self.horizontal_align = True
 
     def horizontal_border(self, style, outer_widths):
         """Build any kind of horizontal border for the table.
@@ -148,7 +150,9 @@ class BaseTable(object):
             align = (self.justify_columns.get(i),)
             inner_dimensions = (inner_widths[i], height)
             padding = (self.padding_left, self.padding_right, 0, 0)
-            cells_in_row.append(align_and_pad_cell(cell, align, inner_dimensions, padding))
+            cells_in_row.append(
+                align_and_pad_cell(cell, align, inner_dimensions, padding, horizontal_align=self.horizontal_align,
+                                   vertical_align=self.vertical_align))
 
         # Determine border characters.
         if style == 'heading':

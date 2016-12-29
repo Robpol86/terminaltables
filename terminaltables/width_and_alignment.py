@@ -39,7 +39,7 @@ def visible_width(string):
     return width
 
 
-def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
+def align_and_pad_cell(string, align, inner_dimensions, padding, space=' ', horizontal_align=True, vertical_align=True):
     """Align a string horizontally and vertically. Also add additional padding in both dimensions.
 
     :param str string: Input string to operate on.
@@ -47,6 +47,8 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
     :param tuple inner_dimensions: Width and height ints to expand string to without padding.
     :param iter padding: Number of space chars for left, right, top, and bottom (4 ints).
     :param str space: Character to use as white space for resizing/padding (use single visible chars only).
+    :param bool horizontal_align: Whether horizontal alignment should occur
+    :param bool vertical_align: Whether vertical alignment should occur
 
     :return: Padded cell split into lines.
     :rtype: list
@@ -55,28 +57,34 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
         string = str(string)
 
     # Handle trailing newlines or empty strings, str.splitlines() does not satisfy.
-    lines = string.splitlines() or ['']
-    if string.endswith('\n'):
-        lines.append('')
+    if vertical_align is True:
+        lines = string.splitlines() or ['']
+        if string.endswith('\n'):
+            lines.append('')
+    # No reason to split lines of np vertical alignment is needed. Also, line newlines should be avoided
+    else:
+        lines = [string.replace('\n', '<BR>')]
 
     # Vertically align and pad.
-    if 'bottom' in align:
-        lines = ([''] * (inner_dimensions[1] - len(lines) + padding[2])) + lines + ([''] * padding[3])
-    elif 'middle' in align:
-        delta = inner_dimensions[1] - len(lines)
-        lines = ([''] * (delta // 2 + delta % 2 + padding[2])) + lines + ([''] * (delta // 2 + padding[3]))
-    else:
-        lines = ([''] * padding[2]) + lines + ([''] * (inner_dimensions[1] - len(lines) + padding[3]))
+    if vertical_align is True:
+        if 'bottom' in align:
+            lines = ([''] * (inner_dimensions[1] - len(lines) + padding[2])) + lines + ([''] * padding[3])
+        elif 'middle' in align:
+            delta = inner_dimensions[1] - len(lines)
+            lines = ([''] * (delta // 2 + delta % 2 + padding[2])) + lines + ([''] * (delta // 2 + padding[3]))
+        else:
+            lines = ([''] * padding[2]) + lines + ([''] * (inner_dimensions[1] - len(lines) + padding[3]))
 
     # Horizontally align and pad.
-    for i, line in enumerate(lines):
-        new_width = inner_dimensions[0] + len(line) - visible_width(line)
-        if 'right' in align:
-            lines[i] = line.rjust(padding[0] + new_width, space) + (space * padding[1])
-        elif 'center' in align:
-            lines[i] = (space * padding[0]) + line.center(new_width, space) + (space * padding[1])
-        else:
-            lines[i] = (space * padding[0]) + line.ljust(new_width + padding[1], space)
+    if horizontal_align is True:
+        for i, line in enumerate(lines):
+            new_width = inner_dimensions[0] + len(line) - visible_width(line)
+            if 'right' in align:
+                lines[i] = line.rjust(padding[0] + new_width, space) + (space * padding[1])
+            elif 'center' in align:
+                lines[i] = (space * padding[0]) + line.center(new_width, space) + (space * padding[1])
+            else:
+                lines[i] = (space * padding[0]) + line.ljust(new_width + padding[1], space)
 
     return lines
 
