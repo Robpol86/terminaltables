@@ -61,7 +61,7 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' ', hori
         lines = string.splitlines() or ['']
         if string.endswith('\n'):
             lines.append('')
-    # No reason to split lines of np vertical alignment is needed. Also, line newlines should be avoided
+    # No reason to split lines when no vertical alignment is needed. Line breaks are escaped.
     else:
         lines = [string.encode('string_escape')]
 
