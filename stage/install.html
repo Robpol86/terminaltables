@@ -8,7 +8,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-82627369-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Installation &mdash; terminaltables</title>
@@ -44,7 +55,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="terminaltables" href="index.html"/>
         <link rel="next" title="Quickstart" href="quickstart.html"/>
-        <link rel="prev" title="terminaltables 3.0.0" href="index.html"/> 
+        <link rel="prev" title="terminaltables 3.1.0" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -73,7 +84,7 @@
             
             
               <div class="version">
-                3.0.0
+                3.1.0
               </div>
             
           
@@ -154,7 +165,7 @@
       
           
           
-            <a href="https://github.com/Robpol86/terminaltables/blob/close_stdin/docs/install.rst" class="fa fa-github"> Edit on GitHub</a>
+            <a href="https://github.com/Robpol86/terminaltables/blob/stage/docs/install.rst" class="fa fa-github"> Edit on GitHub</a>
           
         
       
@@ -196,7 +207,7 @@ repository.</p>
 <h2>Clone and Install<a class="headerlink" href="#clone-and-install" title="Permalink to this headline">¶</a></h2>
 <p>Lastly you can also just clone the repo and install from it. Usually you only need to do this if you plan on
 <a class="reference external" href="https://github.com/Robpol86/terminaltables/blob/master/CONTRIBUTING.md">contributing</a> to the project.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone git@github.com:Robpol86/terminaltables.git
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/Robpol86/terminaltables.git
 <span class="nb">cd</span> terminaltables
 python setup.py install
 </pre></div>
@@ -214,7 +225,7 @@ python setup.py install
         <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="terminaltables 3.0.0" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="terminaltables 3.1.0" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -224,6 +235,7 @@ python setup.py install
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, @Robpol86.
+      Last updated on Oct 16, 2016, 11:16:58 PM.
 
     </p>
   </div>
@@ -241,7 +253,7 @@ python setup.py install
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: close_stdin
+        v: stage
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
@@ -251,8 +263,8 @@ python setup.py install
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="install.html">stage</a></dd>
             <dd><a href="../master/install.html">master</a></dd>
-            <dd><a href="install.html">close_stdin</a></dd>
         </dl>
     </div>
 </div>
@@ -263,7 +275,7 @@ python setup.py install
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.0.0',
+            VERSION:'3.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
