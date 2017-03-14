@@ -24,9 +24,4 @@ on_success: IF %TOX_ENV% NEQ lint pip install codecov & codecov
 
 # Post.
 on_finish:
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_ascii_table.png
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_double_table.png
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_single_table.png
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_ascii.png
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_unicode.png
-  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_bytes.png
+  - FOR %%F IN (test*.png) DO appveyor PushArtifact %%F
