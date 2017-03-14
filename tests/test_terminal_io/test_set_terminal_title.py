@@ -54,7 +54,6 @@ def test(monkeypatch, is_windows, mode):
 
 
 @pytest.mark.skipif(str(not IS_WINDOWS))
-@pytest.mark.skipif('True')  # https://github.com/Robpol86/terminaltables/issues/30
 @pytest.mark.parametrize('mode', ['ascii', 'unicode', 'bytes'])
 def test_windows_screenshot(tmpdir, mode):
     """Test function on Windows in a new console window. Take a screenshot to verify it works.
@@ -65,7 +64,7 @@ def test_windows_screenshot(tmpdir, mode):
     script = tmpdir.join('script.py')
     command = [sys.executable, str(script)]
     change_title = tmpdir.join('change_title')
-    screenshot = PROJECT_ROOT.join('test_terminal_io.png')
+    screenshot = PROJECT_ROOT.join('test_terminal_io_{0}.png'.format(mode))
     if screenshot.check():
         screenshot.remove()
 

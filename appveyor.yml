@@ -18,16 +18,15 @@ environment:
       PYTHON: Python27-x64
 
 # Run.
-install:
-  - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1
-  - ps: .\enable-desktop
 build_script: pip install tox
 test_script: tox -e %TOX_ENV%
 on_success: IF %TOX_ENV% NEQ lint pip install codecov & codecov
 
 # Post.
-# on_finish: https://github.com/Robpol86/terminaltables/issues/30
-  #- appveyor PushArtifact test_ascii_table.png https://github.com/Robpol86/terminaltables/issues/30
-  #- appveyor PushArtifact test_double_table.png https://github.com/Robpol86/terminaltables/issues/30
-  #- appveyor PushArtifact test_single_table.png https://github.com/Robpol86/terminaltables/issues/30
-  #- appveyor PushArtifact test_terminal_io.png https://github.com/Robpol86/terminaltables/issues/30
+on_finish:
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_ascii_table.png
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_double_table.png
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_single_table.png
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_ascii.png
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_unicode.png
+  - IF %TOX_ENV% NEQ lint appveyor PushArtifact test_terminal_io_bytes.png
