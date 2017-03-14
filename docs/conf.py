@@ -9,6 +9,7 @@ import time
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 author = '@Robpol86'
 copyright = '{}, {}'.format(time.strftime('%Y'), author)
+html_last_updated_fmt = '%c'
 master_doc = 'index'
 project = __import__('setup').NAME
 pygments_style = 'friendly'
@@ -49,5 +50,6 @@ googleanalytics_id = 'UA-82627369-1'
 # SCVersioning.
 scv_banner_greatest_tag = True
 scv_grm_exclude = ('.gitignore', '.nojekyll', 'README.rst')
+scv_overflow = ('-W',)
 scv_show_banner = True
 scv_sort = ('semver', 'time')

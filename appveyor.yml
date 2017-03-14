@@ -1,5 +1,6 @@
 # Configure.
 environment:
+  PATH: C:\%PYTHON%;C:\%PYTHON%\Scripts;%PATH%
   PYTHON: Python35
   matrix:
     - TOX_ENV: lint
@@ -17,7 +18,6 @@ environment:
       PYTHON: Python27-x64
 
 # Run.
-init: set PATH=C:\%PYTHON%;C:\%PYTHON%\Scripts;%PATH%
 install:
   - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1
   - ps: .\enable-desktop
