@@ -9,7 +9,7 @@ import time
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 author = '@Robpol86'
 copyright = '{}, {}'.format(time.strftime('%Y'), author)
-html_last_updated_fmt = '%c'
+html_last_updated_fmt = '%c {}'.format(time.tzname[time.localtime().tm_isdst])
 master_doc = 'index'
 project = __import__('setup').NAME
 pygments_style = 'friendly'
