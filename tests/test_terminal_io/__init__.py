@@ -6,7 +6,10 @@ from terminaltables import terminal_io
 class MockKernel32(object):
     """Mock kernel32."""
 
-    def __init__(self, stderr=terminal_io.INVALID_HANDLE_VALUE, stdout=terminal_io.INVALID_HANDLE_VALUE):
+    def __init__(self,
+                 stderr=terminal_io.INVALID_HANDLE_VALUE,
+                 stdout=terminal_io.INVALID_HANDLE_VALUE,
+                 screen_buffer_info=True):
         """Constructor."""
         self.stderr = stderr
         self.stdout = stdout
@@ -14,6 +17,7 @@ class MockKernel32(object):
         self.csbi_out = b'L\x00,\x01\x00\x00*\x01\x07\x00\x00\x00\x0e\x01K\x00*\x01L\x00L\x00'  # 75 x 28
         self.setConsoleTitleA_called = False
         self.setConsoleTitleW_called = False
+        self.screen_buffer_info = screen_buffer_info
 
     def GetConsoleScreenBufferInfo(self, handle, lpcsbi):  # noqa
         """Mock GetConsoleScreenBufferInfo.
@@ -21,6 +25,9 @@ class MockKernel32(object):
         :param handle: Unused handle.
         :param lpcsbi: ctypes.create_string_buffer() return value.
         """
+        if not self.screen_buffer_info:
+            return 0
+
         if handle == self.stderr:
             lpcsbi.raw = self.csbi_err
         else:
