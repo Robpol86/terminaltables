@@ -61,7 +61,7 @@ def table_abcd():
 
 
 def main():
-    """Main function."""
+    """Print some example tables to the console."""
     Windows.enable(auto_colors=True, reset_atexit=True)  # Does nothing if not on Windows.
 
     # Server timings.

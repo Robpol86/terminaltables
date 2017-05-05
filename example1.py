@@ -16,7 +16,7 @@ TABLE_DATA = (
 
 
 def main():
-    """Main function."""
+    """Print some information about Golf cars."""
     title = 'Jetta SportWagen'
 
     # AsciiTable.

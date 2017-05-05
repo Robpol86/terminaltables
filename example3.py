@@ -18,7 +18,7 @@ LONG_STRING = ('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
 
 
 def main():
-    """Main function."""
+    """Print a line-wrapped table of Lorem-ipsum sample text."""
     table_data = [
         ['Long String', ''],  # One row. Two columns. Long string will replace this empty string.
     ]
