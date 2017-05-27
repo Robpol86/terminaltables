@@ -2,9 +2,9 @@
 
 from terminaltables.ascii_table import AsciiTable
 
+
 class UnicodeSingleTable(AsciiTable):
-    """Draw a table using box-drawing characters.
-    """
+    """Draw a table using box-drawing characters."""
     CHAR_F_INNER_HORIZONTAL = '─'
     CHAR_F_INNER_INTERSECT = '┼'
     CHAR_F_INNER_VERTICAL = '│'
@@ -35,9 +35,9 @@ class UnicodeSingleTable(AsciiTable):
     CHAR_OUTER_TOP_LEFT = '┌'
     CHAR_OUTER_TOP_RIGHT = '┐'
 
+
 class UnicodeDoubleTable(AsciiTable):
-    """Draw a table using double lined box-drawing characters.
-    """
+    """Draw a table using double lined box-drawing characters."""
     CHAR_F_INNER_HORIZONTAL = '═'
     CHAR_F_INNER_INTERSECT = '╬'
     CHAR_F_INNER_VERTICAL = '║'
