@@ -11,6 +11,8 @@ from terminaltables.github_table import GithubFlavoredMarkdownTable  # noqa
 from terminaltables.other_tables import DoubleTable  # noqa
 from terminaltables.other_tables import SingleTable  # noqa
 from terminaltables.other_tables import PorcelainTable  # noqa
+from terminaltables.unicode_tables import UnicodeSingleTable  # noqa
+from terminaltables.unicode_tables import UnicodeDoubleTable  # noqa
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'
