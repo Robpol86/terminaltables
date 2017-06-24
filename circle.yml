@@ -1,0 +1,25 @@
+version: 2
+
+defaults: &defaults
+    environment: {TOX_ENV: py}
+    steps:
+        - checkout
+        - run: pip install tox
+        - run: tox -e $TOX_ENV
+        - run: bash <(curl -s https://codecov.io/bash)
+    working_directory: ~/project
+
+jobs:
+    build-lint:
+        <<: *defaults
+        docker: {image: 'python:3.5'}
+        environment: {TOX_ENV: lint}
+    build-py35:
+        <<: *defaults
+        docker: {image: 'python:3.5'}
+    build-py34:
+        <<: *defaults
+        docker: {image: 'python:3.4'}
+    build-py33:
+        <<: *defaults
+        docker: {image: 'python:3.3'}
