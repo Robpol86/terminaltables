@@ -9,25 +9,48 @@ defaults: &defaults
         - run: bash <(curl -s https://codecov.io/bash)
     working_directory: ~/project
 
+defaults_no_cov: &defaults_no_cov
+    <<: *defaults
+    steps:
+        - checkout
+        - run: pip install tox
+        - run: tox -e $TOX_ENV
+
 jobs:
-  build-p27:
+  build-lint:
+    <<: *defaults_no_cov
+    docker:
+      - image: python:3.5
+  build-py35:
     <<: *defaults
     docker:
-      - image: python:2.7
-  build-p34:
+      - image: python:3.5
+  build-py34:
     <<: *defaults
     docker:
       - image: python:3.4
+  build-py33:
+    <<: *defaults
+    docker:
+      - image: python:3.3
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-p27:
+      - build-lint:
           filters:
             branches:
               ignore: gh-pages
-      - build-p34:
+      - build-py35:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-py34:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-py33:
           filters:
             branches:
               ignore: gh-pages
