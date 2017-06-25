@@ -1,61 +1,61 @@
 defaults: &defaults
-    docker:
-        - image: ubuntu:14.04
-    steps:
-        - run:
-            name: "Update package manager..."
-            command: "apt-get -y update"
-        - run:
-            name: "Install git..."
-            command: "apt-get install -y git"
-        - checkout
-    working_directory: ~/project
+  working_directory: ~/incapsula-cracker-py3
+  docker:
+    - image: ubuntu:14.04
+  steps:
+    - run:
+        name: "Update package manager..."
+        command: "apt-get -y update"
+    - run:
+        name: "Install git..."
+        command: "apt-get install -y git"
+    - checkout
 
 python_defaults: &python_defaults
-    working_directory: ~/project
-    steps:
-        - run:
-            name: "Update package manager"
-            command: "apt-get -y update"
-        - run:
-            name: "Install git"
-            command: "apt-get install -y git"
-        - checkout
-        - run:
-            name: "Install dependencies"
-            command: "python -m pip install -r requirements.txt"
-        - run:
-            name: "Install nose"
-            command: "python -m pip install nose"
-        - run:
-            name: "Python version"
-            command: "printf Using- && python --version"
-        - run:
-            name: "Nosetests"
-            command: "nosetests -v"
+  working_directory: ~/incapsula-cracker-py3
+  steps:
+    - run:
+        name: "Update package manager"
+        command: "apt-get -y update"
+    - run:
+        name: "Install git"
+        command: "apt-get install -y git"
+    - checkout
+    - run:
+        name: "Install dependencies"
+        command: "python -m pip install -r requirements.txt"
+    - run:
+        name: "Install nose"
+        command: "python -m pip install nose"
+    - run:
+        name: "Python version"
+        command: "printf Using- && python --version"
+    - run:
+        name: "Nosetests"
+        command: "nosetests -v"
 
 version: 2
 jobs:
-    build:
-        <<: *defaults
-    build-p27:
-        <<: *python_defaults
+  build:
+    <<: *defaults
+  build-p27:
+    <<: *python_defaults
     docker:
-        - image: python:2.7
-    build-p34:
-        <<: *python_defaults
+      - image: python:2.7
+  build-p34:
+    <<: *python_defaults
     docker:
-        - image: python:3.4
+      - image: python:3.4
 
 workflows:
-    version: 2
-    build_and_test:
-        jobs:
-            - build-p27:
-                filters:
-                    branches:
-                        ignore: gh-pages
-            - build-p34:
-                filters:
-                    branches:
-                        ignore: gh-pages
+  version: 2
+  build_and_test:
+    jobs:
+      - build-p27:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-p34:
+          filters:
+            branches:
+              ignore: gh-pages
