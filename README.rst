@@ -9,11 +9,11 @@ Easily draw tables in terminal/console applications from a list of lists of stri
 
 📖 Full documentation: https://robpol86.github.io/terminaltables
 
-.. image:: https://img.shields.io/appveyor/ci/Robpol86/terminaltables/master.svg?style=flat-square&label=AppVeyor%20CI
+.. image:: https://img.shields.io/appveyor/ci/Robpol86/terminaltables/master.svg?style=flat-square&label=Windows
     :target: https://ci.appveyor.com/project/Robpol86/terminaltables
     :alt: Build Status Windows
 
-.. image:: https://img.shields.io/circleci/project/github/Robpol86/terminaltables/master.svg?style=flat-square&label=CircleCI
+.. image:: https://img.shields.io/circleci/project/github/Robpol86/terminaltables/master.svg?style=flat-square&label=Linux
     :target: https://circleci.com/gh/Robpol86/terminaltables
     :alt: Build Status
 
