@@ -36,8 +36,6 @@ python_defaults: &python_defaults
 
 version: 2
 jobs:
-  build:
-    <<: *defaults
   build-p27:
     <<: *python_defaults
     docker:
