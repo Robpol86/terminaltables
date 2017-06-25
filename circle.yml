@@ -18,23 +18,23 @@ defaults_no_cov: &defaults_no_cov
         - run: tox -e $TOX_ENV
 
 jobs:
-  build-lint:
+  test-lint:
     <<: *defaults_no_cov
     environment: {TOX_ENV: lint}
-  build-py35:
+  test-py35:
     <<: *defaults
-  build-py34:
+  test-py34:
     <<: *defaults
     docker: [{image: 'python:3.4'}]
-  build-py33:
+  test-py33:
     <<: *defaults
     docker: [{image: 'python:3.3'}]
 
 workflows:
   version: 2
-  build_and_test:
+  tests:
     jobs:
-      - build-lint
-      - build-py35
-      - build-py34
-      - build-py33
+      - test-lint
+      - test-py35
+      - test-py34
+      - test-py33
