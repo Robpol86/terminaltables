@@ -3,16 +3,8 @@ version: 2
 defaults: &defaults
     environment: {TOX_ENV: py}
     steps:
-        - run:
-            name: "Update package manager"
-            command: "apt-get -y update"
-        - run:
-            name: "Install git"
-            command: "apt-get install -y git"
         - checkout
-        - run:
-            name: "Install dependencies"
-            command: "python -m pip install -r requirements.txt"
+        - run: pip install tox
         - run:
             name: "Install nose"
             command: "python -m pip install nose"
