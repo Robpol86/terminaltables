@@ -1,18 +1,5 @@
 defaults: &defaults
-  working_directory: ~/incapsula-cracker-py3
-  docker:
-    - image: ubuntu:14.04
-  steps:
-    - run:
-        name: "Update package manager..."
-        command: "apt-get -y update"
-    - run:
-        name: "Install git..."
-        command: "apt-get install -y git"
-    - checkout
-
-python_defaults: &python_defaults
-  working_directory: ~/incapsula-cracker-py3
+  working_directory: ~/project
   steps:
     - run:
         name: "Update package manager"
@@ -37,11 +24,11 @@ python_defaults: &python_defaults
 version: 2
 jobs:
   build-p27:
-    <<: *python_defaults
+    <<: *defaults
     docker:
       - image: python:2.7
   build-p34:
-    <<: *python_defaults
+    <<: *defaults
     docker:
       - image: python:3.4
 
