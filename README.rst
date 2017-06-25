@@ -13,8 +13,8 @@ Easily draw tables in terminal/console applications from a list of lists of stri
     :target: https://ci.appveyor.com/project/Robpol86/terminaltables
     :alt: Build Status Windows
 
-.. image:: https://img.shields.io/travis/Robpol86/terminaltables/master.svg?style=flat-square&label=Travis%20CI
-    :target: https://travis-ci.org/Robpol86/terminaltables
+.. image:: https://img.shields.io/circleci/project/github/Robpol86/terminaltables/master.svg?style=flat-square&label=CircleCI
+    :target: https://circleci.com/gh/Robpol86/terminaltables
     :alt: Build Status
 
 .. image:: https://img.shields.io/codecov/c/github/Robpol86/terminaltables/master.svg?style=flat-square&label=Codecov
