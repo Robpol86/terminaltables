@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-    docker: {image: python:3.5}
+    docker: {image: 'python:3.5'}
     environment: {TOX_ENV: py}
     steps:
         - checkout
