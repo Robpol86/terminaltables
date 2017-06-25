@@ -5,15 +5,8 @@ defaults: &defaults
     steps:
         - checkout
         - run: pip install tox
-        - run:
-            name: "Install nose"
-            command: "python -m pip install nose"
-        - run:
-            name: "Python version"
-            command: "printf Using- && python --version"
-        - run:
-            name: "Nosetests"
-            command: "nosetests -v"
+        - run: tox -e $TOX_ENV
+        - run: bash <(curl -s https://codecov.io/bash)
     working_directory: ~/project
 
 jobs:
