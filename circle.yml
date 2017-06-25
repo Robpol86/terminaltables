@@ -23,3 +23,12 @@ jobs:
     build-py33:
         <<: *defaults
         docker: {image: 'python:3.3'}
+
+workflows:
+    version: 2
+    build_and_test:
+        jobs:
+            - build-lint
+            - build-py35
+            - build-py34
+            - build-py33
