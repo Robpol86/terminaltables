@@ -34,7 +34,19 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-lint
-      - build-py35
-      - build-py34
-      - build-py33
+      - build-lint:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-py35:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-py34:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build-py33:
+          filters:
+            branches:
+              ignore: gh-pages
