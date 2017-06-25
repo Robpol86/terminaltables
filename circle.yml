@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-    docker: {image: 'python:3.5'}
+    docker: [{image: 'python:3.5'}]
     environment: {TOX_ENV: py}
     steps:
         - checkout
@@ -25,28 +25,16 @@ jobs:
     <<: *defaults
   build-py34:
     <<: *defaults
-    docker: {image: 'python:3.4'}
+    docker: [{image: 'python:3.4'}]
   build-py33:
     <<: *defaults
-    docker: {image: 'python:3.3'}
+    docker: [{image: 'python:3.3'}]
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-lint:
-          filters:
-            branches:
-              ignore: gh-pages
-      - build-py35:
-          filters:
-            branches:
-              ignore: gh-pages
-      - build-py34:
-          filters:
-            branches:
-              ignore: gh-pages
-      - build-py33:
-          filters:
-            branches:
-              ignore: gh-pages
+      - build-lint
+      - build-py35
+      - build-py34
+      - build-py33
