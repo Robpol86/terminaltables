@@ -25,10 +25,10 @@ jobs:
     <<: *defaults
   build-py34:
     <<: *defaults
-    docker: {image: python:3.4}
+    docker: {image: 'python:3.4'}
   build-py33:
     <<: *defaults
-    docker: {image: python:3.3}
+    docker: {image: 'python:3.3'}
 
 workflows:
   version: 2
