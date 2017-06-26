@@ -17,17 +17,13 @@ defaults_cov: &defaults_cov
 
 jobs:
     test-lint: {<<: *defaults, environment: {TOX_ENV: lint}}
+    test-docs: {<<: *defaults, environment: {TOX_ENV: docs}}
     test-py35: {<<: *defaults_cov}
     test-py34: {<<: *defaults_cov, docker: [{image: 'python:3.4'}]}
     test-py33: {<<: *defaults_cov, docker: [{image: 'python:3.3'}]}
     test-py27: {<<: *defaults_cov, docker: [{image: 'python:2.7'}]}
     test-pypy3: {<<: *defaults_cov, docker: [{image: 'pypy:3'}]}
     test-pypy2: {<<: *defaults_cov, docker: [{image: 'pypy:2'}]}
-    deploy-pypi:
-        <<: *defaults
-        steps:
-            - checkout
-            - run: exit 1
 
 workflows:
     tests:
@@ -39,11 +35,6 @@ workflows:
             - test-py27
             - test-pypy3
             - test-pypy2
-    deploy:
-        jobs:
-            - deploy:
-                requires:
-                    - tests
     version: 2
 
 version: 2
