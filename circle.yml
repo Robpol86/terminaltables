@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-    docker: [{image: 'python:3.5'}]
+    docker: [{image: 'python:3.6'}]
     environment: {TOX_ENV: py}
     steps:
         - checkout
@@ -21,8 +21,10 @@ jobs:
   test-lint:
     <<: *defaults
     environment: {TOX_ENV: lint}
+  test-py36: {<<: *defaults_cov}
   test-py35:
     <<: *defaults_cov
+    docker: [{image: 'python:3.5'}]
   test-py34:
     <<: *defaults_cov
     docker: [{image: 'python:3.4'}]
@@ -32,9 +34,6 @@ jobs:
   test-py27:
     <<: *defaults_cov
     docker: [{image: 'python:2.7'}]
-  test-py26:
-    <<: *defaults_cov
-    docker: [{image: 'python:2.6'}]
   test-pypy3:
     <<: *defaults_cov
     docker: [{image: 'pypy:3'}]
@@ -47,10 +46,10 @@ workflows:
   tests:
     jobs:
       - test-lint
+      - test-py36
       - test-py35
       - test-py34
       - test-py33
       - test-py27
-      - test-py26
       - test-pypy3
       - test-pypy2

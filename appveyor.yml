@@ -1,13 +1,16 @@
 # Configure.
 environment:
   PATH: C:\%PYTHON%;C:\%PYTHON%\Scripts;%PATH%
-  PYTHON: Python35
+  PYTHON: Python36
   matrix:
     - TOX_ENV: lint
+    - TOX_ENV: py36
     - TOX_ENV: py35
     - TOX_ENV: py34
     - TOX_ENV: py33
     - TOX_ENV: py27
+    - TOX_ENV: py
+      PYTHON: Python36-x64
     - TOX_ENV: py
       PYTHON: Python35-x64
     - TOX_ENV: py
