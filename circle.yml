@@ -9,8 +9,7 @@ defaults: &defaults
 
 defaults_cov: &defaults_cov
     <<: *defaults
-    steps:
-        *steps
+    steps: *steps
         - run: bash <(curl -s https://codecov.io/bash)
 
 jobs:
