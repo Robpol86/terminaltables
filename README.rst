@@ -4,8 +4,8 @@ terminaltables
 
 Easily draw tables in terminal/console applications from a list of lists of strings. Supports multi-line rows.
 
-* Python 2.7, PyPy, PyPy3, 3.3, 3.4, 3.5, and 3.6 supported on Linux and OS X.
-* Python 2.7, 3.3, 3.4, 3.5, and 3.6 supported on Windows (both 32 and 64 bit versions of Python).
+* Python 2.7, PyPy, PyPy3, 3.3, 3.4, and 3.5 supported on Linux and OS X.
+* Python 2.7, 3.3, 3.4, and 3.5 supported on Windows (both 32 and 64 bit versions of Python).
 
 📖 Full documentation: https://robpol86.github.io/terminaltables
 
@@ -74,9 +74,6 @@ This project adheres to `Semantic Versioning <http://semver.org/>`_.
 
 Unreleased
 ----------
-
-Added
-    * Python 3.6 support.
 
 Removed
     * Python 2.6 support.
