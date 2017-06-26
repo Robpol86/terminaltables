@@ -18,9 +18,6 @@ defaults_no_cov: &defaults_no_cov
         - run: tox -e $TOX_ENV
 
 jobs:
-  test-lint:
-    <<: *defaults_no_cov
-    environment: {TOX_ENV: lint}
   test-py35:
     <<: *defaults
   test-py34:
@@ -34,7 +31,9 @@ workflows:
   version: 2
   tests:
     jobs:
-      - test-lint
+      - test-lint:
+        <<: *defaults_no_cov
+        environment: {TOX_ENV: lint}
       - test-py35
       - test-py34
       - test-py33
