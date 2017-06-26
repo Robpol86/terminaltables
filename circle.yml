@@ -1,7 +1,7 @@
 defaults: &defaults
     docker: [{image: 'python:3.5'}]
     environment: {TOX_ENV: py}
-    steps: &steps
+    steps:
         - checkout
         - run: pip install tox
         - run: tox -e $TOX_ENV
@@ -9,7 +9,10 @@ defaults: &defaults
 
 defaults_cov: &defaults_cov
     <<: *defaults
-    steps: *steps
+    steps:
+        - checkout
+        - run: pip install tox
+        - run: tox -e $TOX_ENV
         - run: bash <(curl -s https://codecov.io/bash)
 
 jobs:
