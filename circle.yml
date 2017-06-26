@@ -24,10 +24,15 @@ jobs:
     test-py27: {<<: *defaults_cov, docker: [{image: 'python:2.7'}]}
     test-pypy3: {<<: *defaults_cov, docker: [{image: 'pypy:3'}]}
     test-pypy2: {<<: *defaults_cov, docker: [{image: 'pypy:2'}]}
+    deploy-pypi:
+        <<: *defaults
+        steps:
+            - checkout
+            - run: exit 1
 
 workflows:
     tests:
-        jobs:
+        jobs: &tests
             - test-lint
             - test-py35
             - test-py34
@@ -35,6 +40,11 @@ workflows:
             - test-py27
             - test-pypy3
             - test-pypy2
+    deploy:
+        jobs:
+            - deploy:
+                requires:
+                    *tests
     version: 2
 
 version: 2
