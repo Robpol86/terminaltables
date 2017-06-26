@@ -7,33 +7,50 @@ defaults: &defaults
         - checkout
         - run: pip install tox
         - run: tox -e $TOX_ENV
-        - run: bash <(curl -s https://codecov.io/bash)
     working_directory: ~/project
 
-defaults_no_cov: &defaults_no_cov
+defaults_cov: &defaults_cov
     <<: *defaults
     steps:
         - checkout
         - run: pip install tox
         - run: tox -e $TOX_ENV
+        - run: bash <(curl -s https://codecov.io/bash)
 
 jobs:
+  test-lint:
+    <<: *defaults
+    environment: {TOX_ENV: lint}
   test-py35:
-    <<: *defaults
+    <<: *defaults_cov
   test-py34:
-    <<: *defaults
+    <<: *defaults_cov
     docker: [{image: 'python:3.4'}]
   test-py33:
-    <<: *defaults
+    <<: *defaults_cov
     docker: [{image: 'python:3.3'}]
+  test-py27:
+    <<: *defaults_cov
+    docker: [{image: 'python:2.7'}]
+  test-py26:
+    <<: *defaults_cov
+    docker: [{image: 'python:2.6'}]
+  test-pypy3:
+    <<: *defaults_cov
+    docker: [{image: 'pypy:3'}]
+  test-pypy2:
+    <<: *defaults_cov
+    docker: [{image: 'pypy:2'}]
 
 workflows:
   version: 2
   tests:
     jobs:
-      - test-lint:
-        <<: *defaults_no_cov
-        environment: {TOX_ENV: lint}
+      - test-lint
       - test-py35
       - test-py34
       - test-py33
+      - test-py27
+      - test-py26
+      - test-pypy3
+      - test-pypy2
