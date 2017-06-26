@@ -1,7 +1,7 @@
 defaults: &defaults
     docker: [{image: 'python:3.5'}]
     environment: {TOX_ENV: py}
-    steps:
+    steps: &steps
         - checkout
         - run: pip install tox
         - run: tox -e $TOX_ENV
@@ -10,9 +10,7 @@ defaults: &defaults
 defaults_cov: &defaults_cov
     <<: *defaults
     steps:
-        - checkout
-        - run: pip install tox
-        - run: tox -e $TOX_ENV
+        *steps
         - run: bash <(curl -s https://codecov.io/bash)
 
 jobs:
@@ -34,17 +32,13 @@ workflows:
     tests:
         jobs: &tests
             - test-lint
+            - test-docs
             - test-py35
             - test-py34
             - test-py33
             - test-py27
             - test-pypy3
             - test-pypy2
-    deploy:
-        jobs:
-            - deploy:
-                requires:
-                    *tests
     version: 2
 
 version: 2
