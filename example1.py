@@ -46,4 +46,11 @@ def main():
 
 
 if __name__ == '__main__':
+    try:
+        import sys
+        reload(sys)
+        sys.setdefaultencoding('utf8')
+    except:
+        pass
+
     main()
