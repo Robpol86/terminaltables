@@ -12,7 +12,7 @@ class UnicodeSingleTable(AsciiTable):
 
     For Python 2.7 and before you might need to force the encoding on stdout to be UTF-8.
     That can be done with the following commands, although they are not recommended.
-    reload(sys) 
+    reload(sys)
     sys.setdefaultencoding('utf8')
 
     """
