@@ -6,7 +6,7 @@ Just prints sample text and exits.
 
 from __future__ import print_function
 
-from terminaltables import AsciiTable, DoubleTable, SingleTable
+from terminaltables import AsciiTable, DoubleTable, SingleTable, UnicodeSingleTable
 
 TABLE_DATA = (
     ('Platform', 'Years', 'Notes'),
@@ -34,6 +34,13 @@ def main():
     # DoubleTable.
     table_instance = DoubleTable(TABLE_DATA, title)
     table_instance.justify_columns[2] = 'right'
+    print(table_instance.table)
+    print()
+
+    # UnicodeTable
+    table_instance = UnicodeSingleTable(TABLE_DATA, title)
+    table_instance.justify_columns[2] = 'right'
+    #table_instance.inner_row_border = True
     print(table_instance.table)
     print()
 

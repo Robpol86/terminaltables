@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Functions that handle alignment, padding, widths, etc."""
 
 import re

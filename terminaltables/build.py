@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Combine cells into rows."""
 
 from terminaltables.width_and_alignment import visible_width
