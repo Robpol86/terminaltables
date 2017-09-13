@@ -1,4 +1,4 @@
-#coding=UTF-8
+# coding=UTF-8
 """Additional simple tables defined here."""
 
 from terminaltables.ascii_table import AsciiTable

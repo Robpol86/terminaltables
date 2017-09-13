@@ -7,6 +7,10 @@ Just prints sample text and exits.
 from __future__ import print_function
 
 from terminaltables import AsciiTable, DoubleTable, SingleTable, UnicodeSingleTable
+try:
+    from imp import reload
+except:
+    pass # python 2 has it built-in
 
 TABLE_DATA = (
     ('Platform', 'Years', 'Notes'),
@@ -40,7 +44,7 @@ def main():
     # UnicodeTable
     table_instance = UnicodeSingleTable(TABLE_DATA, title)
     table_instance.justify_columns[2] = 'right'
-    #table_instance.inner_row_border = True
+    # table_instance.inner_row_border = True
     print(table_instance.table)
     print()
 
