@@ -10,7 +10,7 @@ from terminaltables import AsciiTable, DoubleTable, SingleTable, UnicodeSingleTa
 try:
     from imp import reload
 except:
-    pass # python 2 has it built-in
+    pass  # python 2 has it built-in
 
 TABLE_DATA = (
     ('Platform', 'Years', 'Notes'),
