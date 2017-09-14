@@ -1,6 +1,6 @@
 """Test function in module."""
 
-from terminaltables.width_and_alignment import max_dimensions, table_width, SEPARATOR
+from terminaltables.width_and_alignment import max_dimensions, SEPARATOR, table_width
 
 
 def test_empty():

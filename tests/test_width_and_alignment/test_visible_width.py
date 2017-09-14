@@ -6,7 +6,7 @@ from colorama import Fore
 from colorclass import Color
 from termcolor import colored
 
-from terminaltables.width_and_alignment import visible_width, SEPARATOR
+from terminaltables.width_and_alignment import SEPARATOR, visible_width
 
 
 @pytest.mark.parametrize('string,expected', [

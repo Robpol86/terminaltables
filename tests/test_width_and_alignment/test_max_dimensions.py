@@ -44,7 +44,7 @@ def test_single_line():
 
 
 def test_separator():
-    """Test separator inside table"""
+    """Test separator inside table."""
     table_data = [
         ['Name', 'Color', 'Type'],
         [SEPARATOR],
