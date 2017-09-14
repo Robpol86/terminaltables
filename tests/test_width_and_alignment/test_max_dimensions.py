@@ -6,7 +6,7 @@ from colorama import Fore
 from colorclass import Color
 from termcolor import colored
 
-from terminaltables.width_and_alignment import max_dimensions
+from terminaltables.width_and_alignment import max_dimensions, SEPARATOR
 
 
 @pytest.mark.parametrize('table_data,expected_w,expected_h', [
@@ -41,6 +41,17 @@ def test_single_line():
 
     table_data.append(['Watermelon', 'green', 'fruit'])
     assert max_dimensions(table_data, 2, 2) == ([10, 5, 9], [1, 1, 1, 1, 1], [14, 9, 13], [1, 1, 1, 1, 1])
+
+
+def test_separator():
+    """Test separator inside table"""
+    table_data = [
+        ['Name', 'Color', 'Type'],
+        [SEPARATOR],
+        ['Avocado', 'green', 'nut'],
+    ]
+
+    assert max_dimensions(table_data, 1, 1) == ([7, 5, 4], [1, 1, 1], [9, 7, 6], [1, 1, 1])
 
 
 def test_multi_line():

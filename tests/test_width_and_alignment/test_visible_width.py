@@ -6,7 +6,7 @@ from colorama import Fore
 from colorclass import Color
 from termcolor import colored
 
-from terminaltables.width_and_alignment import visible_width
+from terminaltables.width_and_alignment import visible_width, SEPARATOR
 
 
 @pytest.mark.parametrize('string,expected', [
@@ -17,6 +17,9 @@ from terminaltables.width_and_alignment import visible_width
     ('שלום', 4),
     ('معرب', 4),
     ('hello 世界', 10),
+
+    # separator
+    (SEPARATOR, 0),
 
     # str+ansi
     ('\x1b[34mhello, world\x1b[39m', 12),

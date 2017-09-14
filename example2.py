@@ -9,6 +9,7 @@ from __future__ import print_function
 from colorclass import Color, Windows
 
 from terminaltables import SingleTable
+from terminaltables import SEPARATOR
 
 
 def table_server_timings():
@@ -60,6 +61,16 @@ def table_abcd():
     return '\n'.join(combined)
 
 
+def table_separators():
+    table_data = [["X", "Y"]]
+    for x in range(0, 3):
+        for y in range(0, 5):
+            table_data.append([Color("{autoyellow}" + str(x) + "{/autoyellow}"), Color(str(y))])
+        table_data.append([SEPARATOR])
+    table_instance = SingleTable(table_data, "Separators")
+    return table_instance.table
+
+
 def main():
     """Main function."""
     Windows.enable(auto_colors=True, reset_atexit=True)  # Does nothing if not on Windows.
@@ -74,6 +85,10 @@ def main():
 
     # Two A B C D tables.
     print(table_abcd())
+    print()
+
+    # Separators
+    print(table_separators())
     print()
 
     # Instructions.

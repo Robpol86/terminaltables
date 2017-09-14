@@ -5,6 +5,8 @@ import unicodedata
 
 from terminaltables.terminal_io import terminal_size
 
+
+SEPARATOR = "<terminaltables.separator>"
 RE_COLOR_ANSI = re.compile(r'(\033\[[\d;]+m)')
 
 
@@ -20,6 +22,10 @@ def visible_width(string):
     :return: String's width.
     :rtype: int
     """
+    # separator has no width
+    if SEPARATOR in string:
+        return 0
+
     if '\033' in string:
         string = RE_COLOR_ANSI.sub('', string)
 
