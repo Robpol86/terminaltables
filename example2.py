@@ -61,7 +61,7 @@ def table_abcd():
 
 
 def table_separators():
-    """Return table string to be printed, including separators"""
+    """Return table string to be printed, including separators."""
     table_data = [["X", "Y"]]
     for x in range(0, 3):
         for y in range(0, 5):
