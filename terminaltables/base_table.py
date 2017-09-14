@@ -194,8 +194,6 @@ class BaseTable(object):
             if SEPARATOR not in row:
                 for line in self.gen_row_lines(row, style, inner_widths, inner_heights[i]):
                     yield line
-            else:
-                yield self.horizontal_border('row', outer_widths)
             # If this is the last row then break. No separator needed.
             if i == last_row_index:
                 break
@@ -206,7 +204,7 @@ class BaseTable(object):
             elif self.inner_footing_row_border and i == before_last_row_index:
                 yield self.horizontal_border('footing', outer_widths)
             # Yield row separator.
-            elif self.inner_row_border:
+            elif self.inner_row_border or SEPARATOR in row:
                 yield self.horizontal_border('row', outer_widths)
 
         # Yield bottom border.
