@@ -75,8 +75,10 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
         if 'right' in align:
             lpad += extra_padding
         elif 'center' in align:
-            lpad += extra_padding // 2
-            rpad += (extra_padding + 1) // 2
+            # Replicate Python's str.center() logic, but using visible_width() instead of len().
+            left = extra_padding // 2 + (extra_padding & inner_dimensions[0] & 1)
+            lpad += left
+            rpad += extra_padding - left
         else:
             rpad += extra_padding
         lines[i] = (space * lpad) + line + (space * rpad)

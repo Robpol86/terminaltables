@@ -75,6 +75,8 @@ from terminaltables.width_and_alignment import align_and_pad_cell
     (u'שלום', 'center', 6, [u' \u05e9\u05dc\u05d5\u05dd ']),
     (u'معرب', 'center', 6, [u' \u0645\u0639\u0631\u0628 ']),
 
+    ('0000', 'center', 7, ['  0000 ']),
+    (colored('0000', 'blue'), 'center', 7, ['  \x1b[34m0000\x1b[0m ']),
     ('00:00', 'center', 8, [' 00:00  ']),
     (colored('00:00', 'blue'), 'center', 8, [' \x1b[34m00:00\x1b[0m  ']),
 ])
