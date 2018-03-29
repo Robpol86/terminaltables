@@ -74,6 +74,9 @@ from terminaltables.width_and_alignment import align_and_pad_cell
     ('蓝色', 'center', 6, [' 蓝色 ']),
     (u'שלום', 'center', 6, [u' \u05e9\u05dc\u05d5\u05dd ']),
     (u'معرب', 'center', 6, [u' \u0645\u0639\u0631\u0628 ']),
+
+    ('00:00', 'center', 8, [' 00:00  ']),
+    (colored('00:00', 'blue'), 'center', 8, [' \x1b[34m00:00\x1b[0m  ']),
 ])
 def test_width(string, align, width, expected):
     """Test width and horizontal alignment.

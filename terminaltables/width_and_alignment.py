@@ -70,13 +70,16 @@ def align_and_pad_cell(string, align, inner_dimensions, padding, space=' '):
 
     # Horizontally align and pad.
     for i, line in enumerate(lines):
-        new_width = inner_dimensions[0] + len(line) - visible_width(line)
+        lpad, rpad = padding[:2]
+        extra_padding = inner_dimensions[0] - visible_width(line)
         if 'right' in align:
-            lines[i] = line.rjust(padding[0] + new_width, space) + (space * padding[1])
+            lpad += extra_padding
         elif 'center' in align:
-            lines[i] = (space * padding[0]) + line.center(new_width, space) + (space * padding[1])
+            lpad += extra_padding // 2
+            rpad += (extra_padding + 1) // 2
         else:
-            lines[i] = (space * padding[0]) + line.ljust(new_width + padding[1], space)
+            rpad += extra_padding
+        lines[i] = (space * lpad) + line + (space * rpad)
 
     return lines
 
