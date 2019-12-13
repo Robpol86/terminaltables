@@ -223,7 +223,7 @@ representing the entire table. Then we&#8217;ll add rows one by one. Each row is
 <p>Next we can use AsciiTable to format the table properly and then we can just print it. <code class="docutils literal"><span class="pre">table.table</span></code> gives you just
 one long string with newline characters so you can easily print it.</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">AsciiTable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
 <span class="go">+----------------------+----------------------+</span>
 <span class="go">| Row one column one   | Row one column two   |</span>
 <span class="go">+----------------------+----------------------+</span>
@@ -238,8 +238,8 @@ one long string with newline characters so you can easily print it.</p>
 <h2>Changing Table Settings<a class="headerlink" href="#changing-table-settings" title="Permalink to this headline">¶</a></h2>
 <p>There are more options available to change how your tables are formatted. Say your table doesn&#8217;t really have a heading
 row; all rows are just data.</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">inner_heading_row_border</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">inner_heading_row_border</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
 <span class="go">+----------------------+----------------------+</span>
 <span class="go">| Row one column one   | Row one column two   |</span>
 <span class="go">| Row two column one   | Row two column two   |</span>
@@ -249,7 +249,7 @@ row; all rows are just data.</p>
 </div>
 <p>Now you want to add a title to the table:</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;My Table&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
 <span class="go">+My Table--------------+----------------------+</span>
 <span class="go">| Row one column one   | Row one column two   |</span>
 <span class="go">| Row two column one   | Row two column two   |</span>
@@ -258,8 +258,8 @@ row; all rows are just data.</p>
 </pre></div>
 </div>
 <p>Maybe you want lines in between all rows:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">inner_row_border</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">inner_row_border</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
 <span class="go">+My Table--------------+----------------------+</span>
 <span class="go">| Row one column one   | Row one column two   |</span>
 <span class="go">+----------------------+----------------------+</span>
@@ -279,7 +279,7 @@ the sidebar.</p>
 API.</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">terminaltables</span> <span class="kn">import</span> <span class="n">SingleTable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">SingleTable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">table</span><span class="o">.</span><span class="n">table</span>
 <span class="go">┌──────────────────────┬──────────────────────┐</span>
 <span class="go">│ Row one column one   │ Row one column two   │</span>
 <span class="go">├──────────────────────┼──────────────────────┤</span>
