@@ -94,5 +94,10 @@ def set_terminal_title(title, kernel32=None):
             return kernel32.SetConsoleTitleW(title) != 0
 
     # Linux/OSX.
-    sys.stdout.write(b'\033]0;' + title_bytes + b'\007')
+    set_title = b'\033]0;' + title_bytes + b'\007'
+    if hasattr(sys.stdout, 'buffer'):
+        sys.stdout.buffer.write(set_title)
+    else:
+        text = set_title.decode(sys.stdout.encoding, 'strict')
+        sys.stdout.write(text)
     return True
