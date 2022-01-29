@@ -1,11 +1,12 @@
 """Test function in module."""
 
-from terminaltables.width_and_alignment import max_dimensions, table_width
+from terminaltables.width_and_alignment import max_dimensions, SEPARATOR, table_width
 
 
 def test_empty():
     """Test with zero-length cells."""
     assert table_width(max_dimensions([['']])[2], 0, 0) == 0
+    assert table_width(max_dimensions([[SEPARATOR]])[2], 0, 0) == 0
     assert table_width(max_dimensions([['', '', '']])[2], 0, 0) == 0
     assert table_width(max_dimensions([['', '', ''], ['', '', '']])[2], 0, 0) == 0
 

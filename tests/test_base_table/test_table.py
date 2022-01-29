@@ -6,6 +6,7 @@ from colorclass import Color
 from termcolor import colored
 
 from terminaltables.base_table import BaseTable
+from terminaltables.width_and_alignment import SEPARATOR
 
 
 def test_ascii():
@@ -27,6 +28,45 @@ def test_ascii():
         '| Tomato  | red   | fruit     |\n'
         '| Lettuce | green | vegetable |\n'
         '+---------+-------+-----------+'
+    )
+
+    assert actual == expected
+
+
+def test_separators():
+    """Test with SEPARATORs thrown in the mix."""
+    table_data = [
+        # vegetables
+        ['Name', 'Color', 'Type'],
+        ['Lettuce', 'green', 'vegetable'],
+        ['Potato', 'yellow', 'vegetable'],
+        ['Carrot', 'red', 'vegetable'],
+        # fruits
+        [SEPARATOR],
+        ['Tomato', 'red', 'fruit'],
+        ['Durian', 'yellow', 'fruit'],
+        # nuts
+        [SEPARATOR],
+        ['Avocado', 'green', 'nut'],
+        ['Wallnut', 'brown', 'nut'],
+    ]
+
+    table = BaseTable(table_data)
+    actual = table.table
+    expected = (
+        '+---------+--------+-----------+\n'
+        '| Name    | Color  | Type      |\n'
+        '+---------+--------+-----------+\n'
+        '| Lettuce | green  | vegetable |\n'
+        '| Potato  | yellow | vegetable |\n'
+        '| Carrot  | red    | vegetable |\n'
+        '+---------+--------+-----------+\n'
+        '| Tomato  | red    | fruit     |\n'
+        '| Durian  | yellow | fruit     |\n'
+        '+---------+--------+-----------+\n'
+        '| Avocado | green  | nut       |\n'
+        '| Wallnut | brown  | nut       |\n'
+        '+---------+--------+-----------+'
     )
 
     assert actual == expected
