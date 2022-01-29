@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """AsciiTable is the main table class. To be inherited by other tables. Define convenience methods here."""
 
 from terminaltables.base_table import BaseTable

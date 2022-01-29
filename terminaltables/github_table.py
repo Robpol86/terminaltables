@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """GithubFlavoredMarkdownTable class."""
 
 from terminaltables.ascii_table import AsciiTable

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Generate simple tables in terminals from a nested list of strings.
 
 Use SingleTable or DoubleTable instead of AsciiTable for box-drawing characters.
@@ -10,7 +11,9 @@ from terminaltables.ascii_table import AsciiTable  # noqa
 from terminaltables.github_table import GithubFlavoredMarkdownTable  # noqa
 from terminaltables.other_tables import DoubleTable  # noqa
 from terminaltables.other_tables import SingleTable  # noqa
+from terminaltables.other_tables import UnicodeSingleTable  # noqa
 from terminaltables.other_tables import PorcelainTable  # noqa
+
 
 __author__ = '@Robpol86'
 __license__ = 'MIT'

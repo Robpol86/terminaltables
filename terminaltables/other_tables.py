@@ -1,7 +1,58 @@
+# coding=UTF-8
 """Additional simple tables defined here."""
 
 from terminaltables.ascii_table import AsciiTable
 from terminaltables.terminal_io import IS_WINDOWS
+
+
+class UnicodeSingleTable(AsciiTable):
+    """Draw a table using UTF-8 border characters. Table borders won't have any gaps between lines.
+
+    Similar to the tables shown on PC BIOS boot messages, but not double-lined.
+
+    For Python 2.7 and before you might need to force the encoding on stdout to be UTF-8.
+    That can be done with the following commands, although they are not recommended.
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+    """
+
+    CHAR_F_INNER_HORIZONTAL = u'─'
+    CHAR_F_INNER_INTERSECT = u'┼'
+    CHAR_F_INNER_VERTICAL = u'│'
+    CHAR_F_OUTER_LEFT_INTERSECT = u'├'
+    CHAR_F_OUTER_LEFT_VERTICAL = u'┌'
+    CHAR_F_OUTER_RIGHT_INTERSECT = u'┤'
+    CHAR_F_OUTER_RIGHT_VERTICAL = u'┐'
+    CHAR_H_INNER_HORIZONTAL = u'─'
+    CHAR_H_INNER_INTERSECT = u'┼'
+    CHAR_H_INNER_VERTICAL = '│'
+    CHAR_H_OUTER_LEFT_INTERSECT = u'├'
+    CHAR_H_OUTER_LEFT_VERTICAL = u'│'
+    CHAR_H_OUTER_RIGHT_INTERSECT = u'┤'
+    CHAR_H_OUTER_RIGHT_VERTICAL = u'│'
+    CHAR_INNER_HORIZONTAL = u'─'
+    CHAR_INNER_INTERSECT = u'┼'
+    CHAR_INNER_VERTICAL = u'│'
+    CHAR_OUTER_BOTTOM_HORIZONTAL = u'─'
+    CHAR_OUTER_BOTTOM_INTERSECT = u'┴'
+    CHAR_OUTER_BOTTOM_LEFT = u'└'
+    CHAR_OUTER_BOTTOM_RIGHT = u'┘'
+    CHAR_OUTER_LEFT_INTERSECT = u'├'
+    CHAR_OUTER_LEFT_VERTICAL = u'│'
+    CHAR_OUTER_RIGHT_INTERSECT = u'┤'
+    CHAR_OUTER_RIGHT_VERTICAL = u'│'
+    CHAR_OUTER_TOP_HORIZONTAL = u'─'
+    CHAR_OUTER_TOP_INTERSECT = u'┬'
+    CHAR_OUTER_TOP_LEFT = u'┌'
+    CHAR_OUTER_TOP_RIGHT = u'┐'
+
+    @property
+    def table(self):
+        """Return a large string of the entire table ready to be printed to the terminal."""
+        ascii_table = super(UnicodeSingleTable, self).table
+        optimized = ascii_table.replace('\033(B\033(0', '')
+        return optimized
 
 
 class UnixTable(AsciiTable):

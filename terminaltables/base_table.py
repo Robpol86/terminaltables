@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base table class. Define just the bare minimum to build tables."""
 
 from terminaltables.build import build_border, build_row, flatten

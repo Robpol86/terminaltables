@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Get info about the current terminal window/screen buffer."""
 
 import ctypes
