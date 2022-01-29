@@ -167,7 +167,7 @@ class RunNewConsole(object):
 def iter_rows(pil_image):
     """Yield tuple of pixels for each row in the image.
 
-    itertools.izip in Python 2.x and zip in Python 3.x are writen in C. Much faster than anything else I've found
+    itertools.izip in Python 2.x and zip in Python 3.x are written in C. Much faster than anything else I've found
     written in pure Python.
 
     From:
