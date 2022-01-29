@@ -44,6 +44,7 @@ deploy:
       "aj+Hl25+NbtmKpHcqxxNJhaMmawgzEPdLX+NwxwAZuTrvUCdiMtYhF9qxN0USHIlXSGDNc\
       7ua6nNpYPhjRv7j5YM4uLlK+4Fv/iU+iQcVfy89BS4vlXzUoje6nLIhogsxytb+FjdGZ0PK\
       JzzxfYr0relUjui/gPYmTQoZ1IiT8A="
+  distributions: "sdist bdist_wheel"
   on:
     condition: $TRAVIS_PYTHON_VERSION = 3.4
     tags: true
